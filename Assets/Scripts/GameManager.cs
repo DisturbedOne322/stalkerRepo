@@ -110,7 +110,6 @@ public class GameManager : MonoBehaviour
                 //works either way if it hit any of the layers in array
                 particleSpawnerOnEnemyHit[i].transform.position = pos;
                 particleSpawnerOnEnemyHit[i].Play();
-
                 if(objectHit.TryGetComponent<WeakPoint>(out WeakPoint weakPoint))
                 {
                     weakPoint.GetDamage();

@@ -10,7 +10,7 @@ public class WeakPoint : MonoBehaviour
     private ParticleSystem particleSystem;
     int health;
 
-    private void Awake()
+    private void OnEnable()
     {
         health = UnityEngine.Random.Range(4, 8);
     }
@@ -21,10 +21,13 @@ public class WeakPoint : MonoBehaviour
         particleSystem = transform.parent.GetComponent<ParticleSystem>();
     }
 
+    public void Enable()
+    {
+        collider.enabled = true;
+    }
+
     public void GetDamage()
     {
-        Debug.Log("he");
-
         health -= 1;
         if (health < 0)
         {

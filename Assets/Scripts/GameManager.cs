@@ -111,6 +111,11 @@ public class GameManager : MonoBehaviour
                 particleSpawnerOnEnemyHit[i].transform.position = pos;
                 particleSpawnerOnEnemyHit[i].Play();
 
+                if(objectHit.TryGetComponent<WeakPoint>(out WeakPoint weakPoint))
+                {
+                    weakPoint.GetDamage();
+                }
+
                 //if the object hit is derived from enemy class
                 if (objectHit.TryGetComponent<Enemy>(out Enemy enemy))
                 {

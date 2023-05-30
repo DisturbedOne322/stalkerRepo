@@ -5,34 +5,53 @@ using UnityEngine;
 public class Flameball : MonoBehaviour
 {
     private Transform spawnPos;
-    private float speed = 1;
-    private Animator animator;
+    
+    private float speed = 2;
+    public Animator animator;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
-    private const string PUDDLE_ANIM = "PuddleAnim";
 
+    [SerializeField]
+    private Sprite sprite;
+
+    private bool isFalling = true;
+
+    public FlameballBaseState currentState;
+    public FlameballFallingState fallingState = new FlameballFallingState();
+    public FlameballPuddleState puddleState = new FlameballPuddleState();
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+
+        currentState = fallingState;
+        currentState.EnterState(this);
     }
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
+    {
+        currentState.UpdateState(this);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        currentState.OnTriggerStay2D(this, collision);
+    }
+
+    public void SwitchState(FlameballBaseState nextState)
+    {
+        currentState = nextState;
+        currentState.EnterState(this);
+    }
+
+    public void FallDown()
     {
         transform.Translate(new Vector2(0, -speed * Time.deltaTime));
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void DestroySelf()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            //deal dmg to player
-            Destroy(this.gameObject);
-        }
-        //hit the ground
-        else
-        {
-            //turn into puddle
-            animator.SetBool(PUDDLE_ANIM, true);
-        }
+        Destroy(gameObject);
     }
 }

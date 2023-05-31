@@ -115,6 +115,11 @@ public class GameManager : MonoBehaviour
                     weakPoint.GetDamage();
                 }
 
+                if(objectHit.TryGetComponent<ShieldMovement>(out ShieldMovement shield))
+                {
+                    particleSpawnerOnEnemyHit[i].transform.parent = shield.transform;
+                }
+
                 //if the object hit is derived from enemy class
                 if (objectHit.TryGetComponent<Enemy>(out Enemy enemy))
                 {

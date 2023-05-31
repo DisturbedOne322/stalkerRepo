@@ -21,6 +21,9 @@ public class Flameball : MonoBehaviour
     public FlameballFallingState fallingState = new FlameballFallingState();
     public FlameballPuddleState puddleState = new FlameballPuddleState();
 
+    private float spriteSizeMultiplier = 6;
+    private float colliderOffset = -0.4f;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -37,6 +40,12 @@ public class Flameball : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         currentState.OnTriggerStay2D(this, collision);
+    }
+
+    public void UpdateCollider()
+    {
+        GetComponent<BoxCollider2D>().size = new Vector2(sprite.bounds.size.x * spriteSizeMultiplier, sprite.bounds.size.y * spriteSizeMultiplier / 2);
+        GetComponent<BoxCollider2D>().offset = new Vector2(0, colliderOffset);
     }
 
     public void SwitchState(FlameballBaseState nextState)

@@ -21,8 +21,11 @@ MonoBehaviour:
     m_Bits: 2048
   - serializedVersion: 2
     m_Bits: 8192
+  - serializedVersion: 2
+    m_Bits: 16384
   particleArray:
   - {fileID: 7778632228144535385, guid: 81a5826256eaa4c4bb2e9b88159d904a, type: 3}
   - {fileID: 1066320973440566859, guid: 25369dddf41a1664ba2a5a119a4a57ff, type: 3}
   - {fileID: 7778632228144535385, guid: 958b8116edf2efd498f88643174fe05e, type: 3}
   - {fileID: 7778632228144535385, guid: 958b8116edf2efd498f88643174fe05e, type: 3}
+  - {fileID: 6158196561625902245, guid: 58473c42be2cb8e46bd2dc224d1a717c, type: 3}

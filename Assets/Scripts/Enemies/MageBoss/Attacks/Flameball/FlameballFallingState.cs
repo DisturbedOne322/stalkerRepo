@@ -18,6 +18,8 @@ public class FlameballFallingState : FlameballBaseState
         manager.FallDown();
     }
 
+
+
     public override void OnTriggerStay2D(Flameball manager, Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Player"))

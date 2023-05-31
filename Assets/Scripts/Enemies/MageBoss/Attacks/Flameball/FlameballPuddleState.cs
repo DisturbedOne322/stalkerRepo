@@ -15,6 +15,7 @@ public class FlameballPuddleState : FlameballBaseState
     public override void EnterState(Flameball manager)
     {
         manager.animator.SetBool(PUDDLE_ANIM, true);
+        manager.UpdateCollider();
     }
 
     public override void UpdateState(Flameball manager)

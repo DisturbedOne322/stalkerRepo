@@ -6,10 +6,11 @@ public class Flameball : MonoBehaviour
 {
     private Transform spawnPos;
     
+    private Vector2 fallDirection = new Vector2 (-0.77f, -0.77f);
     private float speed = 2;
     public Animator animator;
     [SerializeField]
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
 
 
     [SerializeField]
@@ -56,7 +57,7 @@ public class Flameball : MonoBehaviour
 
     public void FallDown()
     {
-        transform.Translate(new Vector2(0, -speed * Time.deltaTime));
+        transform.Translate(-transform.up * speed * Time.deltaTime);
     }
 
     public void DestroySelf()

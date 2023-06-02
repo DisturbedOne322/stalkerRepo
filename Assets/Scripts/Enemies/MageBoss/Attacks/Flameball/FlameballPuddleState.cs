@@ -12,14 +12,28 @@ public class FlameballPuddleState : FlameballBaseState
     private float puddleDamageTickRate = 1f;
     private int damage = 1;
 
+    private float lifeTimeTotal = 5;
+    private float lifeTimeLeft = 5;
+    private SpriteRenderer spriteRenderer;
+
     public override void EnterState(Flameball manager)
     {
         manager.animator.SetBool(PUDDLE_ANIM, true);
         manager.UpdateCollider();
+        spriteRenderer = manager.spriteRenderer;
     }
 
     public override void UpdateState(Flameball manager)
     {
+        lifeTimeLeft -= Time.deltaTime;
+        Color currentAlpha = spriteRenderer.color;
+        currentAlpha.a = Mathf.Min((lifeTimeLeft/lifeTimeTotal) * 2, 1);
+        spriteRenderer.color = currentAlpha;
+        if(lifeTimeLeft < 0)
+        {
+            manager.DestroySelf();
+        }
+
         puddleDamageCD -= Time.deltaTime;
         if(puddleDamageCD < 0)
         {

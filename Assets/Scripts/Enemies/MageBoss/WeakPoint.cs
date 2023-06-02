@@ -10,10 +10,12 @@ public class WeakPoint : MonoBehaviour
     private ParticleSystem particleSystem;
     int health;
 
-    private void OnEnable()
+
+    private void Awake()
     {
-        health = UnityEngine.Random.Range(4, 8);
+        health = UnityEngine.Random.Range(2, 5);
     }
+
 
     void Start()
     {

@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+using System;
 using UnityEngine;
 
 public class FlameballFallingState : FlameballBaseState
 {
     private int damage = 1;
     private float puddleOffsetFromGround = 1.65f;
+
+    public static event Action OnFlameballHitGround;
+
     public override void EnterState(Flameball manager)
     {
         //random spawn;
@@ -32,6 +33,7 @@ public class FlameballFallingState : FlameballBaseState
             //spawn on the ground that was hit
             manager.transform.position = new Vector2(manager.transform.position.x, collision.gameObject.transform.position.y + puddleOffsetFromGround);
             manager.SwitchState(manager.puddleState);
+            OnFlameballHitGround?.Invoke();
         }
     }
 }

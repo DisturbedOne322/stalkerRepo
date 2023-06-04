@@ -23,6 +23,9 @@ public class HellHoundVisuals : MonoBehaviour
     private HitIndicatorsSO hitIndicatorsSO;
     private ParticleSystem[] particleSpawnerOnPlayerHitWithClaw;
 
+    [SerializeField]
+    private Dissolve dissolve;
+
     private void Awake()
     {
         hellHound = GetComponent<HellHound>();
@@ -78,6 +81,8 @@ public class HellHoundVisuals : MonoBehaviour
             var scale = transform.localScale;
             scale.x = transform.position.x > player.transform.position.x? 5 : -5;
             transform.localScale = scale;
+
+            animator.SetFloat("RunSpeed", dissolve.DissolveOnDeath());
         }
     }
 }

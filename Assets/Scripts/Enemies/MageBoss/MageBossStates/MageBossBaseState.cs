@@ -7,4 +7,5 @@ public abstract class MageBossBaseState
     public abstract void EnterState(MageBoss manager);
     public abstract void UpdateState(MageBoss manager);
     public abstract void OnCollisionEnter(TentacleStateManager manager, Collider2D collision);
+    public abstract void FlameballCast(MageBoss manager);
 }

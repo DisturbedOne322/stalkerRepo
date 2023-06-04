@@ -23,6 +23,7 @@ public class HellHound : Enemy
     private float runSpeed;
     private float runSpeedMin = 5;
     private float runSpeedMax = 7.5f;
+    private float dyingSpeedMultiplier = 1f;
     private float attackCD = -1;
     private float attackCDTotal = 1.5f;
 
@@ -32,6 +33,8 @@ public class HellHound : Enemy
     private bool hasAttackedRecently = false;
 
     private PlayerMovement player;
+    [SerializeField]
+    private Dissolve dissolve;
 
     private void Awake()
     {
@@ -49,7 +52,13 @@ public class HellHound : Enemy
         getAggressiveTimer = UnityEngine.Random.Range(2f, 3.5f);
         runSpeed = UnityEngine.Random.Range(runSpeedMin, runSpeedMax);
         playerDetection.OnPlayerInRange += PlayerDetection_OnPlayerInRange;
+        dissolve.OnDissolved += Dissolve_OnDissolved;
         Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), player.GetComponent<CapsuleCollider2D>());
+    }
+
+    private void Dissolve_OnDissolved()
+    {
+        Destroy(gameObject);
     }
 
     private void PlayerDetection_OnPlayerInRange(PlayerMovement player)
@@ -84,6 +93,8 @@ public class HellHound : Enemy
                     AttackPlayer();
                 }
             }
+
+            dyingSpeedMultiplier = dissolve.DissolveOnDeath();
         }
     }
     protected override void DetectPlayer()
@@ -92,7 +103,7 @@ public class HellHound : Enemy
     }
     protected override void MoveToPlayer()
     {
-        transform.Translate(new Vector2((transform.position.x > player.transform.position.x ? -1 : 1) * moveSpeed * Time.deltaTime,0));
+        transform.Translate(new Vector2((transform.position.x > player.transform.position.x ? -1 : 1) * moveSpeed * dyingSpeedMultiplier * Time.deltaTime,0));
     }
     protected override void AttackPlayer()
     {
@@ -108,8 +119,10 @@ public class HellHound : Enemy
     public override void GetDamage(int damage)
     {
         healthPoints -= damage;
-        if(healthPoints <= 0)
-            Destroy(gameObject);
+        if (healthPoints <= 0)
+        {
+            dissolve.StartDissolving();
+        }
 
         OnDamageTaken?.Invoke();
     }

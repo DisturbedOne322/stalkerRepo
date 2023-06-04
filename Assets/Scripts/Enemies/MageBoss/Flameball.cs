@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,8 @@ using UnityEngine;
 public class Flameball : MonoBehaviour
 {
     private Transform spawnPos;
-    
     private Vector2 fallDirection = new Vector2 (-0.77f, -0.77f);
-    private float speed = 2;
+    private float speed = 10;
     public Animator animator;
     [SerializeField]
     public SpriteRenderer spriteRenderer;

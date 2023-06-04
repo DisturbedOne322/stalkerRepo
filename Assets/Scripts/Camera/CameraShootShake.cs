@@ -18,6 +18,9 @@ public class CameraShootShake : MonoBehaviour
     private readonly float shootAmp = 2.3f;
     private readonly float shootFreq = 1.4f;
 
+    private readonly float flameballHitGroundAmp = 5f;
+    private readonly float flameballHitGroundFreq = 5f;
+
     private float originalShakeAmp;
     private float originalShakeFreq;
 
@@ -65,11 +68,19 @@ public class CameraShootShake : MonoBehaviour
         Shoot.OnSuccessfulShoot += Instance_OnShootAction;
         QTE.instance.OnQTEStart += QTE_OnQTEStart;
         QTE.instance.OnQTEEnd += QTE_OnQTEEnd;
+        FlameballFallingState.OnFlameballHitGround += FlameballFallingState_OnFlameballHitGround;
     }
+
     private void Player_OnPlayerTeleported()
     {
         vCam.LookAt = null;
         vCam.Follow = null;
+    }
+
+
+    private void FlameballFallingState_OnFlameballHitGround()
+    {
+        ShakeCamera(flameballHitGroundAmp, flameballHitGroundFreq, shakeTimerTotal);
     }
 
     private void Player_OnHealthChanged(GameManager.PlayerHealthStatus obj)

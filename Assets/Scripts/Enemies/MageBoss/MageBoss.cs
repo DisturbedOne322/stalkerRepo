@@ -8,7 +8,8 @@ public class MageBoss : MonoBehaviour
     public WeakPoint[] collidersArray;
 
     private const string DAMAGED_ANIM = "OnDamaged";
-    private Animator animator;
+    public const string FLAMEBALL_ANIM = "Base Layer.FlameballCast";
+    public Animator animator;
 
 
     [SerializeField]
@@ -69,6 +70,11 @@ public class MageBoss : MonoBehaviour
     private void SetNormalOutline()
     {
         StartCoroutine("ReturnToNormalOutline");
+    }
+    //called from anim event
+    private void CastFlameball()
+    {
+        currentState.FlameballCast(this);
     }
 
     // Update is called once per frame

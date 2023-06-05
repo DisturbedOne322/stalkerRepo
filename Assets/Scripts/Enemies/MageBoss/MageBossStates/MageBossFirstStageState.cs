@@ -6,7 +6,7 @@ public class MageBossFirstStageState : MageBossBaseState
     private PlayerMovement player;
 
     private float currentAttackCD = 5f;
-    private float cdBetweenAttacks = 15f;
+    private float cdBetweenAttacks = 5f;
 
     private Vector3 flameballSpawnStartPos;
     private Vector3 currentFlameBallPos;
@@ -21,13 +21,13 @@ public class MageBossFirstStageState : MageBossBaseState
     private float flameBallsSpawned = 0;
 
 
-    private enum AttackType
+    private enum State
     {
         Idle,
         FlameballCast
     }
 
-    private AttackType attackType;
+    private State state;
 
     public override void EnterState(MageBoss manager)
     {
@@ -42,7 +42,7 @@ public class MageBossFirstStageState : MageBossBaseState
             manager.collidersArray[i].OnWeakPointBroken += MageBossFirstStageState_OnWeakPointBroken;
         }
 
-        attackType = AttackType.Idle;
+        state = State.Idle;
     }
 
     private void MageBossFirstStageState_OnWeakPointBroken()
@@ -61,7 +61,8 @@ public class MageBossFirstStageState : MageBossBaseState
 
             if (currentFlameBallWave >= flameBallWavesTotal)
             {
-                attackType = AttackType.Idle;
+                state = State.Idle;
+                SetCDBetweenAttacks();
                 return;
             }
             flameBallsSpawned = 0;
@@ -80,19 +81,23 @@ public class MageBossFirstStageState : MageBossBaseState
     public override void UpdateState(MageBoss manager)
     {
         currentAttackCD -= Time.deltaTime;
-        if(currentAttackCD < 0)
+        if(currentAttackCD < 0 && state == State.Idle)
         {
             manager.animator.Play(MageBoss.FLAMEBALL_ANIM);
-            currentAttackCD = cdBetweenAttacks;
         }
-        switch(attackType)
+        switch(state)
         {
-            case AttackType.Idle:
+            case State.Idle:
                 break;
-            case AttackType.FlameballCast:
+            case State.FlameballCast:
                 FlameBallWaveAttack();
                 break;
         }
+    }
+
+    private void SetCDBetweenAttacks()
+    {
+        currentAttackCD = cdBetweenAttacks;
     }
 
     private void ResetFlameballSpawnPos()
@@ -105,7 +110,7 @@ public class MageBossFirstStageState : MageBossBaseState
     {
         ResetFlameballSpawnPos();
 
-        attackType = AttackType.FlameballCast;
+        state = State.FlameballCast;
         flameBallsSpawned = 0;
         currentFlameBallWave = 0;
     }

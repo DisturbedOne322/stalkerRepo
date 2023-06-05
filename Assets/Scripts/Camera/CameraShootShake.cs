@@ -27,8 +27,8 @@ public class CameraShootShake : MonoBehaviour
     private CinemachineComposer composer;
     private CinemachineTransposer transposer;
 
-    private readonly float leftBodyOffset = -2;
-    private readonly float rightBodyOffset = 2;
+    private readonly float leftBodyOffset = -3;
+    private readonly float rightBodyOffset = 3;
 
     private readonly float aimCameraSpeed = 2f;
 

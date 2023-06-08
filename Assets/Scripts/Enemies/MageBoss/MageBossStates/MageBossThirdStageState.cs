@@ -18,8 +18,4 @@ public class MageBossThirdStageState : MageBossBaseState
     {
         throw new System.NotImplementedException();
     }
-    public override void FlameballCast(MageBoss manager)
-    {
-        throw new System.NotImplementedException();
-    }
 }

@@ -3,11 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flameball : MonoBehaviour
+public class Flameball : MageBossBaseAttack
 {
     private Transform spawnPos;
     private Vector2 fallDirection = new Vector2 (-0.77f, -0.77f);
     private float speed = 10;
+    public float Speed
+    {
+        get;
+        set;
+    }
     public Animator animator;
     [SerializeField]
     public SpriteRenderer spriteRenderer;

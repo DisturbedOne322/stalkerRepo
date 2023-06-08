@@ -40327,6 +40327,7 @@ GameObject:
   - component: {fileID: 5555952846821820090}
   - component: {fileID: 4501353398367889554}
   - component: {fileID: 1753453877084380412}
+  - component: {fileID: 1486769375038072591}
   - component: {fileID: 1614666792}
   m_Layer: 0
   m_Name: mage_boss
@@ -40444,7 +40445,7 @@ MonoBehaviour:
   - {fileID: 8188212837579191848}
   - {fileID: 2117735509955641995}
   m_Bounds:
-    m_Center: {x: 0.007173121, y: -0.0016250908, z: 0}
+    m_Center: {x: 0.00717324, y: -0.0016250908, z: 0}
     m_Extent: {x: 0.40217316, y: 0.46788502, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -40470,6 +40471,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1486769375038072591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8887629015873884292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f699f6d3b84119b4aa2a0bc7e3ae4bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flameballSpawnStartPos: {fileID: 2059342511288493901}
+  flameballPrefab: {fileID: 5175358612383968646, guid: 2afe707e2dfb129448af44727c94f483, type: 3}
 --- !u!114 &1614666792
 MonoBehaviour:
   m_ObjectHideFlags: 0

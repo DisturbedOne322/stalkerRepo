@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Laser : MonoBehaviour
+public class Laser : MageBossBaseAttack
 {
+    public event Action OnAttackFinished;
     [SerializeField]
     private LineRenderer lineRenderer;
 
@@ -14,32 +16,56 @@ public class Laser : MonoBehaviour
 
     [SerializeField]
     private LayerMask groundLayer;
+
+    private PlayerMovement player;
+
+    private float smoothDampTimeVertical = 0.5f;
+    private float smoothDampTimeHorizontal = 2f;
+    private float velocityHorizontal = 0;
+    private float velocityVertical = 0;
+
+    private float duration;
+
+    private float laserThickness;
+    private float laserEdgeSmoothness;
+
+    private bool attackFinished = true;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        lineRenderer = GetComponent<LineRenderer>();
+        player = GameManager.Instance.GetPlayerReference();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(new Vector3(0,0,10) * Time.deltaTime);
-        hit = Physics2D.Raycast(transform.position, transform.right, 10, groundLayer);
-        Debug.Log(hit.point);
-        
-        if (hit)
+        if (attackFinished)
+            return;
+
+        duration -= Time.deltaTime;
+        if(duration < 0)
         {
-            lineRenderer.SetPosition(1, hit.point);
+            OnAttackFinished?.Invoke();
+            attackFinished = true;
         }
+
+        hit = Physics2D.Raycast(transform.position, -transform.up, 10, groundLayer);        
+        lineRenderer.SetPosition(0, transform.position);
+        Vector2 linePos2 = new Vector2();
+
+        linePos2.y = Mathf.SmoothDamp(lineRenderer.GetPosition(1).y, hit.point.y, ref velocityVertical, smoothDampTimeVertical);
+        linePos2.x = Mathf.SmoothDamp(lineRenderer.GetPosition(1).x, player.transform.position.x, ref velocityHorizontal, smoothDampTimeHorizontal);
+        lineRenderer.SetPosition(1, linePos2);
     }
 
-    private void Enable()
+    public void InitializeLaser(float duration, float laserThickness, float laserEdgeSmoothness)
     {
-        lineRenderer.enabled = true;
-    }
-
-    private void Disable()
-    {
-        lineRenderer.enabled = false;
+        this.duration = duration;
+        this.laserThickness = laserThickness;
+        this.laserEdgeSmoothness = laserEdgeSmoothness;
+        attackFinished = false;
     }
 }

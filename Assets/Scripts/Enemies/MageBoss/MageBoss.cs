@@ -9,8 +9,12 @@ public class MageBoss : MonoBehaviour
 
     private const string DAMAGED_ANIM = "OnDamaged";
     public const string FLAMEBALL_ANIM = "Base Layer.FlameballCast";
+    public const string LASER_ANIM = "Base Layer.LaserCast";
     public Animator animator;
 
+    public FlameballspawnManager flameballspawnManager;
+    [SerializeField]
+    public Laser laser;
 
     [SerializeField]
     private Material material;
@@ -38,6 +42,7 @@ public class MageBoss : MonoBehaviour
 
     private void Awake()
     {
+        flameballspawnManager = GetComponent<FlameballspawnManager>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         currentState = firstStageState;
         currentState.EnterState(this);
@@ -70,11 +75,6 @@ public class MageBoss : MonoBehaviour
     private void SetNormalOutline()
     {
         StartCoroutine("ReturnToNormalOutline");
-    }
-    //called from anim event
-    private void CastFlameball()
-    {
-        currentState.FlameballCast(this);
     }
 
     // Update is called once per frame

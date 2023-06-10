@@ -26,8 +26,12 @@ public class MageBossFirstStageState : MageBossBaseState
     private float fallSpeed = 10;
 
     //laser
-    private float laserAnimationDurationTotal = 10f;
-    private float laserAnimationDuration = 10f;
+    private float laserAnimationDuration = 999f;
+    private float laserThickness = 1f;
+
+    //claw attack
+    private float clawAttackCD = 0f;
+    private float clawAttackCDTotal = 2f;
 
 
     private enum State
@@ -35,6 +39,7 @@ public class MageBossFirstStageState : MageBossBaseState
         Idle,
         FlameballCast,
         LaserCast,
+        LaserPrepare
     }
 
     private State state;
@@ -45,9 +50,9 @@ public class MageBossFirstStageState : MageBossBaseState
         attackSet[1] = LASER_ATTACK;
         player = manager.player;
         health = manager.collidersArray.Length;
-        //flameball = manager.flameball;
         manager.flameballspawnManager.OnAttackFinished += FlameballspawnManager_OnAttackFinished;
-
+        manager.laser.OnAttackFinished += Laser_OnAttackFinished;
+        manager.OnPlayerInClawAttackRange += Manager_OnPlayerInClawAttackRange;
 
         for (int i = 0; i < manager.collidersArray.Length; i++)
         {
@@ -57,11 +62,24 @@ public class MageBossFirstStageState : MageBossBaseState
         state = State.Idle;
     }
 
+    private void Manager_OnPlayerInClawAttackRange(MageBoss manager)
+    {
+        if (clawAttackCD > 0)
+            return;
+        ClawAttack(manager);
+    }
+
+    private void Laser_OnAttackFinished(MageBoss manager)
+    {
+        state = State.Idle;
+        SetCDBetweenAttacks();
+        manager.animator.SetTrigger(MageBoss.LASER_END_TRIGGER);
+    }
+
     private void FlameballspawnManager_OnAttackFinished()
     {
         state = State.Idle;
         SetCDBetweenAttacks();
-        currentAttackCD = cdBetweenAttacks;
     }
 
     private void MageBossFirstStageState_OnWeakPointBroken()
@@ -72,10 +90,11 @@ public class MageBossFirstStageState : MageBossBaseState
 
     public override void UpdateState(MageBoss manager)
     {
+        clawAttackCD -= Time.deltaTime;
         currentAttackCD -= Time.deltaTime;
         if(currentAttackCD < 0 && state == State.Idle)
         {
-            switch(GetRandomAttack())
+            switch (GetRandomAttack())
             {
                 case FLAMEBALL_ATTACK:
                     FlameballCast(manager);
@@ -83,6 +102,16 @@ public class MageBossFirstStageState : MageBossBaseState
                 case LASER_ATTACK:
                     LaserCast(manager);
                     break;
+            }
+        }
+        if(state == State.LaserPrepare)
+        {
+            var a = manager.animator.GetCurrentAnimatorStateInfo(0);
+            if (a.normalizedTime >= 0.99f)
+            {
+                manager.laser.InitializeLaser(laserAnimationDuration, laserThickness, manager);
+                //manager.animator.Play(MageBoss.LASER_ANIM);
+                state = State.LaserCast;
             }
         }
     }
@@ -112,10 +141,15 @@ public class MageBossFirstStageState : MageBossBaseState
 
     private void LaserCast(MageBoss manager)
     {
-        manager.laser.InitializeLaser(3,0,0);
-        manager.animator.Play(MageBoss.LASER_ANIM);
-        state = State.LaserCast;
+        manager.animator.Play(MageBoss.LASER_PREPARE_ANIM);
+        state = State.LaserPrepare;
         lastAttack = LASER_ATTACK;
+    }
+
+    private void ClawAttack(MageBoss manager)
+    {
+        manager.animator.SetTrigger(MageBoss.CLAW_ATTACK_TRIGGER);
+        clawAttackCD = clawAttackCDTotal;
     }
 
 

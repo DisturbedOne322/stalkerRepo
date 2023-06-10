@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class Laser : MageBossBaseAttack
 {
-    public event Action OnAttackFinished;
+    public event Action<MageBoss> OnAttackFinished;
     [SerializeField]
     private LineRenderer lineRenderer;
+    private Material laserMaterial;
 
     [SerializeField]
     private Transform shootPoint;
@@ -26,16 +27,14 @@ public class Laser : MageBossBaseAttack
 
     private float duration;
 
-    private float laserThickness;
-    private float laserEdgeSmoothness;
-
     private bool attackFinished = true;
+
+    private MageBoss caller;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        lineRenderer = GetComponent<LineRenderer>();
         player = GameManager.Instance.GetPlayerReference();
     }
 
@@ -48,7 +47,7 @@ public class Laser : MageBossBaseAttack
         duration -= Time.deltaTime;
         if(duration < 0)
         {
-            OnAttackFinished?.Invoke();
+            OnAttackFinished?.Invoke(caller);
             attackFinished = true;
         }
 
@@ -60,12 +59,13 @@ public class Laser : MageBossBaseAttack
         linePos2.x = Mathf.SmoothDamp(lineRenderer.GetPosition(1).x, player.transform.position.x, ref velocityHorizontal, smoothDampTimeHorizontal);
         lineRenderer.SetPosition(1, linePos2);
     }
-
-    public void InitializeLaser(float duration, float laserThickness, float laserEdgeSmoothness)
+                                //number of laser animation repeats, 1 repeat = 1 sec
+    public void InitializeLaser(float duration, float laserThickness, MageBoss caller)
     {
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.SetWidth(laserThickness,laserThickness);
         this.duration = duration;
-        this.laserThickness = laserThickness;
-        this.laserEdgeSmoothness = laserEdgeSmoothness;
+        this.caller = caller;
         attackFinished = false;
     }
 }

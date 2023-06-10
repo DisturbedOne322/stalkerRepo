@@ -1,15 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MageBoss : MonoBehaviour
 {
+    public event Action<MageBoss> OnPlayerInClawAttackRange;
     [SerializeField]
     public WeakPoint[] collidersArray;
 
     private const string DAMAGED_ANIM = "OnDamaged";
+    public const string LASER_END_TRIGGER = "LaserAttackEnd";
+    public const string CLAW_ATTACK_TRIGGER = "ClawAttack";
     public const string FLAMEBALL_ANIM = "Base Layer.FlameballCast";
     public const string LASER_ANIM = "Base Layer.LaserCast";
+    public const string LASER_PREPARE_ANIM = "Base Layer.LaserCastPrepare";
+    public const string LASER_END_ANIM = "Base Layer.LaserCastEnd";
     public Animator animator;
 
     public FlameballspawnManager flameballspawnManager;
@@ -39,6 +45,11 @@ public class MageBoss : MonoBehaviour
     public GameObject flameball;
 
     public Transform flameballSpawnPos;
+
+    [SerializeField]
+
+    private Transform clawAttackRange;
+
 
     private void Awake()
     {
@@ -81,5 +92,9 @@ public class MageBoss : MonoBehaviour
     void Update()
     {
         currentState.UpdateState(this);
+        if(player.transform.position.x > clawAttackRange.position.x)
+        {
+            OnPlayerInClawAttackRange?.Invoke(this);
+        }
     }
 }

@@ -14,13 +14,7 @@ public class ShieldMovement : MonoBehaviour
     Transform pointD;
     private float interpolateAmount = 0f;
 
-    private float speed = 0.75f;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private float speed = 0.65f;
 
     // Update is called once per frame
     void Update()

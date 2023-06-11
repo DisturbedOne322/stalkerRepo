@@ -8,7 +8,6 @@ public class Laser : MageBossBaseAttack
     public event Action<MageBoss> OnAttackFinished;
     [SerializeField]
     private LineRenderer lineRenderer;
-    private Material laserMaterial;
 
     [SerializeField]
     private Transform shootPoint;
@@ -18,10 +17,13 @@ public class Laser : MageBossBaseAttack
     [SerializeField]
     private LayerMask groundLayer;
 
+    [SerializeField]
+    private LayerMask playerLayer;
+
     private PlayerMovement player;
 
-    private float smoothDampTimeVertical = 0.5f;
-    private float smoothDampTimeHorizontal = 2f;
+    private readonly float smoothDampTimeVertical = 0.5f;
+    private readonly float smoothDampTimeHorizontal = 1.5f;
     private float velocityHorizontal = 0;
     private float velocityVertical = 0;
 
@@ -31,6 +33,9 @@ public class Laser : MageBossBaseAttack
 
     private MageBoss caller;
 
+    private float damageCD = 0f;
+    private float damageCDTotal = 1f;
+    private int damage = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +46,8 @@ public class Laser : MageBossBaseAttack
     // Update is called once per frame
     void Update()
     {
+        damageCD -= Time.deltaTime;
+
         if (attackFinished)
             return;
 
@@ -50,20 +57,41 @@ public class Laser : MageBossBaseAttack
             OnAttackFinished?.Invoke(caller);
             attackFinished = true;
         }
+        SetLaserPosition();
+        DamagePlayer();
 
-        hit = Physics2D.Raycast(transform.position, -transform.up, 10, groundLayer);        
+    }
+
+    private void SetLaserPosition()
+    {
+        hit = Physics2D.Raycast(transform.position, -transform.up, 10, groundLayer);
         lineRenderer.SetPosition(0, transform.position);
         Vector2 linePos2 = new Vector2();
 
         linePos2.y = Mathf.SmoothDamp(lineRenderer.GetPosition(1).y, hit.point.y, ref velocityVertical, smoothDampTimeVertical);
         linePos2.x = Mathf.SmoothDamp(lineRenderer.GetPosition(1).x, player.transform.position.x, ref velocityHorizontal, smoothDampTimeHorizontal);
+
         lineRenderer.SetPosition(1, linePos2);
     }
-                                //number of laser animation repeats, 1 repeat = 1 sec
+
+    private void DamagePlayer()
+    {
+        Debug.DrawRay(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1), Color.magenta);
+        hit = Physics2D.Raycast(transform.position, lineRenderer.GetPosition(1), 20, playerLayer);
+        if(hit)
+        {
+            if (damageCD > 0)
+                return;
+            player.GetDamaged(damage);
+            damageCD = damageCDTotal;
+        }
+    }
+
+    //number of laser animation repeats, 1 repeat = 1 sec
     public void InitializeLaser(float duration, float laserThickness, MageBoss caller)
     {
         lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.SetWidth(laserThickness,laserThickness);
+        lineRenderer.startWidth = laserThickness;
         this.duration = duration;
         this.caller = caller;
         attackFinished = false;

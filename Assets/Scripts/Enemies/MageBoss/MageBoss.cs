@@ -11,7 +11,6 @@ public class MageBoss : MonoBehaviour
 
     private const string DAMAGED_ANIM = "OnDamaged";
     public const string LASER_END_TRIGGER = "LaserAttackEnd";
-    public const string CLAW_ATTACK_TRIGGER = "ClawAttack";
     public const string FLAMEBALL_ANIM = "Base Layer.FlameballCast";
     public const string LASER_ANIM = "Base Layer.LaserCast";
     public const string LASER_PREPARE_ANIM = "Base Layer.LaserCastPrepare";
@@ -24,10 +23,13 @@ public class MageBoss : MonoBehaviour
 
     [SerializeField]
     private Material material;
+
     private const string outlineColor = "_OutlineColor";
     private const string outlineThickness = "_OutlineThickness";
+
     private Vector4 normalColor = new Vector4(0,0,0,1);
     private Vector4 damagedColor = new Vector4(1,0,0,1);
+
     private float normalThickness = 0;
     private float damagedThickness = 1;
 
@@ -47,9 +49,7 @@ public class MageBoss : MonoBehaviour
     public Transform flameballSpawnPos;
 
     [SerializeField]
-
     private Transform clawAttackRange;
-
 
     private void Awake()
     {
@@ -92,9 +92,5 @@ public class MageBoss : MonoBehaviour
     void Update()
     {
         currentState.UpdateState(this);
-        if(player.transform.position.x > clawAttackRange.position.x)
-        {
-            OnPlayerInClawAttackRange?.Invoke(this);
-        }
     }
 }

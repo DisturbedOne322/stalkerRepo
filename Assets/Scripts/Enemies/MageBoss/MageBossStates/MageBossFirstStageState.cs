@@ -9,10 +9,6 @@ public class MageBossFirstStageState : MageBossBaseState
     private float currentAttackCD = 7f;
     private float cdBetweenAttacks = 7f;
 
-   // private Vector3 flameballSpawnStartPos;
-    //private Vector3 currentFlameBallPos;
-    //private GameObject flameball;
-
     private const string FLAMEBALL_ATTACK = "Flameball";
     private const string LASER_ATTACK = "Laser";
     private string lastAttack;
@@ -28,11 +24,6 @@ public class MageBossFirstStageState : MageBossBaseState
     //laser
     private float laserAnimationDuration = 999f;
     private float laserThickness = 1f;
-
-    //claw attack
-    private float clawAttackCD = 0f;
-    private float clawAttackCDTotal = 2f;
-
 
     private enum State
     {
@@ -52,7 +43,6 @@ public class MageBossFirstStageState : MageBossBaseState
         health = manager.collidersArray.Length;
         manager.flameballspawnManager.OnAttackFinished += FlameballspawnManager_OnAttackFinished;
         manager.laser.OnAttackFinished += Laser_OnAttackFinished;
-        manager.OnPlayerInClawAttackRange += Manager_OnPlayerInClawAttackRange;
 
         for (int i = 0; i < manager.collidersArray.Length; i++)
         {
@@ -60,13 +50,6 @@ public class MageBossFirstStageState : MageBossBaseState
         }
 
         state = State.Idle;
-    }
-
-    private void Manager_OnPlayerInClawAttackRange(MageBoss manager)
-    {
-        if (clawAttackCD > 0)
-            return;
-        ClawAttack(manager);
     }
 
     private void Laser_OnAttackFinished(MageBoss manager)
@@ -90,21 +73,20 @@ public class MageBossFirstStageState : MageBossBaseState
 
     public override void UpdateState(MageBoss manager)
     {
-        clawAttackCD -= Time.deltaTime;
         currentAttackCD -= Time.deltaTime;
-        if(currentAttackCD < 0 && state == State.Idle)
+        if (currentAttackCD < 0 && state == State.Idle)
         {
-            switch (GetRandomAttack())
-            {
-                case FLAMEBALL_ATTACK:
-                    FlameballCast(manager);
-                    break;
-                case LASER_ATTACK:
+            //switch (GetRandomAttack())
+            //{
+            //    case FLAMEBALL_ATTACK:
+            //        FlameballCast(manager);
+            //        break;
+             //   case LASER_ATTACK:
                     LaserCast(manager);
-                    break;
-            }
+             //       break;
+            //}
         }
-        if(state == State.LaserPrepare)
+        if (state == State.LaserPrepare)
         {
             var a = manager.animator.GetCurrentAnimatorStateInfo(0);
             if (a.normalizedTime >= 0.99f)
@@ -145,13 +127,6 @@ public class MageBossFirstStageState : MageBossBaseState
         state = State.LaserPrepare;
         lastAttack = LASER_ATTACK;
     }
-
-    private void ClawAttack(MageBoss manager)
-    {
-        manager.animator.SetTrigger(MageBoss.CLAW_ATTACK_TRIGGER);
-        clawAttackCD = clawAttackCDTotal;
-    }
-
 
     public override void OnCollisionEnter(TentacleStateManager manager, Collider2D collision)
     {

@@ -10,8 +10,7 @@ public class ShieldMovement : MonoBehaviour
     Transform pointB;
     [SerializeField]
     Transform pointC;
-    [SerializeField]
-    Transform pointD;
+
     private float interpolateAmount = 0f;
 
     private float speed = 0.65f;
@@ -21,13 +20,9 @@ public class ShieldMovement : MonoBehaviour
     {
         interpolateAmount += Time.deltaTime * speed;
 
-        if(interpolateAmount > 1)
+        if(interpolateAmount > 1 || interpolateAmount < 0)
         {
-            interpolateAmount = 0;
-
-            pointD = pointA;
-            pointA = pointC;
-            pointC = pointD;
+            speed *= -1;
         }
 
         transform.position = QuadraticLerp(pointA.position, pointB.position, pointC.position, interpolateAmount);

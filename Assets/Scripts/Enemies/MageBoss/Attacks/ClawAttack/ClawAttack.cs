@@ -42,7 +42,7 @@ public class ClawAttack : MonoBehaviour
         if (attackAnimationCD > 0)
             return;
 
-        if (player.transform.position.x > attackRange.position.x)
+        if (player.transform.position.x > attackRange.position.x && transform.position.y < attackRange.position.y)
         {
             animator.SetTrigger(CLAW_ATTACK_TRIGGER);
             attackAnimationCD = attackAnimationCDTotal;

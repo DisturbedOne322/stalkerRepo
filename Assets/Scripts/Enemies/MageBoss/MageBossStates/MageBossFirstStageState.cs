@@ -22,7 +22,7 @@ public class MageBossFirstStageState : MageBossBaseState
     private float fallSpeed = 10;
 
     //laser
-    private float laserAnimationDuration = 999f;
+    private float laserAnimationDuration = 10f;
     private float laserThickness = 1f;
 
     private enum State

@@ -20,6 +20,8 @@ public class Laser : MageBossBaseAttack
     [SerializeField]
     private LayerMask playerLayer;
 
+    private float trackOffsetX = 0.5f;
+
     private PlayerMovement player;
 
     private readonly float smoothDampTimeVertical = 0.5f;
@@ -68,16 +70,18 @@ public class Laser : MageBossBaseAttack
         lineRenderer.SetPosition(0, transform.position);
         Vector2 linePos2 = new Vector2();
 
+        trackOffsetX = lineRenderer.GetPosition(1).x > player.transform.position.x ? 0.5f : -0.5f; 
+
         linePos2.y = Mathf.SmoothDamp(lineRenderer.GetPosition(1).y, hit.point.y, ref velocityVertical, smoothDampTimeVertical);
-        linePos2.x = Mathf.SmoothDamp(lineRenderer.GetPosition(1).x, player.transform.position.x, ref velocityHorizontal, smoothDampTimeHorizontal);
+        linePos2.x = Mathf.SmoothDamp(lineRenderer.GetPosition(1).x, player.transform.position.x - trackOffsetX, ref velocityHorizontal, smoothDampTimeHorizontal);
 
         lineRenderer.SetPosition(1, linePos2);
     }
 
     private void DamagePlayer()
     {
-        Debug.DrawRay(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1), Color.magenta);
-        hit = Physics2D.Raycast(transform.position, lineRenderer.GetPosition(1), 20, playerLayer);
+        Debug.DrawRay(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0), Color.magenta);
+        hit = Physics2D.Raycast(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0), 20, playerLayer);
         if(hit)
         {
             if (damageCD > 0)
@@ -92,6 +96,8 @@ public class Laser : MageBossBaseAttack
     {
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.startWidth = laserThickness;
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, transform.position);
         this.duration = duration;
         this.caller = caller;
         attackFinished = false;

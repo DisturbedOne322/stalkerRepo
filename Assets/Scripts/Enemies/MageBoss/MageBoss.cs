@@ -42,14 +42,14 @@ public class MageBoss : MonoBehaviour
     private MageBossThirdStageState thirdStageState = new MageBossThirdStageState();
 
 
-    //first stage attacks
-    [SerializeField]
-    public GameObject flameball;
+    ////first stage attacks
+    //[SerializeField]
+    //public GameObject flameball;
 
-    public Transform flameballSpawnPos;
+    //public Transform flameballSpawnPos;
 
-    [SerializeField]
-    private Transform clawAttackRange;
+    //[SerializeField]
+    //private Transform clawAttackRange;
 
     private void Awake()
     {

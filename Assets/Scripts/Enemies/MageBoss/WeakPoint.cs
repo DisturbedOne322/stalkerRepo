@@ -26,6 +26,8 @@ public class WeakPoint : MonoBehaviour
     public void Enable()
     {
         boxCollider.enabled = true;
+        particleSys.Play();
+        health = UnityEngine.Random.Range(2, 5);
     }
 
     public void GetDamage()

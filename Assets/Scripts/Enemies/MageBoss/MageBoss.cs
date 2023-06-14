@@ -42,15 +42,6 @@ public class MageBoss : MonoBehaviour
     private MageBossThirdStageState thirdStageState = new MageBossThirdStageState();
 
 
-    ////first stage attacks
-    //[SerializeField]
-    //public GameObject flameball;
-
-    //public Transform flameballSpawnPos;
-
-    //[SerializeField]
-    //private Transform clawAttackRange;
-
     private void Awake()
     {
         flameballspawnManager = GetComponent<FlameballspawnManager>();
@@ -83,6 +74,16 @@ public class MageBoss : MonoBehaviour
             yield return new WaitForSeconds(.1f);
         }
     }
+
+    public void ResetColliders()
+    {
+        foreach(var collider in collidersArray)
+        {
+            collider.Enable();
+        }
+    }
+
+
     private void SetNormalOutline()
     {
         StartCoroutine("ReturnToNormalOutline");

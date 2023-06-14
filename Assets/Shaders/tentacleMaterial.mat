@@ -43,9 +43,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _Float: 0
-    - _SpeedMultiplier: 0.5
+    - _SpeedMultiplier: 0.62
     m_Colors:
     - _AcidColor: {r: 0.08960736, g: 1, b: 0, a: 0}
-    - _Tiling: {r: 1, g: 3, b: 0, a: 0}
+    - _Tiling: {r: 0, g: 1.77, b: 0, a: 0}
     - _Vector2: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

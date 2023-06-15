@@ -31,6 +31,13 @@ public class Laser : MageBossBaseAttack
 
     private float duration;
 
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip laserCharge;
+    [SerializeField]
+    private AudioClip laserFalling;
+    private float audioDelayDuration = 1.5f;
+
     private bool attackFinished = true;
 
     private MageBoss caller;
@@ -38,6 +45,8 @@ public class Laser : MageBossBaseAttack
     private float damageCD = 0f;
     private float damageCDTotal = 1f;
     private int damage = 1;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,12 +67,19 @@ public class Laser : MageBossBaseAttack
         {
             OnAttackFinished?.Invoke(caller);
             attackFinished = true;
+            audioSource.Stop();
+            audioSource.PlayOneShot(laserFalling);
         }
         SetLaserPosition();
         DamagePlayer();
 
     }
-
+    private void OnEnable()
+    {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(laserCharge);
+        audioSource.PlayDelayed(audioDelayDuration);
+    }
     private void SetLaserPosition()
     {
         hit = Physics2D.Raycast(transform.position, -transform.up, 10, groundLayer);

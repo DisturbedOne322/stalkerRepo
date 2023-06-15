@@ -10,6 +10,7 @@ public class FlameballFallingState : FlameballBaseState
 
     public override void EnterState(Flameball manager)
     {
+        manager.audioSource.Play();
         //random spawn;
         //idea is to have a separate stage for boss fight with a new camera. Flameball spawns in this stage close to player
     }
@@ -25,12 +26,18 @@ public class FlameballFallingState : FlameballBaseState
     {
         if(collision.gameObject.CompareTag("Player"))
         {
+            manager.audioSource.Stop();
             GameManager.Instance.GetPlayerReference().GetDamaged(damage);
             manager.DestroySelf();
         }
         else
         {
             //spawn on the ground that was hit
+            manager.audioSource.Stop();
+            manager.audioSource.PlayOneShot(
+                manager.fallSoundArray[
+                    UnityEngine.Random.Range(0, manager.fallSoundArray.Length)
+                    ]);
             manager.transform.position = new Vector2(manager.transform.position.x, collision.gameObject.transform.position.y + puddleOffsetFromGround);
             manager.SwitchState(manager.puddleState);
             OnFlameballHitGround?.Invoke();

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flameball : MageBossBaseAttack
+public class Flameball : MonoBehaviour
 {
     private Transform spawnPos;
     private Vector2 fallDirection = new Vector2 (-0.77f, -0.77f);
@@ -16,6 +16,18 @@ public class Flameball : MageBossBaseAttack
     public Animator animator;
     [SerializeField]
     public SpriteRenderer spriteRenderer;
+
+    private PlayerMovement player;
+
+
+    public AudioSource audioSource;
+    private float maxDistanceVolume = 8;
+
+    //rocks
+    [SerializeField]
+    public AudioClip[] fallSoundArray;
+    [SerializeField]
+    public AudioClip fallingSound;
 
 
     [SerializeField]
@@ -32,15 +44,21 @@ public class Flameball : MageBossBaseAttack
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
 
         currentState = fallingState;
         currentState.EnterState(this);
     }
+    private void Start()
+    {
+        player = GameManager.Instance.GetPlayerReference();
+    }
 
     private void Update()
     {
         currentState.UpdateState(this);
+        audioSource.volume = DynamicSoundVolume.GetDynamicVolume(maxDistanceVolume, Mathf.Abs(transform.position.y - player.transform.position.y));
     }
 
     private void OnTriggerStay2D(Collider2D collision)

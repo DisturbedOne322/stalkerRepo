@@ -37,7 +37,9 @@ public class HellHoundSoundManager : MonoBehaviour
     }
     private void Update()
     {
-        audioSource.volume = Mathf.Clamp(1 - Vector2.Distance(transform.position,player.transform.position) / maxVolumeDistance,0, 1);
+        audioSource.volume = DynamicSoundVolume.GetDynamicVolume(maxVolumeDistance, Vector2.Distance(transform.position, player.transform.position));
+
+        //audioSource.volume = Mathf.Clamp(1 - Vector2.Distance(transform.position,player.transform.position) / maxVolumeDistance,0, 1);
     }
     private void HellHound_OnSuccessfulHit()
     {

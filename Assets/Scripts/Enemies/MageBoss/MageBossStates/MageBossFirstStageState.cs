@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class MageBossFirstStageState : MageBossBaseState
 {
-    private int health;
+    public override event System.Action<int, int> OnCoreDestroyed;
+    private int health = 8;
     private PlayerMovement player;
+
+    private Animator animator;
 
     private float currentAttackCD = 7f;
     private float cdBetweenAttacks = 7f;
@@ -25,6 +28,8 @@ public class MageBossFirstStageState : MageBossBaseState
     private float laserAnimationDuration = 5f;
     private float laserThickness = 0.5f;
 
+    private bool defeated = false;
+
     private enum State
     {
         Idle,
@@ -37,6 +42,7 @@ public class MageBossFirstStageState : MageBossBaseState
 
     public override void EnterState(MageBoss manager)
     {
+        animator = manager.GetComponent<Animator>();
         attackSet[0] = FLAMEBALL_ATTACK;
         attackSet[1] = LASER_ATTACK;
         player = manager.player;
@@ -56,7 +62,7 @@ public class MageBossFirstStageState : MageBossBaseState
     {
         state = State.Idle;
         SetCDBetweenAttacks();
-        manager.animator.SetTrigger(MageBoss.LASER_END_TRIGGER);
+        animator.SetTrigger(MageBoss.LASER_END_TRIGGER);
     }
 
     private void FlameballspawnManager_OnAttackFinished()
@@ -68,23 +74,33 @@ public class MageBossFirstStageState : MageBossBaseState
     private void MageBossFirstStageState_OnWeakPointBroken()
     {
         health--;
+        OnCoreDestroyed?.Invoke(health, 8);
+        if (health <= 0)
+        {
+            animator.SetTrigger(MageBoss.DEFEAt_ANIM_TRIGGER);
+            defeated = true;
+        }
         //Update UI
     }
 
     public override void UpdateState(MageBoss manager)
     {
+        if(defeated)
+        {
+            return;
+        }
         currentAttackCD -= Time.deltaTime;
         if (currentAttackCD < 0 && state == State.Idle)
         {
-            switch (GetRandomAttack())
-            {
-                case FLAMEBALL_ATTACK:
-                    FlameballCast(manager);
-                    break;
-                case LASER_ATTACK:
+            //switch (GetRandomAttack())
+            //{
+            //    case FLAMEBALL_ATTACK:
+            //        FlameballCast(manager);
+            //        break;
+            //    case LASER_ATTACK:
                     LaserCast(manager);
-                    break;
-            }
+             //       break;
+            //}
         }
         if (state == State.LaserPrepare)
         {
@@ -92,7 +108,6 @@ public class MageBossFirstStageState : MageBossBaseState
             if (a.normalizedTime >= 0.99f)
             {
                 manager.laser.InitializeLaser(laserAnimationDuration, laserThickness, manager);
-                //manager.animator.Play(MageBoss.LASER_ANIM);
                 state = State.LaserCast;
             }
         }

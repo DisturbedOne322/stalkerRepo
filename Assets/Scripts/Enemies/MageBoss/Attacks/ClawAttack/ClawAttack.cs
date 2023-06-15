@@ -21,6 +21,11 @@ public class ClawAttack : MonoBehaviour
     [SerializeField]
     private ShieldMovement shieldMovement;
 
+    [SerializeField]
+    private AudioClip attackSound;
+
+    private AudioSource audioSource;
+
     private PlayerMovement player;
     private Rigidbody2D playerRB;
 
@@ -28,6 +33,7 @@ public class ClawAttack : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         player = GameManager.Instance.GetPlayerReference();
         playerRB = player.GetComponent<Rigidbody2D>();
         shieldYOffset = player.GetComponent<CapsuleCollider2D>().size.y / 2;
@@ -44,6 +50,7 @@ public class ClawAttack : MonoBehaviour
 
         if (player.transform.position.x > attackRange.position.x && transform.position.y < attackRange.position.y)
         {
+            audioSource.PlayOneShot(attackSound);
             animator.SetTrigger(CLAW_ATTACK_TRIGGER);
             attackAnimationCD = attackAnimationCDTotal;
         }

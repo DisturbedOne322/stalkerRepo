@@ -13,7 +13,7 @@ public class WeakPoint : MonoBehaviour
 
     private void Awake()
     {
-        health = UnityEngine.Random.Range(2, 5);
+        health = 1;//UnityEngine.Random.Range(2, 5);
     }
 
 
@@ -27,13 +27,13 @@ public class WeakPoint : MonoBehaviour
     {
         boxCollider.enabled = true;
         particleSys.Play();
-        health = UnityEngine.Random.Range(2, 5);
+        health = 1;
     }
 
     public void GetDamage()
     {
         health -= 1;
-        if (health < 0)
+        if (health <= 0)
         {
             boxCollider.enabled = false;
             OnWeakPointBroken?.Invoke();

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MageBoss : MonoBehaviour
 {
+    public event Action<int, int> OnHPChanged;
     public event Action<MageBoss> OnPlayerInClawAttackRange;
     [SerializeField]
     public WeakPoint[] collidersArray;
@@ -15,6 +16,7 @@ public class MageBoss : MonoBehaviour
     public const string LASER_ANIM = "Base Layer.LaserCast";
     public const string LASER_PREPARE_ANIM = "Base Layer.LaserCastPrepare";
     public const string LASER_END_ANIM = "Base Layer.LaserCastEnd";
+    public const string DEFEAt_ANIM_TRIGGER = "OnDefeat";
     public Animator animator;
 
     public FlameballspawnManager flameballspawnManager;
@@ -47,13 +49,20 @@ public class MageBoss : MonoBehaviour
         flameballspawnManager = GetComponent<FlameballspawnManager>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         currentState = firstStageState;
-        currentState.EnterState(this);
         animator = GetComponent<Animator>();
+
         for(int i = 0; i < collidersArray.Length; i++)
         {
             collidersArray[i].OnWeakPointBroken += MageBoss_OnWeakPointBroken;
         }
         SetNormalOutline();
+        currentState.EnterState(this);
+        currentState.OnCoreDestroyed += CurrentState_OnCoreDestroyed;
+    }
+
+    private void CurrentState_OnCoreDestroyed(int arg1, int arg2)
+    {
+        OnHPChanged?.Invoke(arg1,arg2);
     }
 
     private void MageBoss_OnWeakPointBroken()

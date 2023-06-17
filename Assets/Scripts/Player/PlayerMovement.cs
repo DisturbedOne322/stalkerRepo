@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public event Action<StaminaState> OnStaminaStateChange;
     public event Action<GameManager.PlayerHealthStatus> OnHealthChanged;
     public event Action OnPlayerTeleported;
     private Rigidbody2D rb2D;
@@ -36,9 +37,19 @@ public class PlayerMovement : MonoBehaviour
     {
         get { return stamina; }
     }
+
+    #region Stamina
+    public enum StaminaState
+    {
+        Idle,
+        Regen,
+        Deplete
+    }
     private readonly float jumpStaminaConsumption = 0.1f;
     private readonly float staminaRegen = 0.1f;
     private readonly float staminaSpentPerSecond = 0.15f;
+    #endregion
+
     private bool isSprinting = false;
     private bool isMoving =false;
     private bool canMove = true;
@@ -179,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
         if(isMoving)
         {
             stamina -= staminaSpentPerSecond * Time.deltaTime;
+            OnStaminaStateChange?.Invoke(StaminaState.Deplete);
             if (stamina < 0)
             {
                 stamina = 0;
@@ -192,6 +204,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(!isMoving || !isSprinting)
         {
+            OnStaminaStateChange?.Invoke(StaminaState.Regen);
             stamina += staminaRegen * Time.deltaTime;
             if (stamina > 1)
                 stamina = 1;

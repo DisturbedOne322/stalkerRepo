@@ -10,6 +10,7 @@ public class UI : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI magazineBulletCountText;
+    int bulletsShot = 0;
 
     [SerializeField]
     private TextMeshProUGUI weaponJammedNotification;
@@ -35,6 +36,7 @@ public class UI : MonoBehaviour
     //magazine UI
     [SerializeField]
     private Image[] bulletImages;
+    private float delayBetweenBulletShow = 0.15f;
 
     //health UI
     [SerializeField]
@@ -111,10 +113,9 @@ public class UI : MonoBehaviour
     private void Shoot_OnSuccessfulReload(int magSize)
     {
         magazineBulletCountText.text = magSize + "/" + magSize;
-        for(int i = 0;i < bulletImages.Length; i++)
-        {
-            bulletImages[i].enabled = true;
-        }
+        StopAllCoroutines();
+        StartCoroutine(ReappearBullets(magSize));
+        bulletsShot = 0;
     }
 
     private void Shoot_OnWeaponJammed()
@@ -126,7 +127,47 @@ public class UI : MonoBehaviour
     private void Shoot_OnSuccessfulShoot(int bullets, int magSize)
     {
         magazineBulletCountText.text = bullets + "/" + magSize;
-        bulletImages[magSize - bullets - 1].enabled = false;
+        StartCoroutine(HideBullet(magSize - bullets - 1));
+        bulletsShot++;
+    }
+
+    IEnumerator HideBullet(int bulletImageIndex)
+    {
+        for(float i = 1; i > 0; i-= 0.1f) 
+        {
+            Color temp = bulletImages[bulletImageIndex].color;
+            temp.a = i;
+            bulletImages[bulletImageIndex].color = temp;
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    IEnumerator ReappearBullets(int magSize)
+    {
+        //enable all the bullets that are left in the mag
+        for (int i = 0; i < magSize - bulletsShot; i++)
+        {
+            Color temp = bulletImages[i].color;
+            temp.a = 1;
+            bulletImages[i].color = temp;
+            Debug.Log(i + "-");
+        }
+        for (int i = magSize - bulletsShot; i < magSize; i++)
+        {
+            StartCoroutine(ShowBullet(i));
+        }
+        yield return null;
+    }
+
+    IEnumerator ShowBullet(int bulletImageIndex)
+    {
+        for (float i = 0; i <= 1; i += 0.1f)
+        {
+            Color temp = bulletImages[bulletImageIndex].color;
+            temp.a = i;
+            bulletImages[bulletImageIndex].color = temp;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 
     // Update is called once per frame

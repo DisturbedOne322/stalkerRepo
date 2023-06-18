@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class HellHound : Enemy

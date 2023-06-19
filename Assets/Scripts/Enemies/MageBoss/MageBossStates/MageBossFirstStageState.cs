@@ -23,9 +23,10 @@ public class MageBossFirstStageState : MageBossBaseState
     private int waveNumberTotal = 2;
     private int spawnAmountTotal = 5;
     private float fallSpeed = 10;
+    private float scale = 1;
 
     //laser
-    private float laserAnimationDuration = 5f;
+    private float laserAnimationDuration = 6;
     private float laserThickness = 0.5f;
 
     private bool defeated = false;
@@ -92,15 +93,15 @@ public class MageBossFirstStageState : MageBossBaseState
         currentAttackCD -= Time.deltaTime;
         if (currentAttackCD < 0 && state == State.Idle)
         {
-            switch (GetRandomAttack())
-            {
-                case FLAMEBALL_ATTACK:
+            //switch (GetRandomAttack())
+            //{
+            //    case FLAMEBALL_ATTACK:
                     FlameballCast(manager);
-                    break;
-                case LASER_ATTACK:
-                    LaserCast(manager);
-                    break;
-            }
+            //        break;
+            //    case LASER_ATTACK:
+            //        LaserCast(manager);
+            //        break;
+            //}
         }
         if (state == State.LaserPrepare)
         {
@@ -130,7 +131,7 @@ public class MageBossFirstStageState : MageBossBaseState
 
     private void FlameballCast(MageBoss manager)
     {
-        manager.flameballspawnManager.InitializeFlameballAttackProperties(waveNumberTotal, spawnAmountTotal, spawnCDTotal,cdBetweenWaves, fallSpeed, true, new Vector3(-1,0,0));
+        manager.flameballspawnManager.InitializeFlameballAttackProperties(waveNumberTotal, spawnAmountTotal, spawnCDTotal,cdBetweenWaves, fallSpeed, scale, true, new Vector3(-1,0,0));
         manager.animator.Play(MageBoss.FLAMEBALL_ANIM);
         state = State.FlameballCast;
         lastAttack = FLAMEBALL_ATTACK;

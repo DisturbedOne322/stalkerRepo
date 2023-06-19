@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 public class Laser : MageBossBaseAttack
@@ -46,12 +47,14 @@ public class Laser : MageBossBaseAttack
     private float damageCDTotal = 1f;
     private int damage = 1;
 
+    private FocusedHeadlight focusedHeadlight;
 
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
+        focusedHeadlight = player.GetComponentInChildren<FocusedHeadlight>();
     }
 
     // Update is called once per frame
@@ -86,17 +89,27 @@ public class Laser : MageBossBaseAttack
         lineRenderer.SetPosition(0, transform.position);
         Vector2 linePos2 = new Vector2();
 
-        trackOffsetX = lineRenderer.GetPosition(1).x > player.transform.position.x ? 0.5f : -0.5f; 
+        trackOffsetX = lineRenderer.GetPosition(1).x > player.transform.position.x ? 1f : -1f; 
 
         linePos2.y = Mathf.SmoothDamp(lineRenderer.GetPosition(1).y, hit.point.y, ref velocityVertical, smoothDampTimeVertical);
         linePos2.x = Mathf.SmoothDamp(lineRenderer.GetPosition(1).x, player.transform.position.x - trackOffsetX, ref velocityHorizontal, smoothDampTimeHorizontal);
 
         lineRenderer.SetPosition(1, linePos2);
+
+        Vector2[] focusedHeadlightBoxPoints = focusedHeadlight.GetFocusedHeadlightBoxPoints();
+
+        if(focusedHeadlightBoxPoints[0] != Vector2.zero && focusedHeadlightBoxPoints[1] != Vector2.zero)
+        {
+            Vector2 intersection = LineIntersection.FindIntersectionPoint(focusedHeadlightBoxPoints[0], focusedHeadlightBoxPoints[1], lineRenderer.GetPosition(0), lineRenderer.GetPosition(1));
+            if (intersection != Vector2.zero)
+            {
+                lineRenderer.SetPosition(1, intersection);
+            }
+        }
     }
 
     private void DamagePlayer()
     {
-        Debug.DrawRay(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0), Color.magenta);
         hit = Physics2D.Raycast(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0), 20, playerLayer);
         if(hit)
         {

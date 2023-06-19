@@ -82,9 +82,4 @@ public class Flameball : MonoBehaviour
     {
         transform.Translate(-transform.up * speed * Time.deltaTime);
     }
-
-    public void DestroySelf()
-    {
-        Destroy(gameObject);
-    }
 }

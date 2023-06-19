@@ -36,11 +36,8 @@ public class GhostVisuals : MonoBehaviour
 
     private void Instance_OnQTEEnd(IQTECaller caller)
     {
-        Debug.Log("disappear");
-
         if (caller == ghost)
         {
-            Debug.Log("I called");
             animator.SetTrigger(DISAPPEAR_ANIM);
         }
     }

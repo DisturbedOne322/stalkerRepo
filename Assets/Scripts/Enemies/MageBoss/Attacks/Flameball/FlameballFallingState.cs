@@ -5,12 +5,16 @@ public class FlameballFallingState : FlameballBaseState
 {
     private int damage = 1;
     private float puddleOffsetFromGround = 1.65f;
-
+    private SpriteRenderer spriteRenderer;
     public static event Action OnFlameballHitGround;
 
     public override void EnterState(Flameball manager)
     {
+        spriteRenderer = manager.spriteRenderer;
         manager.audioSource.Play();
+        Color currentAlpha = spriteRenderer.color;
+        currentAlpha.a = 1;
+        spriteRenderer.color = currentAlpha;
         //random spawn;
         //idea is to have a separate stage for boss fight with a new camera. Flameball spawns in this stage close to player
     }
@@ -28,7 +32,7 @@ public class FlameballFallingState : FlameballBaseState
         {
             manager.audioSource.Stop();
             GameManager.Instance.GetPlayerReference().GetDamaged(damage);
-            manager.DestroySelf();
+            manager.gameObject.SetActive(false);
         }
         else
         {

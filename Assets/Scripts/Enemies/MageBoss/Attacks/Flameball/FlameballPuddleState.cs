@@ -18,6 +18,7 @@ public class FlameballPuddleState : FlameballBaseState
 
     public override void EnterState(Flameball manager)
     {
+        lifeTimeLeft = lifeTimeTotal;
         manager.animator.SetBool(PUDDLE_ANIM, true);
         manager.UpdateCollider();
         spriteRenderer = manager.spriteRenderer;
@@ -31,7 +32,7 @@ public class FlameballPuddleState : FlameballBaseState
         spriteRenderer.color = currentAlpha;
         if(lifeTimeLeft < 0)
         {
-            manager.DestroySelf();
+            manager.gameObject.SetActive(false);
         }
 
         puddleDamageCD -= Time.deltaTime;

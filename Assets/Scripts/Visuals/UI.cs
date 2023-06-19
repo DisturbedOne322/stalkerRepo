@@ -150,7 +150,6 @@ public class UI : MonoBehaviour
             Color temp = bulletImages[i].color;
             temp.a = 1;
             bulletImages[i].color = temp;
-            Debug.Log(i + "-");
         }
         for (int i = magSize - bulletsShot; i < magSize; i++)
         {

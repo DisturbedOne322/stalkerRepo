@@ -8,13 +8,11 @@ public class FocusedHeadlight : MonoBehaviour
     [SerializeField]
     private Light2D focusedLight2D;
     private float defaultLightIntensity;
-    private readonly float focusedLightIntensity = 2.5f;
+    private readonly float focusedLightIntensity = 3f;
     private readonly float brokenLightIntensity = 0.3f;
 
     public static event Action OnGhostFound;
     public static event Action<TentacleStateManager> OnTentacleFound;
-    // private float brokenHeadlightCD = 0;
-    //private float brokenHeadlightCDTotal = 5;
 
     private readonly float focusSpeed = 4.5f;
 
@@ -34,13 +32,15 @@ public class FocusedHeadlight : MonoBehaviour
 
     private RaycastHit2D hit;
     private readonly float boxLength = 10f;
-    private readonly float boxHeight = 3f;
+    private readonly float boxHeight = 2f;
 
     [SerializeField]
     private LayerMask ghostLayerMask;
 
     [SerializeField]
     private LayerMask tentacleLayerMask;
+
+    private Vector2[] focusedHeadlightBoxPoints;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +50,7 @@ public class FocusedHeadlight : MonoBehaviour
         InputManager.Instance.OnHeadlightAction += Instance_OnHeadlightAction;
         InvokeRepeating("TryToBrakeHeadlight", 0, 0.5f);
         currentFocusedLightCapacity = focusedLightCapacity;
+        focusedHeadlightBoxPoints = new Vector2[2];
     }
 
     private void FixedUpdate()
@@ -61,11 +62,19 @@ public class FocusedHeadlight : MonoBehaviour
             {
                 OnGhostFound?.Invoke();
             }
-            hit = Physics2D.BoxCast(transform.position, new Vector2(boxLength, boxHeight), transform.rotation.z, Vector2.right, 0, tentacleLayerMask);
-            if(hit)
+            hit = Physics2D.BoxCast(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, tentacleLayerMask);
+            focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopRightOfBox(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z);
+            focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetBottomRightOfBox(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z);
+
+            if (hit)
             {
                 OnTentacleFound?.Invoke(hit.collider.gameObject.GetComponent<TentacleStateManager>());
             }
+        }
+        else
+        {
+            focusedHeadlightBoxPoints[0] = Vector2.zero;
+            focusedHeadlightBoxPoints[1] = Vector2.zero;
         }
     }
     private void Instance_OnHeadlightAction()
@@ -77,6 +86,11 @@ public class FocusedHeadlight : MonoBehaviour
         }
         focusedLightEnabled = !focusedLightEnabled;
         SoundManager.Instance.PlayFocusedLightSound(focusedLightEnabled);
+    }
+
+    public Vector2[] GetFocusedHeadlightBoxPoints()
+    {
+        return focusedHeadlightBoxPoints;
     }
 
     private void TryToBrakeHeadlight()

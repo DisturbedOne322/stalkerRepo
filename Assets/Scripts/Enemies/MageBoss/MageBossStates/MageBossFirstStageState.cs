@@ -93,16 +93,16 @@ public class MageBossFirstStageState : MageBossBaseState
         currentAttackCD -= Time.deltaTime;
         if (currentAttackCD < 0 && state == State.Idle)
         {
-            //switch (GetRandomAttack())
-            //{
-            //    case FLAMEBALL_ATTACK:
+            switch (GetRandomAttack())
+            {
+                case FLAMEBALL_ATTACK:
                     FlameballCast(manager);
-            //        break;
-            //    case LASER_ATTACK:
-            //        LaserCast(manager);
-            //        break;
-            //}
+            break;
+                case LASER_ATTACK:
+            LaserCast(manager);
+            break;
         }
+    }
         if (state == State.LaserPrepare)
         {
             var a = manager.animator.GetCurrentAnimatorStateInfo(0);

@@ -10,9 +10,6 @@ public class Laser : MageBossBaseAttack
     [SerializeField]
     private LineRenderer lineRenderer;
 
-    [SerializeField]
-    private Transform shootPoint;
-
     private RaycastHit2D hit;
 
     [SerializeField]

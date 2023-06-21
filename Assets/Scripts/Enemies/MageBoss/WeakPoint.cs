@@ -20,7 +20,7 @@ public class WeakPoint : MonoBehaviour
     void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
-        particleSys = transform.GetComponentInChildren<ParticleSystem>();
+        particleSys = GetComponent<ParticleSystem>();
     }
 
     public void Enable()

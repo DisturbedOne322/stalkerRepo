@@ -5,7 +5,6 @@ public class MageBossFirstStageState : MageBossBaseState
 {
     public override event System.Action<int, int> OnCoreDestroyed;
     private int health = 8;
-    private PlayerMovement player;
 
     private Animator animator;
 
@@ -17,19 +16,22 @@ public class MageBossFirstStageState : MageBossBaseState
     private string lastAttack;
     private string[] attackSet = new string[2];
 
+
     //flameball
     private float spawnCDTotal = 1f; // cd between each flameball
-    private float cdBetweenWaves = 2f;
+    private float cdBetweenWaves = 1f;
     private int waveNumberTotal = 2;
     private int spawnAmountTotal = 5;
     private float fallSpeed = 10;
     private float scale = 1;
 
     //laser
-    private float laserAnimationDuration = 999;
-    private float laserThickness = 0.5f;
+    private float laserAnimationDuration = 7;
+    private float laserThickness = 0.3f;
 
     private bool defeated = false;
+
+    private float stateChangeDelay = 12f;
 
     private enum State
     {
@@ -44,9 +46,9 @@ public class MageBossFirstStageState : MageBossBaseState
     public override void EnterState(MageBoss manager)
     {
         animator = manager.GetComponent<Animator>();
+        animator.Play(MageBoss.APPEAR_ANIM);
         attackSet[0] = FLAMEBALL_ATTACK;
         attackSet[1] = LASER_ATTACK;
-        player = manager.player;
         health = manager.collidersArray.Length;
         manager.flameballspawnManager.OnAttackFinished += FlameballspawnManager_OnAttackFinished;
         manager.laser.OnAttackFinished += Laser_OnAttackFinished;
@@ -78,7 +80,7 @@ public class MageBossFirstStageState : MageBossBaseState
         OnCoreDestroyed?.Invoke(health, 8);
         if (health <= 0)
         {
-            animator.SetTrigger(MageBoss.DEFEAt_ANIM_TRIGGER);
+            animator.SetBool(MageBoss.DEFEAT_ANIM_BOOL, true);
             defeated = true;
         }
         //Update UI
@@ -88,20 +90,32 @@ public class MageBossFirstStageState : MageBossBaseState
     {
         if(defeated)
         {
+            stateChangeDelay -= Time.deltaTime;
+            if (stateChangeDelay <= 0)
+            {
+                for (int i = 0; i < manager.collidersArray.Length; i++)
+                {
+                    manager.collidersArray[i].OnWeakPointBroken -= MageBossFirstStageState_OnWeakPointBroken;
+                }
+                manager.flameballspawnManager.OnAttackFinished -= FlameballspawnManager_OnAttackFinished;
+                manager.laser.OnAttackFinished -= Laser_OnAttackFinished;
+                manager.SwitchState(manager.secondStageState);
+            }
+            
             return;
         }
         currentAttackCD -= Time.deltaTime;
         if (currentAttackCD < 0 && state == State.Idle)
         {
-            //switch (GetRandomAttack())
-            //{
-            //    case FLAMEBALL_ATTACK:
-            //        FlameballCast(manager);
-            //        break;
-            //    case LASER_ATTACK:
+            switch (GetRandomAttack())
+            {
+                case FLAMEBALL_ATTACK:
+                    FlameballCast(manager);
+                    break;
+                case LASER_ATTACK:
                     LaserCast(manager);
-            //        break;
-            //}
+                    break;
+            }
         }
         if (state == State.LaserPrepare)
         {

@@ -23,7 +23,7 @@ public class WeakPoint : MonoBehaviour
         particleSys = GetComponent<ParticleSystem>();
     }
 
-    public void Enable()
+    public void ResetWeakPoint()
     {
         boxCollider.enabled = true;
         particleSys.Play();

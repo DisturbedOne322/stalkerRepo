@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class MageBoss : MonoBehaviour
 {
@@ -10,14 +11,25 @@ public class MageBoss : MonoBehaviour
     [SerializeField]
     public WeakPoint[] collidersArray;
 
-    private const string DAMAGED_ANIM = "OnDamaged";
+    public const string APPEAR_ANIM = "Base Layer.Appear";
+    public const string DAMAGED_ANIM = "OnDamaged";
     public const string LASER_END_TRIGGER = "LaserAttackEnd";
     public const string FLAMEBALL_ANIM = "Base Layer.FlameballCast";
     public const string LASER_ANIM = "Base Layer.LaserCast";
     public const string LASER_PREPARE_ANIM = "Base Layer.LaserCastPrepare";
     public const string LASER_END_ANIM = "Base Layer.LaserCastEnd";
-    public const string DEFEAt_ANIM_TRIGGER = "OnDefeat";
+    public const string DEFEAT_ANIM_BOOL = "OnDefeat";
     public Animator animator;
+
+    [SerializeField]
+    private GameObject laserArm;
+    [SerializeField]    
+    private GameObject laserLight;
+    [SerializeField]
+    private GameObject wandArm;
+    [SerializeField]
+    private GameObject wandLight;
+
 
     public FlameballspawnManager flameballspawnManager;
     [SerializeField]
@@ -39,10 +51,11 @@ public class MageBoss : MonoBehaviour
 
     private MageBossBaseState currentState;
 
-    private MageBossFirstStageState firstStageState = new MageBossFirstStageState();
-    private MageBossSecondStageState secondStageState = new MageBossSecondStageState();
-    private MageBossThirdStageState thirdStageState = new MageBossThirdStageState();
+    public MageBossFirstStageState firstStageState = new MageBossFirstStageState();
+    public MageBossSecondStageState secondStageState = new MageBossSecondStageState();
+    public MageBossThirdStageState thirdStageState = new MageBossThirdStageState();
 
+    
 
     private void Awake()
     {
@@ -67,9 +80,31 @@ public class MageBoss : MonoBehaviour
 
     private void MageBoss_OnWeakPointBroken()
     {
-        animator.SetTrigger(DAMAGED_ANIM);
+        AnimatorClipInfo[] m_CurrentClipInfo = this.animator.GetCurrentAnimatorClipInfo(0);
+        if (m_CurrentClipInfo[0].clip.name == "Idle")
+            animator.SetTrigger(DAMAGED_ANIM);
+
         material.SetColor(outlineColor, damagedColor);
         material.SetFloat(outlineThickness, damagedThickness);
+        SetNormalOutline();
+
+
+    }
+
+    public void SwitchState(MageBossBaseState nextState)
+    {
+        currentState.OnCoreDestroyed -= CurrentState_OnCoreDestroyed;
+        currentState = nextState;
+        currentState.EnterState(this);
+        currentState.OnCoreDestroyed += CurrentState_OnCoreDestroyed;
+    }
+
+    public void EnableSecondStageArms()
+    {
+        laserArm.SetActive(true);
+        laserLight.SetActive(true);
+        wandArm.SetActive(true);
+        wandLight.SetActive(true);
     }
 
     IEnumerator ReturnToNormalOutline()
@@ -80,7 +115,7 @@ public class MageBoss : MonoBehaviour
         {
             c.r = red;
             material.SetColor(outlineColor, c);
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.05f);
         }
     }
 
@@ -88,7 +123,7 @@ public class MageBoss : MonoBehaviour
     {
         foreach(var collider in collidersArray)
         {
-            collider.Enable();
+            collider.ResetWeakPoint();
         }
     }
 

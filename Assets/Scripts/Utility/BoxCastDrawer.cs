@@ -122,6 +122,29 @@ public static class BoxCastDrawer
 
         return box;
     }
+    public static Vector2 GetTopLeftOfBox(Vector2 origin, Vector2 size, float angle)
+    {
+        float w = size.x * 0.5f;
+        float h = size.y * 0.5f;
+        Quaternion q = Quaternion.AngleAxis(angle, new Vector3(0, 0, 1));
+
+        var box = new Vector2(-w, h);
+        box = (Vector2)(q * box) + origin;
+
+
+        return box;
+    }
+    public static Vector2 GetBottomLeftOfBox(Vector2 origin, Vector2 size, float angle)
+    {
+        float w = size.x * 0.5f;
+        float h = size.y * 0.5f;
+        Quaternion q = Quaternion.AngleAxis(angle, new Vector3(0, 0, 1));
+
+        var box = new Vector2(-w, -h);
+        box = (Vector2)(q * box) + origin;
+
+        return box;
+    }
 
     private static Vector2[] CreateShiftedBox(Vector2[] box, Vector2 distance)
     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Laser : MageBossBaseAttack
@@ -82,32 +83,49 @@ public class Laser : MageBossBaseAttack
     }
     private void SetLaserPosition()
     {
-        hit = Physics2D.Raycast(transform.position, -transform.up, 10, groundLayer);
         lineRenderer.SetPosition(0, transform.position);
-        Vector2 linePos2 = new Vector2();
-
-        trackOffsetX = lineRenderer.GetPosition(1).x > player.transform.position.x ? 1f : -1f; 
-
-        linePos2.y = Mathf.SmoothDamp(lineRenderer.GetPosition(1).y, hit.point.y, ref velocityVertical, smoothDampTimeVertical);
-        linePos2.x = Mathf.SmoothDamp(lineRenderer.GetPosition(1).x, player.transform.position.x - trackOffsetX, ref velocityHorizontal, smoothDampTimeHorizontal);
-
-        lineRenderer.SetPosition(1, linePos2);
 
         Vector2[] focusedHeadlightBoxPoints = focusedHeadlight.GetFocusedHeadlightBoxPoints();
 
-        if(focusedHeadlightBoxPoints[0] != Vector2.zero && focusedHeadlightBoxPoints[1] != Vector2.zero)
+        bool hitHeadlight = false;
+
+        //focused headlight is turned on
+        if (focusedHeadlightBoxPoints[0] != Vector2.zero && focusedHeadlightBoxPoints[1] != Vector2.zero)
         {
             Vector2 intersection = LineIntersection.FindIntersectionPoint(focusedHeadlightBoxPoints[0], focusedHeadlightBoxPoints[1], lineRenderer.GetPosition(0), lineRenderer.GetPosition(1));
-            if (intersection != Vector2.zero)
+            if (intersection == Vector2.zero)
+                return;
+            //limit intersection point to the area of box
+            float yTopBoxCoord = focusedHeadlightBoxPoints[0].y;
+            float yBottomBoxCoord = focusedHeadlightBoxPoints[1].y;
+
+            float xLeftBoxCoord = focusedHeadlightBoxPoints[0].x < focusedHeadlightBoxPoints[1].x ? focusedHeadlightBoxPoints[0].x : focusedHeadlightBoxPoints[1].x;
+            float xRightBoxCoord = focusedHeadlightBoxPoints[0].x >= focusedHeadlightBoxPoints[1].x ? focusedHeadlightBoxPoints[0].x : focusedHeadlightBoxPoints[1].x;
+
+            if (intersection.x <= xRightBoxCoord && intersection.x >= xLeftBoxCoord && intersection.y <= yTopBoxCoord && intersection.y >= yBottomBoxCoord)
             {
                 lineRenderer.SetPosition(1, intersection);
+                hitHeadlight = true;
             }
+        }
+
+        if(!hitHeadlight)
+        {
+            Vector2 linePos2 = new Vector2();
+            hit = Physics2D.Raycast(transform.position, -transform.up, 10, groundLayer);
+
+            trackOffsetX = lineRenderer.GetPosition(1).x > player.transform.position.x ? 1f : -1f;
+
+            linePos2.y = Mathf.SmoothDamp(lineRenderer.GetPosition(1).y, hit.point.y, ref velocityVertical, smoothDampTimeVertical);
+            linePos2.x = Mathf.SmoothDamp(lineRenderer.GetPosition(1).x, player.transform.position.x - trackOffsetX, ref velocityHorizontal, smoothDampTimeHorizontal);
+
+            lineRenderer.SetPosition(1, linePos2);
         }
     }
 
     private void DamagePlayer()
     {
-        hit = Physics2D.Raycast(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0), 20, playerLayer);
+        hit = Physics2D.Raycast(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1) - lineRenderer.GetPosition(0), Vector2.Distance(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1)), playerLayer);
         if(hit)
         {
             if (damageCD > 0)

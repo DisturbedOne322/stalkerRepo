@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -24,7 +25,7 @@ public class FocusedHeadlight : MonoBehaviour
     {
         get { return currentFocusedLightCapacity; }
     }
-    private readonly float focusedLightSpendRate = 0.2f;
+    private readonly float focusedLightSpendRate = 0;//0.2f;
     private readonly float focusedLightRestoreRate = 0.1f;
 
 
@@ -32,7 +33,7 @@ public class FocusedHeadlight : MonoBehaviour
 
     private RaycastHit2D hit;
     private readonly float boxLength = 10f;
-    private readonly float boxHeight = 2f;
+    private readonly float boxHeight = 3f;
 
     [SerializeField]
     private LayerMask ghostLayerMask;
@@ -41,6 +42,10 @@ public class FocusedHeadlight : MonoBehaviour
     private LayerMask tentacleLayerMask;
 
     private Vector2[] focusedHeadlightBoxPoints;
+
+    //increase headlightBox with time
+    private float headlightBoxSizeMultiplier = 0.4f;
+    private float growSpeed = 0.25f;
 
     // Start is called before the first frame update
     void Start()
@@ -63,19 +68,12 @@ public class FocusedHeadlight : MonoBehaviour
                 OnGhostFound?.Invoke();
             }
             hit = Physics2D.BoxCast(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, tentacleLayerMask);
-            focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopRightOfBox(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z);
-            focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetBottomRightOfBox(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z);
-
             if (hit)
             {
                 OnTentacleFound?.Invoke(hit.collider.gameObject.GetComponent<TentacleStateManager>());
             }
         }
-        else
-        {
-            focusedHeadlightBoxPoints[0] = Vector2.zero;
-            focusedHeadlightBoxPoints[1] = Vector2.zero;
-        }
+
     }
     private void Instance_OnHeadlightAction()
     {
@@ -113,11 +111,27 @@ public class FocusedHeadlight : MonoBehaviour
         {
             focusedLight2D.intensity = Mathf.Lerp(focusedLight2D.intensity, focusedLightIntensity, (light2D.intensity / focusedLightIntensity) * focusSpeed * Time.deltaTime);   
             currentFocusedLightCapacity -= focusedLightSpendRate * Time.deltaTime;
+
+            headlightBoxSizeMultiplier = Mathf.Clamp01(headlightBoxSizeMultiplier + Time.deltaTime * growSpeed);
+
+            if(PlayerVisuals.PlayerScale > 0)
+            {
+                focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+                focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetBottomRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+            }
+            else
+            {
+                focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+                focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetBottomLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+            }
         }
         else
         {
             focusedLight2D.intensity = Mathf.Lerp(focusedLight2D.intensity, defaultLightIntensity, (defaultLightIntensity / focusedLight2D.intensity) * focusSpeed * Time.deltaTime);
             currentFocusedLightCapacity += focusedLightRestoreRate * Time.deltaTime;
+            headlightBoxSizeMultiplier = 0.4f;
+            focusedHeadlightBoxPoints[0] = Vector2.zero;
+            focusedHeadlightBoxPoints[1] = Vector2.zero;
         }
 
         if (currentFocusedLightCapacity < 0)

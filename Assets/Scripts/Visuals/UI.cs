@@ -173,16 +173,16 @@ public class UI : MonoBehaviour
     void Update()
     {
         healthBarRestoreTime += Time.deltaTime;
-        healthBarMaterial.SetFloat(HEALTH_BAR_OUTLINE_THICKNESS, 
-            Mathf.Lerp(healthBarMaterial.GetFloat(HEALTH_BAR_OUTLINE_THICKNESS), 
-            defaultHealthBarOutlineThickness, healthBarRestoreTime ));
+        healthBarMaterial.SetFloat(HEALTH_BAR_OUTLINE_THICKNESS,
+            Mathf.Lerp(healthBarMaterial.GetFloat(HEALTH_BAR_OUTLINE_THICKNESS),
+            defaultHealthBarOutlineThickness, healthBarRestoreTime));
 
         staminaSlider.value = player.Stamina;
 
         headlightCapacitySlider.value = focusedHeadlight.CurrentFocusedLightCapacity;
 
         notificationEnabledTimer -= Time.deltaTime;
-        if(notificationEnabledTimer < 0 )
+        if (notificationEnabledTimer < 0)
         {
             weaponJammedNotification.enabled = false;
         }

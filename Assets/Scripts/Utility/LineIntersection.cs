@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public static class LineIntersection
 {
     public static Vector2 FindIntersectionPoint(Vector2 pointA, Vector2 pointB, Vector2 pointC, Vector2 pointD)
     {
-
         float denominator = ((pointA.x - pointB.x) * (pointC.y - pointD.y) - (pointA.y - pointB.y) * (pointC.x - pointD.x));
         if (denominator == 0)
             return Vector2.zero;

@@ -124,24 +124,25 @@ public class FlameballspawnManager : MonoBehaviour
 
         }
 
-        if (spawnCD < 0)
+        if (spawnCD > 0)
+            return;
+        
+        spawnCD = spawnCDTotal;
+        for(int i = 0;i < pool.Length; i++)
         {
-            spawnCD = spawnCDTotal;
-            for(int i = 0;i < pool.Length; i++)
+            if (!pool[i].active)
             {
-                if (!pool[i].active)
-                {
-                    pool[i].SetActive(true);
-                    pool[i].GetComponent<Flameball>().SwitchState(new FlameballFallingState());
-                    pool[i].transform.position = flameballSpawnPos;
-                    pool[i].GetComponent<Flameball>().Speed = fallSpeed;
-                    pool[i].gameObject.transform.localScale = Vector3.one *  scale;
-                    break;
-                }
+                pool[i].SetActive(true);
+                pool[i].GetComponent<Flameball>().SwitchState(new FlameballFallingState());
+                pool[i].transform.position = flameballSpawnPos;
+                pool[i].GetComponent<Flameball>().Speed = fallSpeed;
+                pool[i].gameObject.transform.localScale = Vector3.one *  scale;
+                break;
             }
-            flameballSpawnPos.x -= flameballSpawnOffset;
-            spawnedAmount++;
         }
+        flameballSpawnPos.x -= flameballSpawnOffset;
+        spawnedAmount++;
+        
         
     }
 }

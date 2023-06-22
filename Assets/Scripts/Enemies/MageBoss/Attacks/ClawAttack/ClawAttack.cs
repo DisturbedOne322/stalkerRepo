@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ClawAttack : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerInClawAttackRange playerInClawAttackRange;
+
     private float attackAnimationCD = 0;
     private float attackAnimationCDTotal = 1.5f;
 
@@ -29,14 +32,21 @@ public class ClawAttack : MonoBehaviour
     private PlayerMovement player;
     private Rigidbody2D playerRB;
 
-    private float shieldYOffset;
-
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
         player = GameManager.Instance.GetPlayerReference();
         playerRB = player.GetComponent<Rigidbody2D>();
-        shieldYOffset = player.GetComponent<CapsuleCollider2D>().size.y / 2;
+        playerInClawAttackRange.OnPlayerInClawAttackRange += PlayerInClawAttackRange_OnPlayerInClawAttackRange;
+    }
+
+    private void PlayerInClawAttackRange_OnPlayerInClawAttackRange()
+    {
+        if (attackAnimationCD > 0)
+            return;
+        audioSource.PlayOneShot(attackSound);
+        animator.SetTrigger(CLAW_ATTACK_TRIGGER);
+        attackAnimationCD = attackAnimationCDTotal;
     }
 
     // Update is called once per frame
@@ -44,16 +54,6 @@ public class ClawAttack : MonoBehaviour
     {
         attackAnimationCD -= Time.deltaTime;
         damageCD -= Time.deltaTime;
-
-        if (attackAnimationCD > 0)
-            return;
-
-        if (player.transform.position.x > attackRange.position.x && transform.position.y < attackRange.position.y)
-        {
-            audioSource.PlayOneShot(attackSound);
-            animator.SetTrigger(CLAW_ATTACK_TRIGGER);
-            attackAnimationCD = attackAnimationCDTotal;
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -7,6 +7,8 @@ public class PlayerVisuals : MonoBehaviour
     [SerializeField]
     private Transform pointingDirection;
 
+    public static float PlayerScale;
+
     private void Update()
     {
         if(pointingDirection.position.x > transform.position.x)
@@ -21,5 +23,6 @@ public class PlayerVisuals : MonoBehaviour
             scale.x = -1;
             transform.localScale = scale;
         }
+        PlayerScale = transform.localScale.x;
     }
 }

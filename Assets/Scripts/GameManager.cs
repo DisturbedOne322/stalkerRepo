@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
         InputManager.Instance.OnFocusActionEnded += Instance_OnFocusActionEnded;
 
         InitiateBossfight.OnBossFightInitiated += InitiateBossfight_OnBossFightInitiated;
-        mageBoss.OnHPChanged += MageBoss_OnHPChanged;
+        //mageBoss.OnHPChanged += MageBoss_OnHPChanged;
     }
 
     private void Update()

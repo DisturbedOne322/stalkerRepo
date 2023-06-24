@@ -18,6 +18,7 @@ public class MageBoss : MonoBehaviour
     public const string LASER_ANIM = "Base Layer.LaserCast";
     public const string LASER_PREPARE_ANIM = "Base Layer.LaserCastPrepare";
     public const string LASER_END_ANIM = "Base Layer.LaserCastEnd";
+    public const string EXCALIBUR_ATTACK_ANIM = "ExcaliburLayer.ExcaliburAttack";
     public const string DEFEAT_ANIM_BOOL = "OnDefeat";
     public Animator animator;
 
@@ -30,6 +31,16 @@ public class MageBoss : MonoBehaviour
     [SerializeField]
     private GameObject wandLight;
 
+    [SerializeField]
+    public GameObject sword;
+    [SerializeField] 
+    private GameObject swordArm;
+
+
+    [SerializeField]
+    public Excalibur excaliburAttack;
+    [SerializeField]
+    public Transform swordSpawnPoint;
 
     public FlameballspawnManager flameballspawnManager;
     [SerializeField]
@@ -61,7 +72,7 @@ public class MageBoss : MonoBehaviour
     {
         flameballspawnManager = GetComponent<FlameballspawnManager>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        currentState = firstStageState;
+        currentState = thirdStageState;
         animator = GetComponent<Animator>();
 
         for(int i = 0; i < collidersArray.Length; i++)
@@ -71,6 +82,16 @@ public class MageBoss : MonoBehaviour
         SetNormalOutline();
         currentState.EnterState(this);
         currentState.OnCoreDestroyed += CurrentState_OnCoreDestroyed;
+    }
+    //called from anim event
+    private void SwordThrown()
+    {
+        sword.SetActive(false);
+    }
+    // called from stage 3
+    public void SwordReturned()
+    {
+        sword.SetActive(true);
     }
 
     private void CurrentState_OnCoreDestroyed(int arg1, int arg2)
@@ -87,8 +108,6 @@ public class MageBoss : MonoBehaviour
         material.SetColor(outlineColor, damagedColor);
         material.SetFloat(outlineThickness, damagedThickness);
         SetNormalOutline();
-
-
     }
 
     public void SwitchState(MageBossBaseState nextState)
@@ -105,6 +124,12 @@ public class MageBoss : MonoBehaviour
         laserLight.SetActive(true);
         wandArm.SetActive(true);
         wandLight.SetActive(true);
+    }
+
+    public void EnableThirdStageArms()
+    {
+        sword.SetActive(true);
+        swordArm.SetActive(true);
     }
 
     IEnumerator ReturnToNormalOutline()

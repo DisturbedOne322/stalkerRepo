@@ -29,6 +29,8 @@ public class Excalibur : MonoBehaviour
     private bool posAligned = false;
     private bool angleAligned = false;
 
+    private TrailRenderer trailRenderer;
+
     //return to boss' hands
     [SerializeField]
     private GameObject target;
@@ -62,9 +64,14 @@ public class Excalibur : MonoBehaviour
         stayOnGroundDuration = 5f;
         player = GameManager.Instance.GetPlayerReference();
 
-        transform.Rotate(new Vector3(0,0,Vector2.SignedAngle(-transform.up, transform.position - player.transform.position)), Space.Self);
+        trailRenderer = GetComponentInChildren<TrailRenderer>();
+        trailRenderer.enabled = true;
 
-        transform.rotation = Quaternion.Euler(0, 0, -transform.rotation.eulerAngles.z);
+        transform.right = -(player.transform.position - transform.position);
+
+        //transform.Rotate(new Vector3(0,0,Vector2.SignedAngle(-transform.up, transform.position - player.transform.position)), Space.Self);
+
+        //transform.rotation = Quaternion.Euler(0, 0, -transform.rotation.eulerAngles.z);
     }
 
     // Update is called once per frame
@@ -150,7 +157,7 @@ public class Excalibur : MonoBehaviour
 
             //floorCrack.transform.position = collision.GetContact(0).point;
             //.GetComponent<Animator>().SetTrigger(CRACK_APPEAR_ANIM_TRIGGER);
-
+            trailRenderer.enabled = false;
             hitTheGround = true;
             
             rb.freezeRotation = true;

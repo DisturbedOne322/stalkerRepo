@@ -18,7 +18,7 @@ public class MageBoss : MonoBehaviour
     public const string LASER_ANIM = "Base Layer.LaserCast";
     public const string LASER_PREPARE_ANIM = "Base Layer.LaserCastPrepare";
     public const string LASER_END_ANIM = "Base Layer.LaserCastEnd";
-    public const string EXCALIBUR_ATTACK_ANIM = "ExcaliburLayer.ExcaliburAttack";
+    public const string EXCALIBUR_ATTACK_TRIGGER = "ExcaliburAttack";
     public const string DEFEAT_ANIM_BOOL = "OnDefeat";
     public Animator animator;
 

@@ -164,7 +164,7 @@ public class MageBossThirdStageState : MageBossBaseState
     private void ExcaliburCast(MageBoss manager)
     {
         manager.StartCoroutine(SpawnExcalibur(manager));
-        manager.animator.Play(MageBoss.EXCALIBUR_ATTACK_ANIM);
+        manager.animator.SetTrigger(MageBoss.EXCALIBUR_ATTACK_TRIGGER);
         state = State.ExcaliburCast;
         lastAttack = EXCALIBUR_ATTACK;
     }

@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private readonly float originalSpeed = 0.8f;
     private float moveSpeed = 0.8f;
-    private readonly float sprintSpeed = 1.2f;
+    private readonly float sprintSpeed = 1.3f;
     private readonly float backwardMoveSpeedMultiplier = 0.9f;
 
     private float stamina = 1;
@@ -162,6 +162,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(rb2D.velocity);
         if (!canMove)
         {
             return;

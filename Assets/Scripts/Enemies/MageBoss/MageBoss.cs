@@ -19,6 +19,7 @@ public class MageBoss : MonoBehaviour
     public const string LASER_PREPARE_ANIM = "Base Layer.LaserCastPrepare";
     public const string LASER_END_ANIM = "Base Layer.LaserCastEnd";
     public const string EXCALIBUR_ATTACK_TRIGGER = "ExcaliburAttack";
+    public const string MAGIC_HOLE_ATTACK_TRIGGER = "MagicHoleAttack";
     public const string DEFEAT_ANIM_BOOL = "OnDefeat";
     public Animator animator;
 
@@ -36,11 +37,16 @@ public class MageBoss : MonoBehaviour
     [SerializeField] 
     private GameObject swordArm;
 
+    [SerializeField]
+    private GameObject magicHoleArm;
 
     [SerializeField]
     public Excalibur excaliburAttack;
     [SerializeField]
     public Transform swordSpawnPoint;
+
+    [SerializeField]
+    public MagicHole magicHole;
 
     public FlameballspawnManager flameballspawnManager;
     [SerializeField]
@@ -130,6 +136,7 @@ public class MageBoss : MonoBehaviour
     {
         sword.SetActive(true);
         swordArm.SetActive(true);
+        magicHoleArm.SetActive(true);
     }
 
     IEnumerator ReturnToNormalOutline()

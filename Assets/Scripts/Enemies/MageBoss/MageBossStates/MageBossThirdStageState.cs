@@ -10,14 +10,15 @@ public class MageBossThirdStageState : MageBossBaseState
 
     private Animator animator;
 
-    private float currentAttackCD = 7f;
-    private float cdBetweenAttacks = 7f;
+    private float currentAttackCD = 12f;
+    private float cdBetweenAttacks = 12f;
 
     private const string FLAMEBALL_ATTACK = "Flameball";
     private const string LASER_ATTACK = "Laser";
     private const string EXCALIBUR_ATTACK = "Excalibur";
+    private const string MAGIC_HOLE_ATTACK = "MagicHole";
     private string lastAttack;
-    private string[] attackSet = new string[3];
+    private string[] attackSet = new string[4];
 
     private MageBoss manager;
 
@@ -37,6 +38,10 @@ public class MageBossThirdStageState : MageBossBaseState
 
     //excalibur
     private float excaliburSpawnDelay = 3f;
+
+    //magic hole
+    private float magicHoleDuration = 5;
+    private float pullingForce = 0.015f;
 
     private bool defeated = false;
 
@@ -64,6 +69,7 @@ public class MageBossThirdStageState : MageBossBaseState
         attackSet[0] = FLAMEBALL_ATTACK;
         attackSet[1] = LASER_ATTACK;
         attackSet[2] = EXCALIBUR_ATTACK;
+        attackSet[3] = MAGIC_HOLE_ATTACK;
         health = manager.collidersArray.Length;
         manager.flameballspawnManager.OnAttackFinished += FlameballspawnManager_OnAttackFinished;
         manager.laser.OnAttackFinished += Laser_OnAttackFinished;
@@ -124,7 +130,8 @@ public class MageBossThirdStageState : MageBossBaseState
         currentAttackCD -= Time.deltaTime;
         if (currentAttackCD < 0 && state == State.Idle)
         {
-            ExcaliburCast(manager);
+            MagicHoleCast(manager);
+            //ExcaliburCast(manager);
             //switch (GetRandomAttack())
             //{
             //    case FLAMEBALL_ATTACK:
@@ -159,6 +166,14 @@ public class MageBossThirdStageState : MageBossBaseState
             index = UnityEngine.Random.Range(0, attackSet.Length);
         } while (attackSet[index] == lastAttack);
         return attackSet[index];
+    }
+
+    private void MagicHoleCast(MageBoss manager)
+    {
+        manager.magicHole.Initialize(magicHoleDuration, pullingForce);
+        manager.animator.SetTrigger(MageBoss.MAGIC_HOLE_ATTACK_TRIGGER);
+        SetCDBetweenAttacks();
+        lastAttack = MAGIC_HOLE_ATTACK;
     }
 
     private void ExcaliburCast(MageBoss manager)

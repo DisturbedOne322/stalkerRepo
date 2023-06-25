@@ -38,8 +38,10 @@ public class Excalibur : MonoBehaviour
     private Vector2 positionVelocitySmDamp;
     private float angleVelocitySmDamp;
 
-    //[SerializeField]
-    //private GameObject floorCrack;
+    [SerializeField]
+    private GameObject floorCrack;
+
+    private bool returning = false;
 
     private void Awake()
     {
@@ -59,6 +61,7 @@ public class Excalibur : MonoBehaviour
         posAligned = false;
         angleAligned = false;
         hitTheGround = false;
+        returning = false;
         fallSpeed = 500f;
         rb.freezeRotation = false;
         stayOnGroundDuration = 5f;
@@ -68,10 +71,6 @@ public class Excalibur : MonoBehaviour
         trailRenderer.enabled = true;
 
         transform.right = -(player.transform.position - transform.position);
-
-        //transform.Rotate(new Vector3(0,0,Vector2.SignedAngle(-transform.up, transform.position - player.transform.position)), Space.Self);
-
-        //transform.rotation = Quaternion.Euler(0, 0, -transform.rotation.eulerAngles.z);
     }
 
     // Update is called once per frame
@@ -83,20 +82,28 @@ public class Excalibur : MonoBehaviour
         }
         else
         {
-            stayOnGroundDuration -= Time.deltaTime;
-            if (stayOnGroundDuration <= 0) 
+            if(!returning)
             {
-                //floorCrack.GetComponent<Animator>().SetTrigger(CRACK_DISAPPEAR_ANIM_TRIGGER);
-                animator.SetTrigger(DURATION_ENDED_TRIGGER);
-
-
-                AlignPosition();
-                AlignRotation();
-                if (posAligned && angleAligned)
+                stayOnGroundDuration -= Time.deltaTime;
+                if (stayOnGroundDuration <= 0)
                 {
-                    gameObject.SetActive(false);
-                    OnSwordRetured?.Invoke();
+                    floorCrack.GetComponent<Animator>().SetTrigger(CRACK_DISAPPEAR_ANIM_TRIGGER);
+                    animator.SetTrigger(DURATION_ENDED_TRIGGER);
+
+                    returning = true;
                 }
+            }
+        }
+
+        if(returning)
+        {
+
+            AlignPosition();
+            AlignRotation();
+            if (posAligned && angleAligned)
+            {
+                gameObject.SetActive(false);
+                OnSwordRetured?.Invoke();
             }
         }
     }
@@ -155,8 +162,9 @@ public class Excalibur : MonoBehaviour
             throwDirection1.x = playerPosX < transform.position.x ? -0.012f : 0.012f;
             playerRB.AddForce(throwDirection1, ForceMode2D.Impulse);
 
-            //floorCrack.transform.position = collision.GetContact(0).point;
-            //.GetComponent<Animator>().SetTrigger(CRACK_APPEAR_ANIM_TRIGGER);
+            floorCrack.gameObject.SetActive(true);
+            floorCrack.transform.position = collision.GetContact(0).point;
+            floorCrack.GetComponent<Animator>().SetTrigger(CRACK_APPEAR_ANIM_TRIGGER);
             trailRenderer.enabled = false;
             hitTheGround = true;
             

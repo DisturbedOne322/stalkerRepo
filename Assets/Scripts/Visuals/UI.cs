@@ -19,9 +19,6 @@ public class UI : MonoBehaviour
     private Slider staminaSlider;
 
     [SerializeField]
-    private Slider healthBarSlider;
-
-    [SerializeField]
     private Slider headlightCapacitySlider;
 
     [SerializeField]
@@ -47,6 +44,8 @@ public class UI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI healthText;
 
+    [SerializeField] MageBoss mageBoss;
+
 
     //UI Materials
     #region StaminaBar
@@ -64,6 +63,19 @@ public class UI : MonoBehaviour
     private const float defaultHealthBarOutlineThickness = 0;
     #endregion
 
+    #region Boss UI
+    [SerializeField]
+    private Slider bossHPBar;
+    private const string BOSS_FIGHT_STARTED_TRIGGER = "OnBossFightStarted";
+    private const string BOSS_FIGHT_ENDED_TRIGGER = "OnBossFightEnded";
+
+    private float nextHPBarValue = 1;
+    private float smDampVelocity;
+
+    private float smDampTime = 0.3f;
+    #endregion
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,6 +84,30 @@ public class UI : MonoBehaviour
         Shoot.OnSuccessfulReload += Shoot_OnSuccessfulReload;
         player.OnHealthChanged += Player_OnHealthChanged;
         player.OnStaminaStateChange += Player_OnStaminaStateChange;
+        mageBoss.OnHPChanged += MageBoss_OnHPChanged;
+        mageBoss.OnStageChanged += MageBoss_OnStageChanged;
+        GameManager.Instance.OnBossFightStarted += Instance_OnBossFightStarted;
+    }
+
+    private void MageBoss_OnStageChanged()
+    {
+        bossHPBar.value = 1;
+        bossHPBar.GetComponent<Animator>().SetTrigger(BOSS_FIGHT_STARTED_TRIGGER);
+    }
+
+    private void Instance_OnBossFightStarted()
+    {
+        
+        bossHPBar.GetComponent<Animator>().SetTrigger(BOSS_FIGHT_STARTED_TRIGGER);
+    }
+
+    private void MageBoss_OnHPChanged(int arg1, int arg2)
+    {
+        nextHPBarValue = arg1 * 1f / arg2;
+        if (nextHPBarValue <= 0f)
+        {
+            bossHPBar.GetComponent<Animator>().SetTrigger(BOSS_FIGHT_ENDED_TRIGGER);
+        }
     }
 
     private void Player_OnStaminaStateChange(PlayerMovement.StaminaState obj)
@@ -172,6 +208,8 @@ public class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bossHPBar.value = Mathf.SmoothDamp(bossHPBar.value, nextHPBarValue, ref smDampVelocity, smDampTime);
+
         healthBarRestoreTime += Time.deltaTime;
         healthBarMaterial.SetFloat(HEALTH_BAR_OUTLINE_THICKNESS,
             Mathf.Lerp(healthBarMaterial.GetFloat(HEALTH_BAR_OUTLINE_THICKNESS),

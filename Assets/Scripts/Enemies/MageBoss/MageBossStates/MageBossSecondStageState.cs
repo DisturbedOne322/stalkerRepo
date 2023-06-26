@@ -10,8 +10,8 @@ public class MageBossSecondStageState : MageBossBaseState
 
     private Animator animator;
 
-    private float currentAttackCD = 7f;
-    private float cdBetweenAttacks = 7f;
+    private float currentAttackCD = 2f;
+    private float cdBetweenAttacks = 2f;
 
     private const string FLAMEBALL_ATTACK = "Flameball";
     private const string LASER_ATTACK = "Laser";
@@ -22,16 +22,16 @@ public class MageBossSecondStageState : MageBossBaseState
     private float switchStateDelay = 10f;
 
     //flameball
-    private float spawnCDTotal = 1f; // cd between each flameball
-    private float cdBetweenWaves = 1f;
-    private int waveNumberTotal = 2;
-    private int spawnAmountTotal = 5;
-    private float fallSpeed = 10;
-    private float scale = 1;
+    private float spawnCDTotal = 0.5f; // cd between each flameball
+    private float cdBetweenWaves = 0.5f;
+    private int waveNumberTotal = 3;
+    private int spawnAmountTotal = 4;
+    private float fallSpeed = 15;
+    private float scale = 1.5f;
 
     //laser
-    private float laserAnimationDuration = 7;
-    private float laserThickness = 0.3f;
+    private float laserAnimationDuration = 10;
+    private float laserThickness = 0.6f;
 
     private bool defeated = false;
 
@@ -100,7 +100,13 @@ public class MageBossSecondStageState : MageBossBaseState
             switchStateDelay -= Time.deltaTime;
             if (switchStateDelay <= 0)
             {
-                manager.SwitchState(manager.secondStageState);
+                for (int i = 0; i < manager.collidersArray.Length; i++)
+                {
+                    manager.collidersArray[i].OnWeakPointBroken -= MageBossFirstStageState_OnWeakPointBroken;
+                }
+                manager.flameballspawnManager.OnAttackFinished -= FlameballspawnManager_OnAttackFinished;
+                manager.laser.OnAttackFinished -= Laser_OnAttackFinished;
+                manager.SwitchState(manager.thirdStageState);
             }
             return;
         }

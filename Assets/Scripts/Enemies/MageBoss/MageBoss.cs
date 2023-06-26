@@ -7,7 +7,7 @@ using UnityEngine.PlayerLoop;
 public class MageBoss : MonoBehaviour
 {
     public event Action<int, int> OnHPChanged;
-    public event Action<MageBoss> OnPlayerInClawAttackRange;
+    public event Action OnStageChanged;
     [SerializeField]
     public WeakPoint[] collidersArray;
 
@@ -39,6 +39,8 @@ public class MageBoss : MonoBehaviour
 
     [SerializeField]
     private GameObject magicHoleArm;
+    [SerializeField]
+    private GameObject magicHoleVFX;
 
     [SerializeField]
     public Excalibur excaliburAttack;
@@ -78,7 +80,7 @@ public class MageBoss : MonoBehaviour
     {
         flameballspawnManager = GetComponent<FlameballspawnManager>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        currentState = thirdStageState;
+        currentState = firstStageState;
         animator = GetComponent<Animator>();
 
         for(int i = 0; i < collidersArray.Length; i++)
@@ -118,6 +120,7 @@ public class MageBoss : MonoBehaviour
 
     public void SwitchState(MageBossBaseState nextState)
     {
+        OnStageChanged?.Invoke();
         currentState.OnCoreDestroyed -= CurrentState_OnCoreDestroyed;
         currentState = nextState;
         currentState.EnterState(this);
@@ -137,6 +140,7 @@ public class MageBoss : MonoBehaviour
         sword.SetActive(true);
         swordArm.SetActive(true);
         magicHoleArm.SetActive(true);
+        magicHoleVFX.SetActive(true);
     }
 
     IEnumerator ReturnToNormalOutline()

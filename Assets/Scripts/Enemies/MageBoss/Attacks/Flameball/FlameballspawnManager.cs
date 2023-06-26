@@ -25,8 +25,12 @@ public class FlameballspawnManager : MonoBehaviour
 
     private float flameballSpawnOffset;
 
+    private float colliderSizeX;
+
     [SerializeField]
-    private Transform flameballSpawnStartPos;
+    private Transform leftBounds;
+    [SerializeField]
+    private Transform rightBounds;
     private Vector3 flameballSpawnPos;
     private Vector3 additionalOffset;
     private bool additionalOffsetOption = false;
@@ -41,21 +45,31 @@ public class FlameballspawnManager : MonoBehaviour
     private float animationDelay = 4f;
     private float animationDelayTotal = 4f;
 
+    private MageBoss mageBoss;
+
 
     private void Start()
     {
-        flameballSpawnOffset = flameballPrefab.GetComponent<BoxCollider2D>().size.x * 4 + 0.25f;
+        colliderSizeX = flameballPrefab.GetComponent<BoxCollider2D>().size.x;
+        flameballSpawnOffset = colliderSizeX * 4 + 0.25f;
         pool = new GameObject[20];
         for(int i = 0; i < pool.Length;i++)
         {
             pool[i] = Instantiate(flameballPrefab);
             pool[i].SetActive(false);
         }
+        mageBoss = GetComponent<MageBoss>();
+        mageBoss.OnHPChanged += MageBoss_OnHPChanged;
+    }
+
+    private void MageBoss_OnHPChanged(int arg1, int arg2)
+    {
+        if (arg1 <= 0)
+            attackFinished = true;
     }
 
     public void InitializeFlameballAttackProperties(int waveNumberTotal, int spawnAmountTotal, float spawnCDTotal, float cdBetweenWaves, float fallSpeed, float scale)
     {
-        flameballSpawnPos = flameballSpawnStartPos.position;
         this.waveNumberTotal = waveNumberTotal;
         this.spawnCDTotal = spawnCDTotal;
         this.spawnAmountTotal = spawnAmountTotal;
@@ -70,7 +84,6 @@ public class FlameballspawnManager : MonoBehaviour
 
     public void InitializeFlameballAttackProperties(int waveNumberTotal, int spawnAmountTotal, float spawnCDTotal, float cdBetweenWaves, float fallSpeed, float scale, bool additionalOffsetOption, Vector3 additionalOffset)
     {
-        flameballSpawnPos = flameballSpawnStartPos.position;
         this.waveNumberTotal = waveNumberTotal;
         this.spawnCDTotal = spawnCDTotal;
         this.spawnAmountTotal = spawnAmountTotal;
@@ -105,7 +118,7 @@ public class FlameballspawnManager : MonoBehaviour
             if (cdBetweenWaves < 0)
             {
                 cdBetweenWaves = cdBetweenWavesTotal;
-                flameballSpawnPos = flameballSpawnStartPos.position;
+                //flameballSpawnPos = flameballSpawnStartPos.position;
                 currentWave++;
                 spawnCD = spawnCDTotal;
                 if (additionalOffsetOption)
@@ -134,15 +147,43 @@ public class FlameballspawnManager : MonoBehaviour
             {
                 pool[i].SetActive(true);
                 pool[i].GetComponent<Flameball>().SwitchState(new FlameballFallingState());
-                pool[i].transform.position = flameballSpawnPos;
+                pool[i].transform.position = new Vector2(FindSpawnPosX(), leftBounds.position.y);
                 pool[i].GetComponent<Flameball>().Speed = fallSpeed;
-                pool[i].gameObject.transform.localScale = Vector3.one *  scale;
+                pool[i].gameObject.transform.localScale = Vector3.one * scale;
                 break;
             }
         }
         flameballSpawnPos.x -= flameballSpawnOffset;
-        spawnedAmount++;
-        
-        
+        spawnedAmount++;      
+    }
+
+
+    private float FindSpawnPosX()
+    {
+        float pos = 0;
+
+        do
+        {
+            pos = UnityEngine.Random.Range(leftBounds.position.x, rightBounds.position.x);
+        }
+        while (CheckIsOccipied(pos));
+
+        return pos;
+    }
+
+    private bool CheckIsOccipied(float pos)
+    {
+        for(int i = 0; i < pool.Length; i++)
+        {
+            if (pool[i].active)
+            {
+                if(pos <= pool[i].transform.position.x + colliderSizeX && pos >= pool[i].transform.position.x - colliderSizeX)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

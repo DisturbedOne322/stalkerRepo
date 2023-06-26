@@ -10,8 +10,8 @@ public class MageBossThirdStageState : MageBossBaseState
 
     private Animator animator;
 
-    private float currentAttackCD = 12f;
-    private float cdBetweenAttacks = 12f;
+    private float currentAttackCD = 2f;
+    private float cdBetweenAttacks = 2f;
 
     private const string FLAMEBALL_ATTACK = "Flameball";
     private const string LASER_ATTACK = "Laser";
@@ -25,16 +25,16 @@ public class MageBossThirdStageState : MageBossBaseState
     private float switchStateDelay = 10f;
 
     //flameball
-    private float spawnCDTotal = 1f; // cd between each flameball
-    private float cdBetweenWaves = 1f;
-    private int waveNumberTotal = 2;
-    private int spawnAmountTotal = 5;
-    private float fallSpeed = 10;
-    private float scale = 1;
+    private float spawnCDTotal = 0.25f; // cd between each flameball
+    private float cdBetweenWaves = 0.25f;
+    private int waveNumberTotal = 4;
+    private int spawnAmountTotal = 3;
+    private float fallSpeed = 20;
+    private float scale = 2f;
 
     //laser
-    private float laserAnimationDuration = 7;
-    private float laserThickness = 0.3f;
+    private float laserAnimationDuration = 13;
+    private float laserThickness = 0.9f;
 
     //excalibur
     private float excaliburSpawnDelay = 3f;
@@ -59,7 +59,7 @@ public class MageBossThirdStageState : MageBossBaseState
     public override void EnterState(MageBoss manager)
     {
         this.manager = manager;
-        //manager.ResetColliders();
+        manager.ResetColliders();
         manager.EnableThirdStageArms();
         animator = manager.GetComponent<Animator>();
         animator.Rebind();
@@ -123,24 +123,28 @@ public class MageBossThirdStageState : MageBossBaseState
             switchStateDelay -= Time.deltaTime;
             if (switchStateDelay <= 0)
             {
-                //manager.SwitchState(manager.secondStageState);
+                //
             }
             return;
         }
         currentAttackCD -= Time.deltaTime;
         if (currentAttackCD < 0 && state == State.Idle)
-        {
-            MagicHoleCast(manager);
-            //ExcaliburCast(manager);
-            //switch (GetRandomAttack())
-            //{
-            //    case FLAMEBALL_ATTACK:
-            //        FlameballCast(manager);
-            //        break;
-            //    case LASER_ATTACK:
-            //        LaserCast(manager);
-            //        break;
-            //}
+        {            
+            switch (GetRandomAttack())
+            {
+                case FLAMEBALL_ATTACK:
+                    FlameballCast(manager);
+                    break;
+                case LASER_ATTACK:
+                    LaserCast(manager);
+                    break;
+                case EXCALIBUR_ATTACK:
+                    ExcaliburCast(manager);
+                    break;
+                case MAGIC_HOLE_ATTACK:
+                    MagicHoleCast(manager); 
+                break;
+            }
         }
         if (state == State.LaserPrepare)
         {

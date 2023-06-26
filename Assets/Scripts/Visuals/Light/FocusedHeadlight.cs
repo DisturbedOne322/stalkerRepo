@@ -25,7 +25,7 @@ public class FocusedHeadlight : MonoBehaviour
     {
         get { return currentFocusedLightCapacity; }
     }
-    private readonly float focusedLightSpendRate = 0;//0.2f;
+    private readonly float focusedLightSpendRate = 0.3f;//0.2f;
     private readonly float focusedLightRestoreRate = 0.1f;
 
 

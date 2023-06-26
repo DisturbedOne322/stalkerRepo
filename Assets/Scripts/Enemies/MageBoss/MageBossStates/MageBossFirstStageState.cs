@@ -8,8 +8,8 @@ public class MageBossFirstStageState : MageBossBaseState
 
     private Animator animator;
 
-    private float currentAttackCD = 7f;
-    private float cdBetweenAttacks = 7f;
+    private float currentAttackCD = 2f;
+    private float cdBetweenAttacks = 2f;
 
     private const string FLAMEBALL_ATTACK = "Flameball";
     private const string LASER_ATTACK = "Laser";
@@ -19,10 +19,10 @@ public class MageBossFirstStageState : MageBossBaseState
 
     //flameball
     private float spawnCDTotal = 1f; // cd between each flameball
-    private float cdBetweenWaves = 1f;
-    private int waveNumberTotal = 2;
-    private int spawnAmountTotal = 5;
-    private float fallSpeed = 10;
+    private float cdBetweenWaves = 3f;
+    private int waveNumberTotal = 1;
+    private int spawnAmountTotal = 10;
+    private float fallSpeed = 11;
     private float scale = 1;
 
     //laser

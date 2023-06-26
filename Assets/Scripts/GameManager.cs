@@ -1,10 +1,13 @@
 using Cinemachine;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 public class GameManager : MonoBehaviour
 {
+    public event Action OnBossFightStarted;
+
     public static GameManager Instance;
 
     [SerializeField]
@@ -24,21 +27,6 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private Teleporter teleporter;
-
-
-    //boss stuff
-    private const string BOSS_FIGHT_STARTED_TRIGGER = "OnBossFightStarted";
-    private const string BOSS_FIGHT_ENDED_TRIGGER = "OnBossFightEnded";
-
-    private float nextHPBarValue = 1;
-    private float smDampVelocity;
-
-    private float smDampTime = 0.3f;
-
-    [SerializeField]
-    private MageBoss mageBoss;
-    [SerializeField]
-    private Slider bossHPBar;
 
     [SerializeField]
     private GameObject boss;
@@ -91,27 +79,13 @@ public class GameManager : MonoBehaviour
         InputManager.Instance.OnFocusActionEnded += Instance_OnFocusActionEnded;
 
         InitiateBossfight.OnBossFightInitiated += InitiateBossfight_OnBossFightInitiated;
-        //mageBoss.OnHPChanged += MageBoss_OnHPChanged;
     }
 
-    private void Update()
-    {
-        bossHPBar.value = Mathf.SmoothDamp(bossHPBar.value, nextHPBarValue, ref smDampVelocity, smDampTime);
-    }
-
-    private void MageBoss_OnHPChanged(int arg1, int arg2)
-    {
-        nextHPBarValue = arg1 * 1f / arg2;
-        if(nextHPBarValue <= 0f) 
-        {
-            bossHPBar.GetComponent<Animator>().SetTrigger(BOSS_FIGHT_ENDED_TRIGGER);
-        }
-    }
 
     private void InitiateBossfight_OnBossFightInitiated()
     {
-        bossHPBar.GetComponent<Animator>().SetTrigger(BOSS_FIGHT_STARTED_TRIGGER);
         boss.gameObject.SetActive(true);
+        OnBossFightStarted?.Invoke();
     }
 
     public PlayerMovement GetPlayerReference()

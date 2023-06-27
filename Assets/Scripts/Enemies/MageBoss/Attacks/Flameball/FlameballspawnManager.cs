@@ -177,7 +177,7 @@ public class FlameballspawnManager : MonoBehaviour
         {
             if (pool[i].active)
             {
-                if(pos <= pool[i].transform.position.x + colliderSizeX && pos >= pool[i].transform.position.x - colliderSizeX)
+                if(pos <= pool[i].transform.position.x + colliderSizeX  && pos >= pool[i].transform.position.x - colliderSizeX)
                 {
                     return true;
                 }

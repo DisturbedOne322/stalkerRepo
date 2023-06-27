@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = false;
         Shoot.OnBulletHit += Shoot_OnBulletHit;
         //pre instantiate bullet hit particles
         particleSpawnerOnEnemyHit = new ParticleSystem[particleHitSO.particleArray.Length];

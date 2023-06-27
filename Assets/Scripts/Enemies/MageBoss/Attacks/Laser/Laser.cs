@@ -19,12 +19,12 @@ public class Laser : MageBossBaseAttack
     [SerializeField]
     private LayerMask playerLayer;
 
-    private float trackOffsetX = 0.5f;
+    private float trackOffsetX = 3f;
 
     private PlayerMovement player;
 
     private readonly float smoothDampTimeVertical = 0.5f;
-    private readonly float smoothDampTimeHorizontal = 1.5f;
+    private readonly float smoothDampTimeHorizontal = 1.2f;
     private float velocityHorizontal = 0;
     private float velocityVertical = 0;
 
@@ -35,7 +35,7 @@ public class Laser : MageBossBaseAttack
     private AudioClip laserCharge;
     [SerializeField]
     private AudioClip laserFalling;
-    private float audioDelayDuration = 1.5f;
+    private float audioDelayDuration = 1.7f;
 
     private bool attackFinished = true;
 
@@ -90,31 +90,52 @@ public class Laser : MageBossBaseAttack
         bool hitHeadlight = false;
 
         //focused headlight is turned on
-        if (focusedHeadlightBoxPoints[0] != Vector2.zero && focusedHeadlightBoxPoints[1] != Vector2.zero)
+        if (focusedHeadlightBoxPoints[0] != Vector2.zero)
         {
+            float xLeftBoxCoord;
+            float xRightBoxCoord;
+            float yTopBoxCoord;
+            float yBottomBoxCoord;
+
+            //first check if boss laser intresects with top left - top right line of headlight box
             Vector2 intersection = LineIntersection.FindIntersectionPoint(focusedHeadlightBoxPoints[0], focusedHeadlightBoxPoints[1], lineRenderer.GetPosition(0), lineRenderer.GetPosition(1));
-            if (intersection == Vector2.zero)
-                return;
-            //limit intersection point to the area of box
-            float yTopBoxCoord = focusedHeadlightBoxPoints[0].y;
-            float yBottomBoxCoord = focusedHeadlightBoxPoints[1].y;
-
-            float xLeftBoxCoord = focusedHeadlightBoxPoints[0].x < focusedHeadlightBoxPoints[1].x ? focusedHeadlightBoxPoints[0].x : focusedHeadlightBoxPoints[1].x;
-            float xRightBoxCoord = focusedHeadlightBoxPoints[0].x >= focusedHeadlightBoxPoints[1].x ? focusedHeadlightBoxPoints[0].x : focusedHeadlightBoxPoints[1].x;
-
-            if (intersection.x <= xRightBoxCoord && intersection.x >= xLeftBoxCoord && intersection.y <= yTopBoxCoord && intersection.y >= yBottomBoxCoord)
+            if (intersection != Vector2.zero)
             {
-                lineRenderer.SetPosition(1, intersection);
-                hitHeadlight = true;
+                xLeftBoxCoord = focusedHeadlightBoxPoints[0].x;
+                xRightBoxCoord = focusedHeadlightBoxPoints[1].x;
+
+                yTopBoxCoord = focusedHeadlightBoxPoints[0].y > focusedHeadlightBoxPoints[1].y ? focusedHeadlightBoxPoints[0].y : focusedHeadlightBoxPoints[1].y;
+                yBottomBoxCoord = focusedHeadlightBoxPoints[0].y <= focusedHeadlightBoxPoints[1].y ? focusedHeadlightBoxPoints[0].y : focusedHeadlightBoxPoints[1].y;
+
+                if (intersection.x <= xRightBoxCoord && intersection.x >= xLeftBoxCoord && intersection.y <= yTopBoxCoord && intersection.y >= yBottomBoxCoord)
+                {
+                    lineRenderer.SetPosition(1, intersection);
+                    hitHeadlight = true;
+                }
+                //if it doesn't check if boss laser intresects with top right - bottom right line of headlight box
+                else
+                {
+                    intersection = LineIntersection.FindIntersectionPoint(focusedHeadlightBoxPoints[1], focusedHeadlightBoxPoints[2], lineRenderer.GetPosition(0), lineRenderer.GetPosition(1));
+                    yTopBoxCoord = focusedHeadlightBoxPoints[1].y;
+                    yBottomBoxCoord = focusedHeadlightBoxPoints[2].y;
+
+                    xLeftBoxCoord = focusedHeadlightBoxPoints[1].x < focusedHeadlightBoxPoints[2].x ? focusedHeadlightBoxPoints[1].x : focusedHeadlightBoxPoints[2].x;
+                    xRightBoxCoord = focusedHeadlightBoxPoints[1].x >= focusedHeadlightBoxPoints[2].x ? focusedHeadlightBoxPoints[1].x : focusedHeadlightBoxPoints[2].x;
+
+                    if (intersection.x <= xRightBoxCoord && intersection.x >= xLeftBoxCoord && intersection.y <= yTopBoxCoord && intersection.y >= yBottomBoxCoord)
+                    {
+                        lineRenderer.SetPosition(1, intersection);
+                        hitHeadlight = true;
+                    }
+                }
             }
         }
 
+        //no intersection at all, just follow player
         if(!hitHeadlight)
         {
             Vector2 linePos2 = new Vector2();
             hit = Physics2D.Raycast(transform.position, -transform.up, 10, groundLayer);
-
-            trackOffsetX = lineRenderer.GetPosition(1).x > player.transform.position.x ? 1f : -1f;
 
             linePos2.y = Mathf.SmoothDamp(lineRenderer.GetPosition(1).y, hit.point.y, ref velocityVertical, smoothDampTimeVertical);
             linePos2.x = Mathf.SmoothDamp(lineRenderer.GetPosition(1).x, player.transform.position.x - trackOffsetX, ref velocityHorizontal, smoothDampTimeHorizontal);
@@ -141,7 +162,9 @@ public class Laser : MageBossBaseAttack
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.startWidth = laserThickness;
         lineRenderer.SetPosition(0, transform.position);
-        lineRenderer.SetPosition(1, transform.position);
+        hit = Physics2D.Raycast(transform.position, Vector2.down, 10, groundLayer);
+        lineRenderer.SetPosition(1, hit.point);
+
         this.duration = duration;
         this.caller = caller;
         attackFinished = false;

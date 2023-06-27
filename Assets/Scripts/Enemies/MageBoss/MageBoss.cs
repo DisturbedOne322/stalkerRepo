@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -74,10 +75,20 @@ public class MageBoss : MonoBehaviour
     public MageBossSecondStageState secondStageState = new MageBossSecondStageState();
     public MageBossThirdStageState thirdStageState = new MageBossThirdStageState();
 
-    
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip flyUpAudioClip;
+    [SerializeField]
+    private AudioClip defeatAudioClip;
+    [SerializeField]
+    private AudioClip[] damagedAudioClipArray;
+    [SerializeField]
+    private AudioClip swordThrowSound;
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         flameballspawnManager = GetComponent<FlameballspawnManager>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         currentState = firstStageState;
@@ -89,6 +100,7 @@ public class MageBoss : MonoBehaviour
         }
         SetNormalOutline();
         currentState.EnterState(this);
+        audioSource.PlayOneShot(defeatAudioClip);
         currentState.OnCoreDestroyed += CurrentState_OnCoreDestroyed;
     }
     //called from anim event
@@ -113,6 +125,7 @@ public class MageBoss : MonoBehaviour
         if (m_CurrentClipInfo[0].clip.name == "Idle")
             animator.SetTrigger(DAMAGED_ANIM);
 
+        audioSource.PlayOneShot(damagedAudioClipArray[UnityEngine.Random.Range(0, damagedAudioClipArray.Length)]);
         material.SetColor(outlineColor, damagedColor);
         material.SetFloat(outlineThickness, damagedThickness);
         SetNormalOutline();
@@ -120,6 +133,8 @@ public class MageBoss : MonoBehaviour
 
     public void SwitchState(MageBossBaseState nextState)
     {
+        audioSource.Stop();
+        audioSource.PlayOneShot(defeatAudioClip);
         OnStageChanged?.Invoke();
         currentState.OnCoreDestroyed -= CurrentState_OnCoreDestroyed;
         currentState = nextState;
@@ -129,6 +144,7 @@ public class MageBoss : MonoBehaviour
 
     public void EnableSecondStageArms()
     {
+        audioSource.Play();
         laserArm.SetActive(true);
         laserLight.SetActive(true);
         wandArm.SetActive(true);
@@ -137,6 +153,7 @@ public class MageBoss : MonoBehaviour
 
     public void EnableThirdStageArms()
     {
+        audioSource.Play();
         sword.SetActive(true);
         swordArm.SetActive(true);
         magicHoleArm.SetActive(true);
@@ -163,6 +180,22 @@ public class MageBoss : MonoBehaviour
         }
     }
 
+    public void PlayFlyUpSound()
+    {
+        audioSource.PlayOneShot(flyUpAudioClip);
+    }
+
+    public void PlayThrowSwordSound()
+    {
+        StartCoroutine(PlaySoundWithDelay(swordThrowSound, 2f));
+    }
+
+    IEnumerator PlaySoundWithDelay(AudioClip clip, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        audioSource.PlayOneShot(clip);
+    }
 
     private void SetNormalOutline()
     {

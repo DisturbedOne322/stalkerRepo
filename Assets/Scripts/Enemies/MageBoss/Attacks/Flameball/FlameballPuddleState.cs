@@ -12,8 +12,8 @@ public class FlameballPuddleState : FlameballBaseState
     private float puddleDamageTickRate = 1f;
     private int damage = 1;
 
-    private float lifeTimeTotal = 5;
-    private float lifeTimeLeft = 5;
+    private float lifeTimeTotal = 3f;
+    private float lifeTimeLeft = 3f;
     private SpriteRenderer spriteRenderer;
 
     public override void EnterState(Flameball manager)

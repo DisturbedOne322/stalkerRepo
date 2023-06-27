@@ -10,8 +10,8 @@ public class MageBossSecondStageState : MageBossBaseState
 
     private Animator animator;
 
-    private float currentAttackCD = 2f;
-    private float cdBetweenAttacks = 2f;
+    private float currentAttackCD = 6f;
+    private float cdBetweenAttacks = 4f;
 
     private const string FLAMEBALL_ATTACK = "Flameball";
     private const string LASER_ATTACK = "Laser";
@@ -125,8 +125,8 @@ public class MageBossSecondStageState : MageBossBaseState
         }
         if (state == State.LaserPrepare)
         {
-            var a = manager.animator.GetCurrentAnimatorStateInfo(0);
-            if (a.normalizedTime >= 0.99f)
+            AnimatorClipInfo[] m_CurrentClipInfo = this.animator.GetCurrentAnimatorClipInfo(0);
+            if (m_CurrentClipInfo[0].clip.name == "LaserCast")
             {
                 manager.laser.InitializeLaser(laserAnimationDuration, laserThickness, manager);
                 state = State.LaserCast;
@@ -151,6 +151,7 @@ public class MageBossSecondStageState : MageBossBaseState
 
     private void FlameballCast(MageBoss manager)
     {
+        manager.PlayFlyUpSound();
         manager.flameballspawnManager.InitializeFlameballAttackProperties(waveNumberTotal, spawnAmountTotal, spawnCDTotal, cdBetweenWaves, fallSpeed, scale, true, new Vector3(-1, 0, 0));
         manager.animator.Play(MageBoss.FLAMEBALL_ANIM);
         state = State.FlameballCast;
@@ -159,6 +160,7 @@ public class MageBossSecondStageState : MageBossBaseState
 
     private void LaserCast(MageBoss manager)
     {
+        manager.PlayFlyUpSound();
         manager.animator.Play(MageBoss.LASER_PREPARE_ANIM);
         state = State.LaserPrepare;
         lastAttack = LASER_ATTACK;

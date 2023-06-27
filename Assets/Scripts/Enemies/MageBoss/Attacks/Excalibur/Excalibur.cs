@@ -43,8 +43,20 @@ public class Excalibur : MonoBehaviour
 
     private bool returning = false;
 
+    //audio source plays fire sound
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip hitGroundSound;
+    [SerializeField]
+    private AudioClip fallingDownSound;
+    [SerializeField]
+    private AudioClip returnSound;
+
+    private float maxVolumeDistance = 15f;
+
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
@@ -66,7 +78,6 @@ public class Excalibur : MonoBehaviour
         rb.freezeRotation = false;
         stayOnGroundDuration = 5f;
         player = GameManager.Instance.GetPlayerReference();
-
         trailRenderer = GetComponentInChildren<TrailRenderer>();
         trailRenderer.enabled = true;
 
@@ -89,7 +100,8 @@ public class Excalibur : MonoBehaviour
                 {
                     floorCrack.GetComponent<Animator>().SetTrigger(CRACK_DISAPPEAR_ANIM_TRIGGER);
                     animator.SetTrigger(DURATION_ENDED_TRIGGER);
-
+                    audioSource.Stop();
+                    audioSource.PlayOneShot(returnSound);
                     returning = true;
                 }
             }
@@ -106,6 +118,11 @@ public class Excalibur : MonoBehaviour
                 OnSwordRetured?.Invoke();
             }
         }
+    }
+
+    private void OnEnable()
+    {
+        audioSource.PlayOneShot(fallingDownSound);
     }
 
     private void AlignPosition()
@@ -153,6 +170,8 @@ public class Excalibur : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Ground"))
         {
+            audioSource.PlayOneShot(hitGroundSound);
+            audioSource.Play();
             animator.SetTrigger(GROUND_HIT_ANIM_TRIGGER);
 
             rb.velocity = Vector2.zero;

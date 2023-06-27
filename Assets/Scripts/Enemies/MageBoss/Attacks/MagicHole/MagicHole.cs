@@ -10,7 +10,10 @@ public class MagicHole : MonoBehaviour
     private const string CIRCLE_SIZE = "CircleSize";
     private const string DISTANCE_TO_PLAYER = "DistanceToPlayer";
     private const string CONE_HEIGHT = "ConeHeight";
-    
+
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip createMagicHoleSound;
 
     private float minCirlceSize = 0;
     private float currentCircleSize = 0;
@@ -31,11 +34,13 @@ public class MagicHole : MonoBehaviour
 
     private float attackDuration = 5;
 
-    private float pullingForce = 6.5f;
+    private float pullingForce = 4.5f;
 
     private void Awake()
     {
         magicHoleVFX = GetComponent<VisualEffect>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Stop();
     }
 
     private void Start()
@@ -56,7 +61,7 @@ public class MagicHole : MonoBehaviour
                 return;
             }
             Vector2 vectorFromPlayerToHole = (transform.position - player.transform.position).normalized;
-            player.transform.Translate(vectorFromPlayerToHole * pullingForce * Time.deltaTime );
+            player.transform.Translate(vectorFromPlayerToHole * pullingForce * Time.deltaTime);
 
             distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
             currentDistance = magicHoleVFX.GetFloat(DISTANCE_TO_PLAYER);
@@ -68,13 +73,13 @@ public class MagicHole : MonoBehaviour
         }
     }
 
-    public void Initialize(float duration, float pullingForce)
+    public void Initialize(float duration)
     {
         currentDistance = minDistance;
         currentCircleSize = minCirlceSize;
         attackDuration = duration;
         magicHoleCreated = false;
-        //this.pullingForce = pullingForce;
+        audioSource.PlayOneShot(createMagicHoleSound);
         StartCoroutine(CreateMagicHole());
     }   
     
@@ -91,6 +96,7 @@ public class MagicHole : MonoBehaviour
         magicHoleVFX.SetFloat(CIRCLE_SIZE, currentCircleSize);
 
         magicHoleCreated = true;
+        audioSource.Play();
     }
 
     IEnumerator CloseMagicHole()
@@ -111,7 +117,7 @@ public class MagicHole : MonoBehaviour
         //in case of floating point error
         currentCircleSize = minCirlceSize;
         magicHoleVFX.SetFloat(CIRCLE_SIZE, currentCircleSize);
-
+        audioSource.Stop();
         magicHoleCreated = false;
     }
 }

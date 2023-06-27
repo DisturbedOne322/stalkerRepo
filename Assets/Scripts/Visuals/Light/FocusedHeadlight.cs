@@ -25,15 +25,15 @@ public class FocusedHeadlight : MonoBehaviour
     {
         get { return currentFocusedLightCapacity; }
     }
-    private readonly float focusedLightSpendRate = 0.3f;//0.2f;
-    private readonly float focusedLightRestoreRate = 0.1f;
+    private readonly float focusedLightSpendRate = 0.2f;//0.2f;
+    private readonly float focusedLightRestoreRate = 0.75f;
 
 
     private readonly float brokenHeadlightProbability = 0.03f; 
 
     private RaycastHit2D hit;
     private readonly float boxLength = 10f;
-    private readonly float boxHeight = 3f;
+    private readonly float boxHeight = 1.5f;
 
     [SerializeField]
     private LayerMask ghostLayerMask;
@@ -55,7 +55,7 @@ public class FocusedHeadlight : MonoBehaviour
         InputManager.Instance.OnHeadlightAction += Instance_OnHeadlightAction;
         InvokeRepeating("TryToBrakeHeadlight", 0, 0.5f);
         currentFocusedLightCapacity = focusedLightCapacity;
-        focusedHeadlightBoxPoints = new Vector2[2];
+        focusedHeadlightBoxPoints = new Vector2[3];
     }
 
     private void FixedUpdate()
@@ -114,16 +114,18 @@ public class FocusedHeadlight : MonoBehaviour
 
             headlightBoxSizeMultiplier = Mathf.Clamp01(headlightBoxSizeMultiplier + Time.deltaTime * growSpeed);
 
-            if(PlayerVisuals.PlayerScale > 0)
-            {
-                focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
-                focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetBottomRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
-            }
-            else
-            {
-                focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
-                focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetBottomLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
-            }
+            //if(PlayerVisuals.PlayerScale > 0)
+            //{
+            focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+            focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetTopRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+            focusedHeadlightBoxPoints[2] = BoxCastDrawer.GetBottomRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+            //}
+            //else
+            //{
+            //    focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+            //    focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetTopLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+            //    focusedHeadlightBoxPoints[2] = BoxCastDrawer.GetBottomLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
+            //}
         }
         else
         {
@@ -132,6 +134,7 @@ public class FocusedHeadlight : MonoBehaviour
             headlightBoxSizeMultiplier = 0.4f;
             focusedHeadlightBoxPoints[0] = Vector2.zero;
             focusedHeadlightBoxPoints[1] = Vector2.zero;
+            focusedHeadlightBoxPoints[2] = Vector2.zero;
         }
 
         if (currentFocusedLightCapacity < 0)

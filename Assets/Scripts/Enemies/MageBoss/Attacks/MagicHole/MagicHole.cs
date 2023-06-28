@@ -46,6 +46,12 @@ public class MagicHole : MonoBehaviour
     private void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
+        MageBoss.OnFightFinished += MageBoss_OnFightFinished;
+    }
+
+    private void MageBoss_OnFightFinished()
+    {
+        attackDuration = -1;
     }
 
     // Update is called once per frame

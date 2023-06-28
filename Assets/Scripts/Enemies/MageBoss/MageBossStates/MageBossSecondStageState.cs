@@ -6,12 +6,14 @@ using UnityEngine;
 public class MageBossSecondStageState : MageBossBaseState
 {
     public override event System.Action<int, int> OnCoreDestroyed;
+    public override event Action OnFightFinished;
+
     private int health = 8;
 
     private Animator animator;
 
-    private float currentAttackCD = 6f;
-    private float cdBetweenAttacks = 4f;
+    private float currentAttackCD = 4f;
+    private float cdBetweenAttacks = 2f;
 
     private const string FLAMEBALL_ATTACK = "Flameball";
     private const string LASER_ATTACK = "Laser";
@@ -19,7 +21,7 @@ public class MageBossSecondStageState : MageBossBaseState
     private string[] attackSet = new string[2];
 
 
-    private float switchStateDelay = 10f;
+    private float switchStateDelay = 7f;
 
     //flameball
     private float spawnCDTotal = 0.5f; // cd between each flameball
@@ -126,10 +128,13 @@ public class MageBossSecondStageState : MageBossBaseState
         if (state == State.LaserPrepare)
         {
             AnimatorClipInfo[] m_CurrentClipInfo = this.animator.GetCurrentAnimatorClipInfo(0);
-            if (m_CurrentClipInfo[0].clip.name == "LaserCast")
+            if (m_CurrentClipInfo.Length != 0)
             {
-                manager.laser.InitializeLaser(laserAnimationDuration, laserThickness, manager);
-                state = State.LaserCast;
+                if (m_CurrentClipInfo[0].clip.name == "LaserCast")
+                {
+                    manager.laser.InitializeLaser(laserAnimationDuration, laserThickness, manager);
+                    state = State.LaserCast;
+                }
             }
         }
     }
@@ -165,10 +170,4 @@ public class MageBossSecondStageState : MageBossBaseState
         state = State.LaserPrepare;
         lastAttack = LASER_ATTACK;
     }
-
-    public override void OnCollisionEnter(TentacleStateManager manager, Collider2D collision)
-    {
-        throw new System.NotImplementedException();
-    }
-
 }

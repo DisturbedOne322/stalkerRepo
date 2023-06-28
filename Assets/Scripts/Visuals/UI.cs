@@ -91,7 +91,7 @@ public class UI : MonoBehaviour
 
     private void MageBoss_OnStageChanged()
     {
-        bossHPBar.value = 1;
+        nextHPBarValue = 1;
         bossHPBar.GetComponent<Animator>().SetTrigger(BOSS_FIGHT_STARTED_TRIGGER);
     }
 

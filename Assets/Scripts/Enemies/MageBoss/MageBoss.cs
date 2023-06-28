@@ -8,6 +8,7 @@ using UnityEngine.PlayerLoop;
 public class MageBoss : MonoBehaviour
 {
     public event Action<int, int> OnHPChanged;
+    public static event Action OnFightFinished;
     public event Action OnStageChanged;
     [SerializeField]
     public WeakPoint[] collidersArray;
@@ -21,6 +22,7 @@ public class MageBoss : MonoBehaviour
     public const string LASER_END_ANIM = "Base Layer.LaserCastEnd";
     public const string EXCALIBUR_ATTACK_TRIGGER = "ExcaliburAttack";
     public const string MAGIC_HOLE_ATTACK_TRIGGER = "MagicHoleAttack";
+    public const string FINISHED_FIGHT_TRIGGER = "OnFinishedFight";
     public const string DEFEAT_ANIM_BOOL = "OnDefeat";
     public Animator animator;
 
@@ -91,7 +93,7 @@ public class MageBoss : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         flameballspawnManager = GetComponent<FlameballspawnManager>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        currentState = thirdStageState;
+        currentState = firstStageState;
         animator = GetComponent<Animator>();
 
         for(int i = 0; i < collidersArray.Length; i++)
@@ -102,7 +104,14 @@ public class MageBoss : MonoBehaviour
         currentState.EnterState(this);
         audioSource.PlayOneShot(defeatAudioClip);
         currentState.OnCoreDestroyed += CurrentState_OnCoreDestroyed;
+        currentState.OnFightFinished += CurrentState_OnFightFinished;
     }
+
+    private void CurrentState_OnFightFinished()
+    {
+        OnFightFinished?.Invoke();
+    }
+
     //called from anim event
     private void SwordThrown()
     {
@@ -122,8 +131,11 @@ public class MageBoss : MonoBehaviour
     private void MageBoss_OnWeakPointBroken()
     {
         AnimatorClipInfo[] m_CurrentClipInfo = this.animator.GetCurrentAnimatorClipInfo(0);
-        if (m_CurrentClipInfo[0].clip.name == "Idle")
-            animator.SetTrigger(DAMAGED_ANIM);
+        if(m_CurrentClipInfo.Length != 0)
+        {
+            if (m_CurrentClipInfo[0].clip.name == "Idle")
+                animator.SetTrigger(DAMAGED_ANIM);
+        }
 
         audioSource.PlayOneShot(damagedAudioClipArray[UnityEngine.Random.Range(0, damagedAudioClipArray.Length)]);
         material.SetColor(outlineColor, damagedColor);
@@ -137,9 +149,11 @@ public class MageBoss : MonoBehaviour
         audioSource.PlayOneShot(defeatAudioClip);
         OnStageChanged?.Invoke();
         currentState.OnCoreDestroyed -= CurrentState_OnCoreDestroyed;
+        currentState.OnFightFinished -= CurrentState_OnFightFinished;
         currentState = nextState;
         currentState.EnterState(this);
         currentState.OnCoreDestroyed += CurrentState_OnCoreDestroyed;
+        currentState.OnFightFinished += CurrentState_OnFightFinished;
     }
 
     public void EnableSecondStageArms()

@@ -6,23 +6,24 @@ using UnityEngine;
 public class MageBossThirdStageState : MageBossBaseState
 {
     public override event System.Action<int, int> OnCoreDestroyed;
+    public override event System.Action OnFightFinished;
+
     private int health = 8;
 
     private Animator animator;
 
-    private float currentAttackCD = 6f;
-    private float cdBetweenAttacks = 4f;
+    private float currentAttackCD = 4f;
+    private float cdBetweenAttacks = 3f;
 
     private const string FLAMEBALL_ATTACK = "Flameball";
     private const string LASER_ATTACK = "Laser";
     private const string EXCALIBUR_ATTACK = "Excalibur";
-    private const string MAGIC_HOLE_ATTACK = "MagicHole";
     private string lastAttack;
-    private string[] attackSet = new string[4];
+    private string[] attackSet = new string[3];
 
     private MageBoss manager;
 
-    private float switchStateDelay = 10f;
+    private float switchStateDelay = 7f;
 
     //flameball
     private float spawnCDTotal = 0.75f; // cd between each flameball
@@ -33,7 +34,7 @@ public class MageBossThirdStageState : MageBossBaseState
     private float scale = 1.7f;
 
     //laser
-    private float laserAnimationDuration = 13;
+    private float laserAnimationDuration = 12;
     private float laserThickness = 0.9f;
 
     //excalibur
@@ -41,8 +42,10 @@ public class MageBossThirdStageState : MageBossBaseState
 
     //magic hole
     private float magicHoleDuration = 5;
+    private bool magicHoleOnLastAttack = false;
 
     private bool defeated = false;
+    private bool finishedFight = false;
 
     private enum State
     {
@@ -58,7 +61,7 @@ public class MageBossThirdStageState : MageBossBaseState
     public override void EnterState(MageBoss manager)
     {
         this.manager = manager;
-        //manager.ResetColliders();
+        manager.ResetColliders();
         manager.EnableThirdStageArms();
         animator = manager.GetComponent<Animator>();
         animator.Rebind();
@@ -68,7 +71,6 @@ public class MageBossThirdStageState : MageBossBaseState
         attackSet[0] = FLAMEBALL_ATTACK;
         attackSet[1] = LASER_ATTACK;
         attackSet[2] = EXCALIBUR_ATTACK;
-        attackSet[3] = MAGIC_HOLE_ATTACK;
         health = manager.collidersArray.Length;
         manager.flameballspawnManager.OnAttackFinished += FlameballspawnManager_OnAttackFinished;
         manager.laser.OnAttackFinished += Laser_OnAttackFinished;
@@ -80,7 +82,7 @@ public class MageBossThirdStageState : MageBossBaseState
 
         state = State.Idle;
 
-        manager.excaliburAttack.OnSwordRetured += ExcaliburAttack_OnSwordRetured;
+        manager.excaliburAttack.OnSwordAttackFinished += ExcaliburAttack_OnSwordRetured;
     }
 
     private void ExcaliburAttack_OnSwordRetured()
@@ -109,49 +111,59 @@ public class MageBossThirdStageState : MageBossBaseState
         OnCoreDestroyed?.Invoke(health, 8);
         if (health <= 0)
         {
-            animator.SetTrigger(MageBoss.DEFEAT_ANIM_BOOL);
+            animator.SetTrigger(MageBoss.FINISHED_FIGHT_TRIGGER);
+            OnFightFinished?.Invoke();
             defeated = true;
         }
-        //Update UI
     }
 
     public override void UpdateState(MageBoss manager)
     {
         if (defeated)
         {
+            if (finishedFight)
+                return;
             switchStateDelay -= Time.deltaTime;
             if (switchStateDelay <= 0)
             {
-                //
+                manager.excaliburAttack.OnSwordAttackFinished -= ExcaliburAttack_OnSwordRetured;
+                manager.flameballspawnManager.OnAttackFinished -= FlameballspawnManager_OnAttackFinished;
+                manager.laser.OnAttackFinished -= Laser_OnAttackFinished;
+
+                for (int i = 0; i < manager.collidersArray.Length; i++)
+                {
+                    manager.collidersArray[i].OnWeakPointBroken -= MageBossFirstStageState_OnWeakPointBroken;
+                }
+                finishedFight = true;
             }
             return;
         }
         currentAttackCD -= Time.deltaTime;
         if (currentAttackCD < 0 && state == State.Idle)
-        {            
-            //switch (GetRandomAttack())
-            //{
-            //    case FLAMEBALL_ATTACK:
-            //        FlameballCast(manager);
-            //        break;
-            //    case LASER_ATTACK:
-            //        LaserCast(manager);
-            //        break;
-            //    case EXCALIBUR_ATTACK:
+        {
+            switch (GetRandomAttack())
+            {
+                case FLAMEBALL_ATTACK:
+                    FlameballCast(manager);
+                    break;
+                case LASER_ATTACK:
+                    LaserCast(manager);
+                    break;
+                case EXCALIBUR_ATTACK:
                     ExcaliburCast(manager);
-            //        break;
-            //    case MAGIC_HOLE_ATTACK:
-            //        MagicHoleCast(manager); 
-            //    break;
-            //}
+                    break;
+            }
         }
         if (state == State.LaserPrepare)
         {
             AnimatorClipInfo[] m_CurrentClipInfo = this.animator.GetCurrentAnimatorClipInfo(0);
-            if (m_CurrentClipInfo[0].clip.name == "LaserCast")
+            if (m_CurrentClipInfo.Length != 0)
             {
-                manager.laser.InitializeLaser(laserAnimationDuration, laserThickness, manager);
-                state = State.LaserCast;
+                if (m_CurrentClipInfo[0].clip.name == "LaserCast")
+                {
+                    manager.laser.InitializeLaser(laserAnimationDuration, laserThickness, manager);
+                    state = State.LaserCast;
+                }
             }
         }
     }
@@ -175,8 +187,6 @@ public class MageBossThirdStageState : MageBossBaseState
     {
         manager.magicHole.Initialize(magicHoleDuration);
         manager.animator.SetTrigger(MageBoss.MAGIC_HOLE_ATTACK_TRIGGER);
-        SetCDBetweenAttacks();
-        lastAttack = MAGIC_HOLE_ATTACK;
     }
 
     private void ExcaliburCast(MageBoss manager)
@@ -186,6 +196,8 @@ public class MageBossThirdStageState : MageBossBaseState
         manager.animator.SetTrigger(MageBoss.EXCALIBUR_ATTACK_TRIGGER);
         state = State.ExcaliburCast;
         lastAttack = EXCALIBUR_ATTACK;
+
+        CreateMagicHole(5);
     }
 
     IEnumerator SpawnExcalibur(MageBoss manager)
@@ -203,6 +215,8 @@ public class MageBossThirdStageState : MageBossBaseState
         manager.animator.Play(MageBoss.FLAMEBALL_ANIM);
         state = State.FlameballCast;
         lastAttack = FLAMEBALL_ATTACK;
+
+        CreateMagicHole(9);
     }
 
     private void LaserCast(MageBoss manager)
@@ -211,10 +225,21 @@ public class MageBossThirdStageState : MageBossBaseState
         manager.animator.Play(MageBoss.LASER_PREPARE_ANIM);
         state = State.LaserPrepare;
         lastAttack = LASER_ATTACK;
+        CreateMagicHole(10);
     }
 
-    public override void OnCollisionEnter(TentacleStateManager manager, Collider2D collision)
+    private void CreateMagicHole(float duration)
     {
-        throw new System.NotImplementedException();
+        if(magicHoleOnLastAttack)
+        {
+            magicHoleOnLastAttack = false;
+            return;
+        }
+        if (UnityEngine.Random.Range(0, 1f) > 0f)
+        {
+            magicHoleDuration = duration;
+            MagicHoleCast(manager); 
+            magicHoleOnLastAttack = true;
+        }
     }
 }

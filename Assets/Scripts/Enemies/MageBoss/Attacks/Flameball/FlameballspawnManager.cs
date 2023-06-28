@@ -65,7 +65,10 @@ public class FlameballspawnManager : MonoBehaviour
     private void MageBoss_OnHPChanged(int arg1, int arg2)
     {
         if (arg1 <= 0)
+        {
             attackFinished = true;
+            animationDelay = animationDelayTotal;
+        }
     }
 
     public void InitializeFlameballAttackProperties(int waveNumberTotal, int spawnAmountTotal, float spawnCDTotal, float cdBetweenWaves, float fallSpeed, float scale)
@@ -90,7 +93,7 @@ public class FlameballspawnManager : MonoBehaviour
         this.fallSpeed = fallSpeed;
         this.cdBetweenWaves = cdBetweenWaves;
         this.scale = scale;
-        cdBetweenWavesTotal = cdBetweenWaves;
+        this.cdBetweenWavesTotal = cdBetweenWaves;
         this.additionalOffset = additionalOffset;
         this.additionalOffsetOption = additionalOffsetOption;
         attackFinished = false;

@@ -9,13 +9,14 @@ public class FocusedHeadlight : MonoBehaviour
     [SerializeField]
     private Light2D focusedLight2D;
     private float defaultLightIntensity;
-    private readonly float focusedLightIntensity = 3f;
+    private readonly float focusedLightIntensity = 6f;
     private readonly float brokenLightIntensity = 0.3f;
 
     public static event Action OnGhostFound;
     public static event Action<TentacleStateManager> OnTentacleFound;
 
-    private readonly float focusSpeed = 4.5f;
+    private float focusSpeed = 1;
+    private float lightSmDampVelocity;
 
     private bool focusedLightEnabled = false;
 
@@ -109,27 +110,18 @@ public class FocusedHeadlight : MonoBehaviour
     {
         if (focusedLightEnabled)
         {
-            focusedLight2D.intensity = Mathf.Lerp(focusedLight2D.intensity, focusedLightIntensity, (light2D.intensity / focusedLightIntensity) * focusSpeed * Time.deltaTime);   
+            focusedLight2D.intensity = Mathf.SmoothDamp(focusedLight2D.intensity, focusedLightIntensity, ref lightSmDampVelocity, focusSpeed);
             currentFocusedLightCapacity -= focusedLightSpendRate * Time.deltaTime;
 
             headlightBoxSizeMultiplier = Mathf.Clamp01(headlightBoxSizeMultiplier + Time.deltaTime * growSpeed);
 
-            //if(PlayerVisuals.PlayerScale > 0)
-            //{
             focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
             focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetTopRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
             focusedHeadlightBoxPoints[2] = BoxCastDrawer.GetBottomRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
-            //}
-            //else
-            //{
-            //    focusedHeadlightBoxPoints[0] = BoxCastDrawer.GetTopRightOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
-            //    focusedHeadlightBoxPoints[1] = BoxCastDrawer.GetTopLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
-            //    focusedHeadlightBoxPoints[2] = BoxCastDrawer.GetBottomLeftOfBox(transform.position, new Vector2(boxLength, boxHeight) * headlightBoxSizeMultiplier, transform.parent.parent.rotation.eulerAngles.z);
-            //}
         }
         else
         {
-            focusedLight2D.intensity = Mathf.Lerp(focusedLight2D.intensity, defaultLightIntensity, (defaultLightIntensity / focusedLight2D.intensity) * focusSpeed * Time.deltaTime);
+            focusedLight2D.intensity = Mathf.SmoothDamp(focusedLight2D.intensity, defaultLightIntensity, ref lightSmDampVelocity, focusSpeed);
             currentFocusedLightCapacity += focusedLightRestoreRate * Time.deltaTime;
             headlightBoxSizeMultiplier = 0.4f;
             focusedHeadlightBoxPoints[0] = Vector2.zero;

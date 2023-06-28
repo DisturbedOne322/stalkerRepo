@@ -66,7 +66,7 @@ public class Flameball : MonoBehaviour
 
     public void UpdateCollider()
     {
-        GetComponent<BoxCollider2D>().size = new Vector2(sprite.bounds.size.x * spriteSizeMultiplier, sprite.bounds.size.y * spriteSizeMultiplier / 2);
+        GetComponent<BoxCollider2D>().size = new Vector2(sprite.bounds.size.x * spriteSizeMultiplier / 1.5f, sprite.bounds.size.y * spriteSizeMultiplier / 2.5f);
         GetComponent<BoxCollider2D>().offset = new Vector2(0, colliderOffset);
     }
 

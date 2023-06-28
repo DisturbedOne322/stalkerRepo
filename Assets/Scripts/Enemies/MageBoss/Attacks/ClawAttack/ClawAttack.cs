@@ -39,6 +39,8 @@ public class ClawAttack : MonoBehaviour
 
     private void PlayerInClawAttackRange_OnPlayerInClawAttackRange()
     {
+        if (!gameObject.activeSelf)
+            return;
         if (attackAnimationCD > 0)
             return;
         audioSource.PlayOneShot(attackSound);

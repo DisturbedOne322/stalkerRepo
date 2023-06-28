@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Excalibur : MonoBehaviour
 {
-    public event Action OnSwordRetured;
+    public event Action OnSwordAttackFinished;
 
 
     private const string GROUND_HIT_ANIM_TRIGGER = "GhoundHit";
@@ -21,14 +21,14 @@ public class Excalibur : MonoBehaviour
     private PlayerMovement player;
     private Rigidbody2D playerRB;
 
-    private float fallSpeed = 500f;
+    private float fallSpeed = 1000;
 
     private bool hitTheGround = false;
 
     private readonly Vector3 circleCastOffset = new Vector3(-1, -2, 0);
     private readonly float circleCastRadius = 4;
 
-    private float stayOnGroundDuration = 7f;
+    private float stayOnGroundDuration;
 
     private bool posAligned = false;
     private bool angleAligned = false;
@@ -41,6 +41,10 @@ public class Excalibur : MonoBehaviour
 
     private Vector2 positionVelocitySmDamp;
     private float angleVelocitySmDamp;
+
+    private Vector3 defaultScale;
+    private Vector3 sizeSmDampVelocity;
+    private float sizeSmDampTime = 1f;
 
     [SerializeField]
     private GameObject floorCrack;
@@ -62,17 +66,49 @@ public class Excalibur : MonoBehaviour
     //max distance when explosion force has any impact
     private readonly float maxExplosionForceDistance = 15f;
 
+
+    [SerializeField]
+    private Material dissolveSwordMat;
+
+    private const string DISSOLVE_AMOUNT = "_dissolveAmount";
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();       
     }
 
     private void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
         playerRB = player.GetComponent<Rigidbody2D>();
+        MageBoss.OnFightFinished += MageBoss_OnFightFinished;
+    }
+
+    private void MageBoss_OnFightFinished()
+    {
+        if(!returning)
+        {
+            stayOnGroundDuration = 999;
+            animator.SetTrigger(DURATION_ENDED_TRIGGER);
+            StartCoroutine(Dissolve());
+        }
+        else
+        {
+            returning = false;
+            StartCoroutine(Dissolve());
+        }
+    }
+
+    private IEnumerator Dissolve()
+    {
+        for(float i = 1; i > 0; i-= 0.01f) 
+        {
+            dissolveSwordMat.SetFloat(DISSOLVE_AMOUNT, i);
+            yield return new WaitForSeconds(0.02f);
+        }
+        gameObject.SetActive(false);
     }
 
     public void Initialize(Vector2 spawnPosition)
@@ -84,7 +120,7 @@ public class Excalibur : MonoBehaviour
         returning = false;
         fallSpeed = 500f;
         rb.freezeRotation = false;
-        stayOnGroundDuration = 5f;
+        stayOnGroundDuration = 8f;
         player = GameManager.Instance.GetPlayerReference();
         trailRenderer = GetComponentInChildren<TrailRenderer>();
         trailRenderer.enabled = true;
@@ -98,7 +134,6 @@ public class Excalibur : MonoBehaviour
         if (!hitTheGround)
         {
             rb.AddForce(-transform.right * fallSpeed * Time.deltaTime);
-            playerRB.WakeUp();
         }
         else
         {
@@ -112,19 +147,19 @@ public class Excalibur : MonoBehaviour
                     audioSource.Stop();
                     audioSource.PlayOneShot(returnSound);
                     returning = true;
+                    OnSwordAttackFinished?.Invoke();
                 }
             }
         }
 
         if(returning)
         {
-
+            ReturnToDefaultSize();
             AlignPosition();
             AlignRotation();
             if (posAligned && angleAligned)
             {
                 gameObject.SetActive(false);
-                OnSwordRetured?.Invoke();
             }
         }
     }
@@ -132,6 +167,13 @@ public class Excalibur : MonoBehaviour
     private void OnEnable()
     {
         audioSource.PlayOneShot(fallingDownSound);
+        defaultScale = transform.localScale;
+        transform.localScale *= 2;
+    }
+
+    private void ReturnToDefaultSize()
+    {
+        transform.localScale = Vector3.SmoothDamp(transform.localScale, defaultScale, ref sizeSmDampVelocity, sizeSmDampTime);
     }
 
     private void AlignPosition()

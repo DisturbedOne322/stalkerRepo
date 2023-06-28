@@ -64,8 +64,8 @@ public class MageBoss : MonoBehaviour
     private Vector4 normalColor = new Vector4(0,0,0,1);
     private Vector4 damagedColor = new Vector4(1,0,0,1);
 
-    private float normalThickness = 0;
-    private float damagedThickness = 1;
+    private readonly float normalThickness = 0;
+    private readonly float damagedThickness = 1;
 
     public PlayerMovement player;
 
@@ -91,7 +91,7 @@ public class MageBoss : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         flameballspawnManager = GetComponent<FlameballspawnManager>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        currentState = firstStageState;
+        currentState = thirdStageState;
         animator = GetComponent<Animator>();
 
         for(int i = 0; i < collidersArray.Length; i++)
@@ -164,7 +164,7 @@ public class MageBoss : MonoBehaviour
     {
         Color c = new Color();
         c.a = 1;
-        for (float red = 1f; red >= 0; red -= 0.1f)
+        for (float red = damagedThickness; red >= normalThickness; red -= 0.1f)
         {
             c.r = red;
             material.SetColor(outlineColor, c);

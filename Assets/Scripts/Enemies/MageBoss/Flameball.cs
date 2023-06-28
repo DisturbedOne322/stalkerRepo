@@ -33,8 +33,6 @@ public class Flameball : MonoBehaviour
     [SerializeField]
     private Sprite sprite;
 
-    private bool isFalling = true;
-
     public FlameballBaseState currentState;
     public FlameballFallingState fallingState = new FlameballFallingState();
     public FlameballPuddleState puddleState = new FlameballPuddleState();

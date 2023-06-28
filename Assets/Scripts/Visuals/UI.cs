@@ -33,7 +33,7 @@ public class UI : MonoBehaviour
     //magazine UI
     [SerializeField]
     private Image[] bulletImages;
-    private float delayBetweenBulletShow = 0.15f;
+    private float bulletAlphaModifierSpeed = 0.05f;
 
     //health UI
     [SerializeField]
@@ -174,13 +174,13 @@ public class UI : MonoBehaviour
             Color temp = bulletImages[bulletImageIndex].color;
             temp.a = i;
             bulletImages[bulletImageIndex].color = temp;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(bulletAlphaModifierSpeed);
         }
     }
 
     IEnumerator ReappearBullets(int magSize)
     {
-        //enable all the bullets that are left in the mag
+        //enable all the bullets that are left in the mag (reposition them to the bottom of mag)
         for (int i = 0; i < magSize - bulletsShot; i++)
         {
             Color temp = bulletImages[i].color;
@@ -201,7 +201,7 @@ public class UI : MonoBehaviour
             Color temp = bulletImages[bulletImageIndex].color;
             temp.a = i;
             bulletImages[bulletImageIndex].color = temp;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(bulletAlphaModifierSpeed);
         }
     }
 

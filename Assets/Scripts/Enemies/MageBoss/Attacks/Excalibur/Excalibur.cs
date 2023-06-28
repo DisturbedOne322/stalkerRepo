@@ -24,7 +24,11 @@ public class Excalibur : MonoBehaviour
     private float fallSpeed = 500f;
 
     private bool hitTheGround = false;
-    private float stayOnGroundDuration = 5f;
+
+    private readonly Vector3 circleCastOffset = new Vector3(-1, -2, 0);
+    private readonly float circleCastRadius = 4;
+
+    private float stayOnGroundDuration = 7f;
 
     private bool posAligned = false;
     private bool angleAligned = false;
@@ -52,7 +56,11 @@ public class Excalibur : MonoBehaviour
     [SerializeField]
     private AudioClip returnSound;
 
-    private float maxVolumeDistance = 15f;
+    private readonly float throwBackForce = 0.001f;
+    private readonly float explosionForce = 0.015f;
+
+    //max distance when explosion force has any impact
+    private readonly float maxExplosionForceDistance = 15f;
 
     private void Awake()
     {
@@ -90,6 +98,7 @@ public class Excalibur : MonoBehaviour
         if (!hitTheGround)
         {
             rb.AddForce(-transform.right * fallSpeed * Time.deltaTime);
+            playerRB.WakeUp();
         }
         else
         {
@@ -161,24 +170,44 @@ public class Excalibur : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            Vector2 throwDirection = new Vector2(0, 0.01f);
+            Vector2 throwDirection = new Vector2(0, throwBackForce);
             float playerPosX = player.transform.position.x;
-            throwDirection.x = playerPosX < transform.position.x ? -0.01f : 0.01f;
+            throwDirection.x = playerPosX < transform.position.x ? -throwBackForce : throwBackForce;
 
             playerRB.AddForce(throwDirection, ForceMode2D.Impulse);
-            player.GetDamaged(2);
+            player.GetDamaged(1);
         }
         if (collision.gameObject.CompareTag("Ground"))
         {
+            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position + circleCastOffset, circleCastRadius, Vector2.up);
+            
+            foreach(var objectHit in hit)
+            {
+                if (objectHit.collider.gameObject.CompareTag("Player"))
+                {
+                    player.GetDamaged(2);
+                    //since player has multiple colliders, he gets damaged multiple times, so break early from the loop
+                    break;
+                }
+            }
+
             audioSource.PlayOneShot(hitGroundSound);
             audioSource.Play();
             animator.SetTrigger(GROUND_HIT_ANIM_TRIGGER);
 
             rb.velocity = Vector2.zero;
             fallSpeed = 0;
-            Vector2 throwDirection1 = new Vector2(0, 0.01f);
+
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+            if(distanceToPlayer == 0)
+            {
+                distanceToPlayer = 0.01f;
+            }
+            float explosionForceMultiplier = Mathf.Clamp01( 1 - (distanceToPlayer / maxExplosionForceDistance));
+
+            Vector2 throwDirection1 = new Vector2(explosionForce * explosionForceMultiplier, explosionForce * explosionForceMultiplier);
             float playerPosX = player.transform.position.x;
-            throwDirection1.x = playerPosX < transform.position.x ? -0.012f : 0.012f;
+            throwDirection1.x *= playerPosX < transform.position.x ? -1 : 1;
             playerRB.AddForce(throwDirection1, ForceMode2D.Impulse);
 
             floorCrack.gameObject.SetActive(true);

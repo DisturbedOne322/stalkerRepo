@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    public event Action OnStartedPullingPlayer;
     public event Action OnAppear;
     public event Action OnDisappear;
 

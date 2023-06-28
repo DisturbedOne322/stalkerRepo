@@ -1,4 +1,5 @@
 using Cinemachine;
+using Dreamteck.Splines;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,7 +68,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Cursor.visible = false;
+        Cursor.visible = true;
         Shoot.OnBulletHit += Shoot_OnBulletHit;
         //pre instantiate bullet hit particles
         particleSpawnerOnEnemyHit = new ParticleSystem[particleHitSO.particleArray.Length];
@@ -130,7 +131,7 @@ public class GameManager : MonoBehaviour
                     weakPoint.GetDamage();
                 }
 
-                if(objectHit.TryGetComponent<ShieldMovement>(out ShieldMovement shield))
+                if(objectHit.TryGetComponent<SplineFollower>(out SplineFollower shield))
                 {
                     particleSpawnerOnEnemyHit[i].transform.parent = shield.transform;
                 }

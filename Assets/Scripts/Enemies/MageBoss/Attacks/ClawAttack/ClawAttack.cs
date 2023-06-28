@@ -22,9 +22,6 @@ public class ClawAttack : MonoBehaviour
     private Animator animator;
 
     [SerializeField]
-    private ShieldMovement shieldMovement;
-
-    [SerializeField]
     private AudioClip attackSound;
 
     private AudioSource audioSource;

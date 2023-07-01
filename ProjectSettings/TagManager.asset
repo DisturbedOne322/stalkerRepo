@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerHitBox
   - Ground
+  - PlayerFake
   layers:
   - Default
   - TransparentFX

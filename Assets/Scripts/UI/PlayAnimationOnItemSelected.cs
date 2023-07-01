@@ -21,6 +21,7 @@ public class PlayAnimationOnItemSelected : MonoBehaviour
 
     public void OnPointerExit()
     {
-        animator.SetTrigger(STOP_ANIM_ANIM_TRIGGER);
+        if(!MainMenuManager.playerActed)
+            animator.SetTrigger(STOP_ANIM_ANIM_TRIGGER);
     }
 }

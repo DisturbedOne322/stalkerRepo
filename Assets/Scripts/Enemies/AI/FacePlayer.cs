@@ -21,9 +21,4 @@ public class FacePlayer : MonoBehaviour
 
         transform.localScale = newScale;
     }
-
-    private void LateUpdate()
-    {
-        
-    }
 }

@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootPlayer : MonoBehaviour
+public class ShootPlayer : MonoBehaviour, IParticleSpawnerCaller, IShootableWeapon
 {
+    public event Action OnSpawnParticleAction;
+    public event Action OnShoot;
+
     private PlayerMovement player;
     [SerializeField]
     private LayerMask layerMask;
@@ -36,6 +40,11 @@ public class ShootPlayer : MonoBehaviour
     {
         if (player == null)
             return;
+
+        OnSpawnParticleAction?.Invoke();
+        OnShoot?.Invoke();
+
+        SoundManager.Instance.PlayShootSound();
 
         hit = Physics2D.Raycast(transform.position, transform.right, shootDistance, layerMask);
         if(hit)

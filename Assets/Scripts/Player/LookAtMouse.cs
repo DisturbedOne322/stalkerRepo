@@ -17,6 +17,9 @@ public class LookAtMouse : MonoBehaviour
     private bool focusFeature;
     private bool focused;
 
+    private PlayerMovement player;
+    private bool isAlive = true;
+
     public bool Focused
     {
         get { return focused; }
@@ -28,6 +31,11 @@ public class LookAtMouse : MonoBehaviour
         originalRotation = transform.rotation;
     }
 
+    private void Player_OnPlayerDied()
+    {
+        isAlive = false;
+    }
+
     private void Start()
     {
         if (focusFeature)
@@ -35,6 +43,8 @@ public class LookAtMouse : MonoBehaviour
             InputManager.Instance.OnFocusActionStarted += InputManager_OnFocusAction;
             InputManager.Instance.OnFocusActionEnded += InputManager_OnFocusActionEnded;
         }
+        player = GameManager.Instance.GetPlayerReference();
+        player.OnPlayerDied += Player_OnPlayerDied;
     }
 
     private void InputManager_OnFocusActionEnded()
@@ -49,6 +59,8 @@ public class LookAtMouse : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!isAlive)
+            return;
         if(Idle.IsIdle) 
         {
             ReturnToOriginalPosition();

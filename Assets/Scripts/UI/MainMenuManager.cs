@@ -10,6 +10,9 @@ public class MainMenuManager : MonoBehaviour
     private GameObject loadScreen;
 
     [SerializeField]
+    private GameObject optionsWindow;
+
+    [SerializeField]
     private Animator playerMainMenuAnimator;
 
     private const string PLAYER_PLAY_ANIM = "Base Layer.PlayerMainMenuPlay";
@@ -56,5 +59,10 @@ public class MainMenuManager : MonoBehaviour
     private void LoadScene()
     {
         SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
+    }
+
+    public void OpenOptionsWindow()
+    {
+        optionsWindow.SetActive(true);
     }
 }

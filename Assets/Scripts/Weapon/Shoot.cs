@@ -43,15 +43,23 @@ public class Shoot : MonoBehaviour
     private float gunJamProbability = 0.0075f;
     private bool isJammed = false;
 
+    private bool isAlive = true;
+
     private void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
+        player.OnPlayerDied += Player_OnPlayerDied;
         playerPos = player.transform;
         InputManager.Instance.OnShootAction += InputManager_OnShootAction;
         InputManager.Instance.OnReloadAction += InputManager_OnReloadAction;
 
         QTE.instance.OnQTEStart += QTE_OnQTEStart;
         QTE.instance.OnQTEEnd += Instance_OnQTEEnd;
+    }
+
+    private void Player_OnPlayerDied()
+    {
+        isAlive = false;
     }
 
     private void Instance_OnQTEEnd(IQTECaller caller)
@@ -77,6 +85,9 @@ public class Shoot : MonoBehaviour
 
     private void InputManager_OnShootAction()
     {
+        if (!isAlive)
+            return;
+
         if(isPlayerInQTE)
         {
             return;
@@ -155,8 +166,7 @@ public class Shoot : MonoBehaviour
 
     private void ShootBullet()
     {
-        //Vector3 shootDirection = playerPos.localScale.x > 0 ? transform.right : transform.right * -1;
-        //RaycastHit2D raycastHit2D = Physics2D.Raycast(shootStartingPoint.position, shootDirection, 15f);
+
         RaycastHit2D raycastHit2D = TryShootBullet();
         if (raycastHit2D)
         {

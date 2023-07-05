@@ -7,7 +7,10 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance;
 
     [SerializeField]
-    private AudioSource mainAudioSource;
+    private AudioSource musicAudioSource;
+
+    [SerializeField]
+    private AudioSource soundEffectsAudioSource;
 
     [SerializeField] 
     private AudioSource focusedLightAudioSource;
@@ -36,7 +39,7 @@ public class SoundManager : MonoBehaviour
             Instance = this;
         }
 
-        mainAudioSource = GetComponent<AudioSource>();
+        soundEffectsAudioSource = GetComponent<AudioSource>();
     }
     private void Start()
     {
@@ -45,33 +48,33 @@ public class SoundManager : MonoBehaviour
 
     private void QTE_OnQTEStart()
     {
-        mainAudioSource.PlayOneShot(qteAudioClip);
+        soundEffectsAudioSource.PlayOneShot(qteAudioClip);
     }
 
     public void PlayShootSound()
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.shootSound);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.shootSound);
     }
     public void PlayMagInSound()
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.magInSound);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.magInSound);
     }
     public void PlayMagOutSound()
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.magOutSound);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.magOutSound);
     }
     public void PlayReloadSound()
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.reloadSound);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.reloadSound);
     }
     public void PlayGetHurtSound()
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.getHurtSound);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.getHurtSound);
     }
 
     public void PlayBoneCrackSound()
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.boneCrackSound);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.boneCrackSound);
     }
 
     public void PlayFocusedLightSound(bool isFocusedLightEnabled)
@@ -90,25 +93,25 @@ public class SoundManager : MonoBehaviour
 
     public void PlayNoAmmoSound()
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.noAmmoSound);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.noAmmoSound);
     }
 
     public void PlayStepsSound()
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.stepSound[Random.Range(0,audioClipsSO.stepSound.Length)]);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.stepSound[Random.Range(0,audioClipsSO.stepSound.Length)]);
     }
 
     public void PlayBrokenHeadlightSound()
     {
-        mainAudioSource.PlayOneShot(headlightBrokenAudioClipArray[Random.Range(0,headlightBrokenAudioClipArray.Length)]);
+        soundEffectsAudioSource.PlayOneShot(headlightBrokenAudioClipArray[Random.Range(0,headlightBrokenAudioClipArray.Length)]);
     }
 
     public void PlayExhaleSound(float volume)
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.exhaleSound, volume);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.exhaleSound, volume);
     }
     public void PlayInhaleSound(float volume)
     {
-        mainAudioSource.PlayOneShot(audioClipsSO.inhaleSound, volume);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.inhaleSound, volume);
     }
 }

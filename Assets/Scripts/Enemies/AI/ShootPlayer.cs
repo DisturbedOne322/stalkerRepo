@@ -8,6 +8,9 @@ public class ShootPlayer : MonoBehaviour, IParticleSpawnerCaller, IShootableWeap
     public event Action OnSpawnParticleAction;
     public event Action OnShoot;
 
+    [SerializeField]
+    private Transform parent;
+
     private PlayerMovement player;
     [SerializeField]
     private LayerMask layerMask;
@@ -41,17 +44,18 @@ public class ShootPlayer : MonoBehaviour, IParticleSpawnerCaller, IShootableWeap
         if (player == null)
             return;
 
+        StartCoroutine(ShootCooldown(shootCD));
+        canShoot = false;
+
         OnSpawnParticleAction?.Invoke();
         OnShoot?.Invoke();
 
         SoundManager.Instance.PlayShootSound();
 
-        hit = Physics2D.Raycast(transform.position, transform.right, shootDistance, layerMask);
+        hit = Physics2D.Raycast(transform.position, transform.right * parent.transform.localScale.x, shootDistance, layerMask);
         if(hit)
         {
             player.GetDamaged(1);
-            canShoot = false;
-            StartCoroutine(ShootCooldown(shootCD));
         }
     }
 

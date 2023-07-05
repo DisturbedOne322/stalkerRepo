@@ -9,6 +9,7 @@ public class Animations : MonoBehaviour
     //private const string JUMPING_ANIMATION = "HasJumped";
     private const string RELOAD_ANIMATION = "HasReloaded";
     private const string AIM_ANIMATION = "IsAiming";
+    private const string DEATH_ANIM_TRIGGER = "OnDeath";
 
     private float stepSoundTimer = 0.4f;
     private float stepSoundTimerTotal = 0.4f;
@@ -33,6 +34,13 @@ public class Animations : MonoBehaviour
 
         QTE.instance.OnQTEStart += QTE_OnQTEStart;
         QTE.instance.OnQTEEnd += Instance_OnQTEEnd;
+
+        player.OnPlayerDied += Player_OnPlayerDied;
+    }
+
+    private void Player_OnPlayerDied()
+    {
+        animator.SetTrigger(DEATH_ANIM_TRIGGER);
     }
 
     private void Instance_OnQTEEnd(IQTECaller caller)

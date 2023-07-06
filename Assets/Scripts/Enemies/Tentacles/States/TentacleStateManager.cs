@@ -59,6 +59,12 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
         QTE.instance.OnQTEEnd += Instance_OnQTEEnd;
     }
 
+    private void OnDestroy()
+    {
+        FocusedHeadlight.OnTentacleFound -= FocusedHeadlight_OnTentacleFound;
+        QTE.instance.OnQTEEnd -= Instance_OnQTEEnd;
+    }
+
     private void Instance_OnQTEEnd(IQTECaller caller)
     {
         if(caller == this)

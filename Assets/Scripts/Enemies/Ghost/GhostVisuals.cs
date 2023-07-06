@@ -24,6 +24,14 @@ public class GhostVisuals : MonoBehaviour
         ghost.OnPlayerDetected += Ghost_OnPlayerDetected;
     }
 
+    private void OnDestroy()
+    {
+        FocusedHeadlight.OnGhostFound -= FocusedHeadlight_OnGhostFound;
+        QTE.instance.OnQTEEnd -= Instance_OnQTEEnd;
+        ghost.OnAttack -= Ghost_OnAttack;
+        ghost.OnPlayerDetected -= Ghost_OnPlayerDetected;
+    }
+
     private void Ghost_OnPlayerDetected()
     {
         animator.SetBool(DETECTED_ANIM, true);

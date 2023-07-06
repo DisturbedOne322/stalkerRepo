@@ -59,6 +59,11 @@ public class FocusedHeadlight : MonoBehaviour
         focusedHeadlightBoxPoints = new Vector2[3];
     }
 
+    private void OnDestroy()
+    {
+        InputManager.Instance.OnHeadlightAction -= Instance_OnHeadlightAction;
+    }
+
     private void FixedUpdate()
     {
         if (focusedLightEnabled)

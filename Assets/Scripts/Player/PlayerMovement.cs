@@ -100,6 +100,17 @@ public class PlayerMovement : MonoBehaviour
         QTE.instance.OnQTERoundFailed += QTE_OnQTERoundFailed;
     }
 
+    private void OnDestroy()
+    {
+        InputManager.Instance.OnJumpAction -= InputManager_OnJumpAction;
+        InputManager.Instance.OnSprintActionStarted -= Instance_OnSprintActionStarted;
+        InputManager.Instance.OnSprintActionEnded -= Instance_OnSprintActionEnded;
+
+        QTE.instance.OnQTEStart -= QTE_OnQTEStart;
+        QTE.instance.OnQTEEnd -= QTE_OnQTEEnd;
+        QTE.instance.OnQTERoundFailed -= QTE_OnQTERoundFailed;
+    }
+
     private void QTE_OnQTERoundFailed(int damage)
     {
         GetDamaged(damage);

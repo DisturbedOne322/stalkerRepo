@@ -107,6 +107,12 @@ public class MageBoss : MonoBehaviour
         currentState.OnFightFinished += CurrentState_OnFightFinished;
     }
 
+    private void OnDestroy()
+    {
+        currentState.OnCoreDestroyed -= CurrentState_OnCoreDestroyed;
+        currentState.OnFightFinished -= CurrentState_OnFightFinished;
+    }
+
     private void CurrentState_OnFightFinished()
     {
         OnFightFinished?.Invoke();

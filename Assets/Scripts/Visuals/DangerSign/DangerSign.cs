@@ -28,6 +28,12 @@ public class DangerSign : MonoBehaviour
         ghost.OnBurstAttackEnd += Ghost_OnAttackEnd;
     }
 
+    private void OnDestroy()
+    {
+        ghost.OnBurstAttack -= Ghost_OnAttack;
+        ghost.OnBurstAttackEnd -= Ghost_OnAttackEnd;
+    }
+
     private void Ghost_OnAttackEnd()
     {
         isInDanger = false;

@@ -46,6 +46,11 @@ public class SoundManager : MonoBehaviour
         QTE.instance.OnQTEStart += QTE_OnQTEStart;
     }
 
+    private void OnDestroy()
+    {
+        QTE.instance.OnQTEStart -= QTE_OnQTEStart;
+    }
+
     private void QTE_OnQTEStart()
     {
         soundEffectsAudioSource.PlayOneShot(qteAudioClip);

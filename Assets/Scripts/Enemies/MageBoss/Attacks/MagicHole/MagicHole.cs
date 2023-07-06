@@ -49,6 +49,11 @@ public class MagicHole : MonoBehaviour
         MageBoss.OnFightFinished += MageBoss_OnFightFinished;
     }
 
+    private void OnDestroy()
+    {
+        MageBoss.OnFightFinished -= MageBoss_OnFightFinished;
+    }
+
     private void MageBoss_OnFightFinished()
     {
         attackDuration = -1;

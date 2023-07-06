@@ -29,6 +29,11 @@ public class PostProcessing : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        player.OnHealthChanged -= Player_OnHealthChanged;
+    }
+
     private void Player_OnHealthChanged(GameManager.PlayerHealthStatus healthStatus)
     {
         if (healthStatus == GameManager.PlayerHealthStatus.LowHP)

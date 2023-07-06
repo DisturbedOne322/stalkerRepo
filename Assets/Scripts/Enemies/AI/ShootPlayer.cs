@@ -30,6 +30,11 @@ public class ShootPlayer : MonoBehaviour, IParticleSpawnerCaller, IShootableWeap
         approachPlayer.OnPlayerInRange += ApproachPlayer_OnPlayerInRange;
     }
 
+    private void OnDestroy()
+    {
+        approachPlayer.OnPlayerInRange -= ApproachPlayer_OnPlayerInRange;
+    }
+
     private void ApproachPlayer_OnPlayerInRange(bool inRange)
     {
         if (!canShoot)

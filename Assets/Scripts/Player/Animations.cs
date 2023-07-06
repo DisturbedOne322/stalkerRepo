@@ -38,6 +38,18 @@ public class Animations : MonoBehaviour
         player.OnPlayerDied += Player_OnPlayerDied;
     }
 
+    private void OnDestroy()
+    {
+        InputManager.Instance.OnFocusActionEnded -= Instance_OnFocusActionEnded;
+        InputManager.Instance.OnFocusActionStarted -= Instance_OnFocusActionStarted;
+        Shoot.OnSuccessfulReload -= Shoot_OnSuccessfulReload;
+
+        QTE.instance.OnQTEStart -= QTE_OnQTEStart;
+        QTE.instance.OnQTEEnd -= Instance_OnQTEEnd;
+
+        player.OnPlayerDied -= Player_OnPlayerDied;
+    }
+
     private void Player_OnPlayerDied()
     {
         animator.SetTrigger(DEATH_ANIM_TRIGGER);

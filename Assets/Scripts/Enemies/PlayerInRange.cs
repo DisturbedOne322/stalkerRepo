@@ -16,6 +16,8 @@ public class PlayerInRange : MonoBehaviour
     [SerializeField]
     private LayerMask playerLayerMask;
 
+    HellHound hellHound;
+
     private void FixedUpdate()
     {
         FindPlayerInRange();
@@ -23,8 +25,13 @@ public class PlayerInRange : MonoBehaviour
 
     private void Start()
     {
-        HellHound hellHound = gameObject.GetComponentInParent<HellHound>();
+        hellHound = gameObject.GetComponentInParent<HellHound>();
         hellHound.OnDamageTaken += HellHound_OnDamageTaken;
+    }
+
+    private void OnDestroy()
+    {
+        hellHound.OnDamageTaken -= HellHound_OnDamageTaken;
     }
 
     private void HellHound_OnDamageTaken()

@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject boss;
 
+    public bool gamePaused { get; private set; }
+
     public Vector2 BottomLeftScreenBoundaries
     {
         get { return Camera.main.ScreenToWorldPoint(new Vector2(0, 0)); }
@@ -64,11 +66,13 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+        gamePaused = false;
     }
 
     private void Start()
     {
-        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = false;
         Shoot.OnBulletHit += Shoot_OnBulletHit;
         //pre instantiate bullet hit particles
         particleSpawnerOnEnemyHit = new ParticleSystem[particleHitSO.particleArray.Length];
@@ -80,9 +84,35 @@ public class GameManager : MonoBehaviour
         InputManager.Instance.OnFocusActionStarted += Instance_OnFocusActionStarted;
         InputManager.Instance.OnFocusActionEnded += Instance_OnFocusActionEnded;
 
+        PauseMenuManager.OnGamePaused += PauseMenuManager_OnGamePaused;
+
         InitiateBossfight.OnBossFightInitiated += InitiateBossfight_OnBossFightInitiated;
     }
 
+    private void OnDestroy()
+    {
+        Shoot.OnBulletHit -= Shoot_OnBulletHit;
+
+        InputManager.Instance.OnFocusActionStarted -= Instance_OnFocusActionStarted;
+        InputManager.Instance.OnFocusActionEnded -= Instance_OnFocusActionEnded;
+
+        PauseMenuManager.OnGamePaused -= PauseMenuManager_OnGamePaused;
+
+        InitiateBossfight.OnBossFightInitiated -= InitiateBossfight_OnBossFightInitiated;
+    }
+
+    private void PauseMenuManager_OnGamePaused(bool paused)
+    {
+        Cursor.visible = !paused;
+        gamePaused = paused;
+        Time.timeScale = gamePaused ? 0 : 1;
+    }
+
+    public void UnpauseGameOnButtonPress()
+    {
+        gamePaused = false;
+        Time.timeScale = 1;
+    }
 
     private void InitiateBossfight_OnBossFightInitiated()
     {

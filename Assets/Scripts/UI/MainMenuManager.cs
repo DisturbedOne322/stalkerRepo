@@ -25,7 +25,10 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
         playerActed = false;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void OnExitPressed()
@@ -33,6 +36,7 @@ public class MainMenuManager : MonoBehaviour
         playerMainMenuAnimator.Play(PLAYER_EXIT_ANIM);
         playerActed = true;
         StartCoroutine(ExitGame(exitAnimDuration));
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void OnPlayPressed()
@@ -40,6 +44,7 @@ public class MainMenuManager : MonoBehaviour
         playerMainMenuAnimator.Play(PLAYER_PLAY_ANIM);
         playerActed = true;
         StartCoroutine(PlayGame(playAnimDuration));
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private IEnumerator ExitGame(float delay)

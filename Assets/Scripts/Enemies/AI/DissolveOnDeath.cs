@@ -36,6 +36,11 @@ public class DissolveOnDeath : MonoBehaviour, IDefeatable
         SetDissolveOnRenderer(maxDissolve);    
     }
 
+    private void OnDestroy()
+    {
+        damagable.OnDeath -= Damagable_OnDeath;
+    }
+
     private void Damagable_OnDeath()
     {
         Die();

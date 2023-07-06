@@ -86,6 +86,11 @@ public class Excalibur : MonoBehaviour
         MageBoss.OnFightFinished += MageBoss_OnFightFinished;
     }
 
+    private void OnDestroy()
+    {
+        MageBoss.OnFightFinished -= MageBoss_OnFightFinished;
+    }
+
     private void MageBoss_OnFightFinished()
     {
         if(!returning)

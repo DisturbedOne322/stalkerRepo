@@ -71,6 +71,16 @@ public class CameraShootShake : MonoBehaviour
         FlameballFallingState.OnFlameballHitGround += FlameballFallingState_OnFlameballHitGround;
     }
 
+    private void OnDestroy()
+    {
+        player.OnHealthChanged -= Player_OnHealthChanged;
+        player.OnPlayerTeleported -= Player_OnPlayerTeleported;
+        Shoot.OnSuccessfulShoot -= Instance_OnShootAction;
+        QTE.instance.OnQTEStart -= QTE_OnQTEStart;
+        QTE.instance.OnQTEEnd -= QTE_OnQTEEnd;
+        FlameballFallingState.OnFlameballHitGround -= FlameballFallingState_OnFlameballHitGround;
+    }
+
     private void Player_OnPlayerTeleported()
     {
         vCam.LookAt = null;

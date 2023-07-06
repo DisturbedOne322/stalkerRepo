@@ -31,6 +31,11 @@ public class ApproachPlayer : MonoBehaviour
         damagable.OnDeath += Damagable_OnDeath;
     }
 
+    private void OnDestroy()
+    {
+        damagable.OnDeath -= Damagable_OnDeath;
+    }
+
     private void Damagable_OnDeath()
     {
         isAlive = false;

@@ -57,6 +57,16 @@ public class Shoot : MonoBehaviour
         QTE.instance.OnQTEEnd += Instance_OnQTEEnd;
     }
 
+    private void OnDestroy()
+    {
+        player.OnPlayerDied -= Player_OnPlayerDied;
+        InputManager.Instance.OnShootAction -= InputManager_OnShootAction;
+        InputManager.Instance.OnReloadAction -= InputManager_OnReloadAction;
+
+        QTE.instance.OnQTEStart -= QTE_OnQTEStart;
+        QTE.instance.OnQTEEnd -= Instance_OnQTEEnd;
+    }
+
     private void Player_OnPlayerDied()
     {
         isAlive = false;
@@ -85,6 +95,9 @@ public class Shoot : MonoBehaviour
 
     private void InputManager_OnShootAction()
     {
+        if (GameManager.Instance.gamePaused)
+            return;
+
         if (!isAlive)
             return;
 

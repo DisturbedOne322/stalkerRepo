@@ -35,6 +35,14 @@ public class HellHoundSoundManager : MonoBehaviour
         hellHound.OnHellHoundAttack += HellHound_OnHellHoundAttack;
         hellHound.OnSuccessfulHit += HellHound_OnSuccessfulHit;
     }
+    private void OnDestroy()
+    {
+        playerDetection.OnPlayerInRange -= PlayerDetection_OnPlayerInRange;
+        hellHound.OnAggressiveStateChange -= HellHound_OnAggressiveStateChange;
+        hellHound.OnHellHoundAttack -= HellHound_OnHellHoundAttack;
+        hellHound.OnSuccessfulHit -= HellHound_OnSuccessfulHit;
+    }
+
     private void Update()
     {
         audioSource.volume = DynamicSoundVolume.GetDynamicVolume(maxVolumeDistance, Vector2.Distance(transform.position, player.transform.position));

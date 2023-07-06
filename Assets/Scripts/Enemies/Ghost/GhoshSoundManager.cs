@@ -21,6 +21,12 @@ public class GhoshSoundManager : MonoBehaviour
         ghost.OnGhostSpotted += Ghost_OnGhostSpotted;
     }
 
+    private void OnDestroy()
+    {
+        ghost.OnBurstAttack -= Ghost_OnBurstAttack;
+        ghost.OnGhostSpotted -= Ghost_OnGhostSpotted;
+    }
+
     private void Ghost_OnGhostSpotted()
     {
         audioSource.PlayOneShot(SpottedAudioClip);

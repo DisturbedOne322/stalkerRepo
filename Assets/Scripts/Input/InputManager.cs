@@ -16,6 +16,8 @@ public class InputManager : MonoBehaviour
     public event Action OnSprintActionEnded;
     public event Action OnHeadlightAction;
 
+    public event Action OnPauseAction;
+
 
     PlayerInputActions playerInputActions;
     private void Awake()
@@ -50,6 +52,22 @@ public class InputManager : MonoBehaviour
         playerInputActions.Player.Sprint.started += Sprint_started;
         playerInputActions.Player.Sprint.canceled += Sprint_canceled;
         playerInputActions.Player.Headlight.performed += Headlight_performed;
+        playerInputActions.Player.Pause.performed += Pause_performed;
+    }
+
+    private void OnDestroy()
+    {
+        playerInputActions.Player.Focus.started -= Focus_started;
+        playerInputActions.Player.Focus.canceled -= Focus_canceled;
+        playerInputActions.Player.Sprint.started -= Sprint_started;
+        playerInputActions.Player.Sprint.canceled -= Sprint_canceled;
+        playerInputActions.Player.Headlight.performed -= Headlight_performed;
+        playerInputActions.Player.Pause.performed -= Pause_performed;
+    }
+
+    private void Pause_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnPauseAction?.Invoke();
     }
 
     private void Headlight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)

@@ -16,6 +16,11 @@ public class TeleporterSoundManager : MonoBehaviour
         teleporter.OnAppear += Teleporter_OnAppear;
     }
 
+    private void OnDestroy()
+    {
+        teleporter.OnAppear -= Teleporter_OnAppear;
+    }
+
     private void Teleporter_OnAppear()
     {
        audioSource.Play();

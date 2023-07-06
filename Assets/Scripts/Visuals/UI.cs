@@ -89,6 +89,18 @@ public class UI : MonoBehaviour
         GameManager.Instance.OnBossFightStarted += Instance_OnBossFightStarted;
     }
 
+    private void OnDestroy()
+    {
+        Shoot.OnSuccessfulShoot -= Shoot_OnSuccessfulShoot;
+        Shoot.OnWeaponJammed -= Shoot_OnWeaponJammed;
+        Shoot.OnSuccessfulReload -= Shoot_OnSuccessfulReload;
+        player.OnHealthChanged -= Player_OnHealthChanged;
+        player.OnStaminaStateChange -= Player_OnStaminaStateChange;
+        mageBoss.OnHPChanged -= MageBoss_OnHPChanged;
+        mageBoss.OnStageChanged -= MageBoss_OnStageChanged;
+        GameManager.Instance.OnBossFightStarted -= Instance_OnBossFightStarted;
+    }
+
     private void MageBoss_OnStageChanged()
     {
         nextHPBarValue = 1;

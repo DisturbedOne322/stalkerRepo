@@ -49,7 +49,10 @@ public class Ghost : Enemy, IQTECaller
         player = GameManager.Instance.GetPlayerReference();
     }
 
-
+    private void OnDestroy()
+    {
+        FocusedHeadlight.OnGhostFound -= FocusedHeadlight_OnGhostFound;
+    }
 
     private void FocusedHeadlight_OnGhostFound()
     {

@@ -18,6 +18,12 @@ public class SpawnParticleOnObject : MonoBehaviour
             caller.OnSpawnParticleAction += Caller_OnSpawnParticleAction;
     }
 
+    private void OnDestroy()
+    {
+        if (go.TryGetComponent<IParticleSpawnerCaller>(out IParticleSpawnerCaller caller))
+            caller.OnSpawnParticleAction -= Caller_OnSpawnParticleAction;
+    }
+
     private void Caller_OnSpawnParticleAction()
     {
         particleSystem.Play();

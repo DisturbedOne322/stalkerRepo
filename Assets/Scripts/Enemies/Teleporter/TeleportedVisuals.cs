@@ -19,6 +19,12 @@ public class TeleportedVisuals : MonoBehaviour
         teleporter.OnDisappear += Teleporter_OnDisappear;
     }
 
+    private void OnDestroy()
+    {
+        teleporter.OnAppear -= Teleporter_OnAppear;
+        teleporter.OnDisappear -= Teleporter_OnDisappear;
+    }
+
     private void Teleporter_OnDisappear()
     {
         animator.SetTrigger(DISAPPEAR_ANIM);

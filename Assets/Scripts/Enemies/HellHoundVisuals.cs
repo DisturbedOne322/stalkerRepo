@@ -51,6 +51,14 @@ public class HellHoundVisuals : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        playerDetection.OnPlayerInRange -= PlayerDetection_OnPlayerInRange;
+        hellHound.OnAggressiveStateChange -= HellHound_OnAggressiveStateChange;
+        hellHound.OnHellHoundAttack -= HellHound_OnHellHoundAttack;
+        hellHound.OnSuccessfulHit -= HellHound_OnSuccessfulHit;
+    }
+
     private void HellHound_OnSuccessfulHit()
     {
         int playerHitWithClawRandomIndicatorIndex = Random.Range(0, particleSpawnerOnPlayerHitWithClaw.Length);

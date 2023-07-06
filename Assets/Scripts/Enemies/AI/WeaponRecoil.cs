@@ -20,6 +20,14 @@ public class WeaponRecoil : MonoBehaviour
        }
     }
 
+    private void OnDestroy()
+    {
+        if (go.TryGetComponent<IShootableWeapon>(out IShootableWeapon shootableWeapon))
+        {
+            shootableWeapon.OnShoot -= ShootableWeapon_OnShoot;
+        }
+    }
+
     private void ShootableWeapon_OnShoot()
     {
         transform.Rotate(new Vector3(0, 0, recoilStrength));

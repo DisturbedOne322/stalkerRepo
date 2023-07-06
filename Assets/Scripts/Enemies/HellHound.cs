@@ -52,6 +52,12 @@ public class HellHound : Enemy
         Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), player.GetComponent<CapsuleCollider2D>());
     }
 
+    private void OnDestroy()
+    {
+        playerDetection.OnPlayerInRange -= PlayerDetection_OnPlayerInRange;
+        dissolve.OnDissolved -= Dissolve_OnDissolved;
+    }
+
     private void Dissolve_OnDissolved()
     {
         Destroy(gameObject);

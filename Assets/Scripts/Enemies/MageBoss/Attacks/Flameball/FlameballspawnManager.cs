@@ -62,6 +62,11 @@ public class FlameballspawnManager : MonoBehaviour
         mageBoss.OnHPChanged += MageBoss_OnHPChanged;
     }
 
+    private void OnDestroy()
+    {
+        mageBoss.OnHPChanged -= MageBoss_OnHPChanged;
+    }
+
     private void MageBoss_OnHPChanged(int arg1, int arg2)
     {
         if (arg1 <= 0)

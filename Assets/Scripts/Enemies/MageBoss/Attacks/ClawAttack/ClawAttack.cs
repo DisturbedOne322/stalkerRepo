@@ -36,6 +36,10 @@ public class ClawAttack : MonoBehaviour
         playerRB = player.GetComponent<Rigidbody2D>();
         playerInClawAttackRange.OnPlayerInClawAttackRange += PlayerInClawAttackRange_OnPlayerInClawAttackRange;
     }
+    private void OnDestroy()
+    {
+        playerInClawAttackRange.OnPlayerInClawAttackRange -= PlayerInClawAttackRange_OnPlayerInClawAttackRange;
+    }
 
     private void PlayerInClawAttackRange_OnPlayerInClawAttackRange()
     {

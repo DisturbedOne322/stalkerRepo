@@ -92,6 +92,12 @@ public class Breathe : MonoBehaviour
         #endregion
     }
 
+    private void OnDestroy()
+    {
+        player.OnHealthChanged -= Player_OnHealthChanged;
+
+    }
+
     private void Player_OnHealthChanged(GameManager.PlayerHealthStatus playerHealthStatus)
     {
         var brearheGradient = breatheParticles.colorOverLifetime;

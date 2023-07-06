@@ -24,6 +24,12 @@ public class PlayerFakeVisuals : MonoBehaviour
         damagable.OnDeath += Damagable_OnDeath;
     }
 
+    private void OnDestroy()
+    {
+        damagable.OnDeath -= Damagable_OnDeath;
+        approachPlayer.OnPlayerInRange -= ApproachPlayer_OnPlayerInRange;
+    }
+
     private void Damagable_OnDeath()
     {
         animator.SetTrigger(DEATH_ANIM_TRIGGER);

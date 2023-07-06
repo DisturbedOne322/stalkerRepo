@@ -19,6 +19,11 @@ public class PlayerVisuals : MonoBehaviour
         player.OnPlayerDied += Player_OnPlayerDied;
     }
 
+    private void OnDestroy()
+    {
+        player.OnPlayerDied -= Player_OnPlayerDied;
+    }
+
     private void Player_OnPlayerDied()
     {
         isAlive = false;

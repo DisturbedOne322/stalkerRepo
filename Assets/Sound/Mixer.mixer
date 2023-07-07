@@ -36,11 +36,11 @@ AudioMixerController:
   m_UpdateMode: 0
   m_ExposedParameters:
   - guid: 60ff5d4ce3f54be49ab5dcc08d995dcf
-    name: Master
+    name: Master Volume
   - guid: fd67577d7a22ba2469ecdc708e8e6a5d
-    name: Music
+    name: Music Volume
   - guid: d9f411962cfcf0347a870e0f4830ec6f
-    name: Sound Effects
+    name: Effects Volume
   m_AudioMixerGroupViews:
   - guids:
     - d87fc4259844f624889ab6dc75f31d85

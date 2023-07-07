@@ -7,11 +7,12 @@ TagManager:
   - PlayerHitBox
   - Ground
   - PlayerFake
+  - SavePoint
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - FlyParticlesCollider
   - Water
   - UI
   - Glow

@@ -34,7 +34,7 @@ public class Shoot : MonoBehaviour
     private float shootDistance = 15f;
 
     private int magCount = 12;
-    private int currentBulletNum = 12;
+    public int currentBulletNum = 12;
 
     private bool reloading = false;
     private float reloadTimer = 2f;

@@ -87,6 +87,7 @@ public class UI : MonoBehaviour
         mageBoss.OnHPChanged += MageBoss_OnHPChanged;
         mageBoss.OnStageChanged += MageBoss_OnStageChanged;
         GameManager.Instance.OnBossFightStarted += Instance_OnBossFightStarted;
+        magazineBulletCountText.text = player.GetComponentInChildren<Shoot>().currentBulletNum.ToString() +"/12";
     }
 
     private void OnDestroy()

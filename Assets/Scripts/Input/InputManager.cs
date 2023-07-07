@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
     public event Action OnSprintActionStarted;
     public event Action OnSprintActionEnded;
     public event Action OnHeadlightAction;
+    public event Action OnInteract;
 
     public event Action OnPauseAction;
 
@@ -53,8 +54,8 @@ public class InputManager : MonoBehaviour
         playerInputActions.Player.Sprint.canceled += Sprint_canceled;
         playerInputActions.Player.Headlight.performed += Headlight_performed;
         playerInputActions.Player.Pause.performed += Pause_performed;
+        playerInputActions.Player.Interact.performed += Interact_performed;
     }
-
     private void OnDestroy()
     {
         playerInputActions.Player.Focus.started -= Focus_started;
@@ -63,6 +64,12 @@ public class InputManager : MonoBehaviour
         playerInputActions.Player.Sprint.canceled -= Sprint_canceled;
         playerInputActions.Player.Headlight.performed -= Headlight_performed;
         playerInputActions.Player.Pause.performed -= Pause_performed;
+        playerInputActions.Player.Interact.performed -= Interact_performed;
+    }
+
+    private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnInteract?.Invoke();
     }
 
     private void Pause_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)

@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public int HealthPoints
     {
         get { return healthPoints; }
+        set { healthPoints = value; }
     }
 
     public int MaxHealthPoint

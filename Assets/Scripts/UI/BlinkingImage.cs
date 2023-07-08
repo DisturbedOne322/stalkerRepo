@@ -20,11 +20,29 @@ public class BlinkingImage : MonoBehaviour
     [SerializeField, Min(0.01f)]
     private float animationTime;
 
+    private float stepTime;
+
     // Start is called before the first frame update
     void Start()
     {
         image = GetComponent<Image>();
-        StartCoroutine(ReduceAlpha());
+        stepTime = step * animationTime * (maxAlpha / minAlpha);
+        if (maxAlpha < minAlpha)
+        {
+            Debug.LogError("Max alpha < min alpha");
+            this.enabled = false;
+        }
+    }
+
+    private void Awake()
+    {
+        image = GetComponent<Image>();
+        stepTime = step * animationTime * (maxAlpha / minAlpha);
+        if (maxAlpha < minAlpha)
+        {
+            Debug.LogError("Max alpha < min alpha");
+            this.enabled = false;
+        }
     }
 
     private IEnumerator IncreaseAlpha()
@@ -37,7 +55,7 @@ public class BlinkingImage : MonoBehaviour
 
             image.color = temp;
 
-            yield return new WaitForSeconds(step * animationTime);
+            yield return new WaitForSeconds(stepTime);
         }
 
         StartCoroutine(ReduceAlpha());
@@ -53,8 +71,14 @@ public class BlinkingImage : MonoBehaviour
 
             image.color = temp;
 
-            yield return new WaitForSeconds(step * animationTime);
+            yield return new WaitForSeconds(stepTime);
         }
         StartCoroutine (IncreaseAlpha());
+    }
+
+    private void OnEnable()
+    {
+        StopAllCoroutines();
+        StartCoroutine(ReduceAlpha());
     }
 }

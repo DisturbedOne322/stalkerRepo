@@ -20,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     public int HealthPoints
     {
         get { return healthPoints; }
-        set { healthPoints = value; }
     }
 
     public int MaxHealthPoint
@@ -81,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     float movementDirection;
+    private bool inAnimation = false;
 
     private void Awake()
     {
@@ -144,6 +144,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void InputManager_OnJumpAction()
     {
+        if (inAnimation)
+            return;
         if (!isAlive)
             return;
         if(!canMove)        
@@ -188,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
 
         movementDirection = InputManager.Instance.GetMovementVector();
         isMoving = movementDirection != 0;
-        if (isMoving && isGrounded)
+        if (isMoving)
         {
             float moveSpeedMultiplier = (movementDirection > 0 && transform.localScale.x > 0)
                 || (movementDirection < 0 && transform.localScale.x < 0) ? 1 : backwardMoveSpeedMultiplier;  
@@ -202,6 +204,12 @@ public class PlayerMovement : MonoBehaviour
             DepleteStamina();
         if(IsGrounded)
             RegenStamina();
+    }
+
+    public void RestoreFullHealth()
+    {
+        healthPoints = MaxHealthPoint;
+        OnHealthChanged?.Invoke(GameManager.PlayerHealthStatus.HighHP);
     }
 
     private void DepleteStamina()

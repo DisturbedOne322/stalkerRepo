@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -9,9 +10,13 @@ public class SaveGame : MonoBehaviour
     [SerializeField]
     public int uniqueSavePointID;
     private IsPlayerInRange isPlayerInRange;
-    private DisplayIcon displayIcon;
 
     private bool playerInRange;
+
+    public event Action OnDisplayIcon;
+    public static event Action OnGameSaved;
+
+    private bool recentlySaved = false;
 
     private void Start()
     {
@@ -23,25 +28,32 @@ public class SaveGame : MonoBehaviour
     private void IsPlayerInRange_OnPlayerInRange(bool obj)
     {
         playerInRange = obj;
+        if (!playerInRange)
+            recentlySaved = false;
     }
 
     private void Instance_OnInteract()
     {
-        if(playerInRange)
+        if (recentlySaved)
+            return;
+
+        if (playerInRange)
         {
-            Debug.Log("Saved");
+            
             PlayerMovement player = GameManager.Instance.GetPlayerReference();
 
             SaveData saveData = new SaveData();
             saveData.savePoint = uniqueSavePointID;
-            saveData.playerHealth = player.HealthPoints;
+            player.RestoreFullHealth();
             saveData.bulletAmount = player.GetComponentInChildren<Shoot>().currentBulletNum;
 
             string SaveDataJSON = JsonUtility.ToJson(saveData);
             System.IO.File.WriteAllText(Application.persistentDataPath + "/SaveData.json", SaveDataJSON);
 
-            Debug.Log("Saved");
-            Debug.Log(SaveDataJSON);
+            OnGameSaved?.Invoke();
+            OnDisplayIcon?.Invoke();
+
+            recentlySaved = true;
         }
     }
 }

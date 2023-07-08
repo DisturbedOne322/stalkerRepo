@@ -15,11 +15,13 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField]
     private Animator playerMainMenuAnimator;
 
-    private const string PLAYER_PLAY_ANIM = "Base Layer.PlayerMainMenuPlay";
-    private const string PLAYER_EXIT_ANIM = "Base Layer.PlayerMainMenuExit";
+    private const string PLAYER_PLAY_ANIM = "Base Layer.PlayerMainMenuExit";
+    private const string PLAYER_EXIT_ANIM = "Base Layer.PlayerMainMenuPlay";
 
-    private readonly float exitAnimDuration = 6;
-    private readonly float playAnimDuration = 4;
+    private const string LOAD_SCREEN_TRIGGER = "OnLoad";
+
+    private readonly float playAnimDuration = 6;
+    private readonly float exitAnimDuration = 4;
 
     public static bool playerActed { get; private set; }
 
@@ -49,14 +51,14 @@ public class MainMenuManager : MonoBehaviour
 
     private IEnumerator ExitGame(float delay)
     {
-        loadScreen.SetActive(true);
+        loadScreen.GetComponent<Animator>().SetTrigger(LOAD_SCREEN_TRIGGER);
         yield return new WaitForSeconds(delay);
         Application.Quit();
     }
 
     private IEnumerator PlayGame(float delay)
     {
-        loadScreen.SetActive(true);
+        loadScreen.GetComponent<Animator>().SetTrigger(LOAD_SCREEN_TRIGGER);
         yield return new WaitForSeconds(delay);
         LoadScene();
     }

@@ -95,7 +95,8 @@ public class CameraShootShake : MonoBehaviour
 
     private void Player_OnHealthChanged(GameManager.PlayerHealthStatus obj)
     {
-        ShakeCamera(playerDamagedShakeAmp, playerDamagedShakeFreq, shakeTimerTotal);
+        if(player.HealthPoints != player.MaxHealthPoint)
+            ShakeCamera(playerDamagedShakeAmp, playerDamagedShakeFreq, shakeTimerTotal);
     }
 
     private void QTE_OnQTEStart()

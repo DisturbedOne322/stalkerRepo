@@ -31,7 +31,6 @@ public class LoadData : MonoBehaviour
         {
             GameObject[] savePoints = GameObject.FindGameObjectsWithTag("SavePoint");
             PlayerMovement player = GameManager.Instance.GetPlayerReference();
-            player.HealthPoints = saveData.playerHealth;
             player.GetComponentInChildren<Shoot>().currentBulletNum = saveData.bulletAmount;
             for(int i = 0; i < savePoints.Length; i++)
             {

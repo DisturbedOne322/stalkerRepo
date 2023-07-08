@@ -27,6 +27,9 @@ public class UI : MonoBehaviour
     [SerializeField]
     private FocusedHeadlight focusedHeadlight;
 
+    [SerializeField]
+    private Image saveGameIcon;
+
     private float notificationEnabledTimer;
     private float notificationEnabledTimerTotal = 2f;
 
@@ -88,6 +91,20 @@ public class UI : MonoBehaviour
         mageBoss.OnStageChanged += MageBoss_OnStageChanged;
         GameManager.Instance.OnBossFightStarted += Instance_OnBossFightStarted;
         magazineBulletCountText.text = player.GetComponentInChildren<Shoot>().currentBulletNum.ToString() +"/12";
+
+        SaveGame.OnGameSaved += SaveGame_OnGameSaved;
+    }
+
+    private void SaveGame_OnGameSaved()
+    {
+        StartCoroutine(DisableImageAfterDelay(saveGameIcon, 2));
+    }
+
+    private IEnumerator DisableImageAfterDelay(Image img, float delay)
+    {
+        img.gameObject.SetActive(true);
+        yield return new WaitForSeconds(delay);
+        img.gameObject.SetActive(false);
     }
 
     private void OnDestroy()

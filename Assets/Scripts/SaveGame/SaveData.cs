@@ -7,6 +7,5 @@ using UnityEngine;
 public class SaveData
 {
     public int savePoint;
-    public int playerHealth;
     public int bulletAmount;
 }

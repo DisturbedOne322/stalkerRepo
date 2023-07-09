@@ -27,6 +27,11 @@ public class AudioMixerSettings : MonoBehaviour
     {
         volumeLabel.text = volumeLabelText;
 
+        float value;
+        audioMixer.GetFloat(volumeLabelText, out value);
+        slider.value = Mathf.Exp(value / 20);
+
+
         UpdateOnValueChanged(slider.value);
         slider.onValueChanged.AddListener(delegate {
             UpdateOnValueChanged(slider.value);

@@ -15,6 +15,8 @@ public class FocusedHeadlight : MonoBehaviour
     public static event Action OnGhostFound;
     public static event Action<TentacleStateManager> OnTentacleFound;
 
+    public static event Action OnExecutionerFound;
+
     private float focusSpeed = 1;
     private float lightSmDampVelocity;
 
@@ -42,6 +44,11 @@ public class FocusedHeadlight : MonoBehaviour
     [SerializeField]
     private LayerMask tentacleLayerMask;
 
+    [SerializeField]
+    private LayerMask executionerLayerMask;
+
+
+
     private Vector2[] focusedHeadlightBoxPoints;
 
     //increase headlightBox with time
@@ -68,6 +75,7 @@ public class FocusedHeadlight : MonoBehaviour
     {
         if (focusedLightEnabled)
         {
+            
             hit = Physics2D.BoxCast(transform.position, new Vector2(boxLength, boxHeight), transform.rotation.z, Vector2.right, 0, ghostLayerMask);
             if (hit)
             {
@@ -78,8 +86,13 @@ public class FocusedHeadlight : MonoBehaviour
             {
                 OnTentacleFound?.Invoke(hit.collider.gameObject.GetComponent<TentacleStateManager>());
             }
-        }
-
+            hit = Physics2D.BoxCast(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, executionerLayerMask);
+            if (hit)
+            {
+                OnExecutionerFound?.Invoke();
+            }
+            BoxCastDrawer.Draw(hit, transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right);
+         }
     }
     private void Instance_OnHeadlightAction()
     {

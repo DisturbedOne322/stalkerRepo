@@ -18,6 +18,12 @@ public class ApproachPlayer : MonoBehaviour
     [SerializeField]
     private float speed;
 
+    [SerializeField]
+    private float cdAfterAttack = 0;
+    private float lastAttackTime;
+
+    private bool inCD = false;
+
     private bool isAlive = true;
 
     private IDamagable damagable;
@@ -43,6 +49,13 @@ public class ApproachPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(inCD)
+        {
+            if(Time.time > lastAttackTime + cdAfterAttack)            
+                inCD = false;            
+            return;
+        }
+
         if(!isAlive)
         {
             return;
@@ -53,7 +66,15 @@ public class ApproachPlayer : MonoBehaviour
 
         if (!playerInRange)
             rb.AddForce(vectorToPlayer * speed);
+        else
+        {
+            rb.velocity = Vector3.zero;
+            lastAttackTime = Time.time;
+            inCD = true;
+        }
 
         OnPlayerInRange?.Invoke(playerInRange);
+
+
     }
 }

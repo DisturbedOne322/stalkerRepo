@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class Dissolve : MonoBehaviour
 {
-    [SerializeField]
+    //[SerializeField]
     private Material material;
+    private SpriteRenderer spriteRenderer;
 
     private float dissolveAmount = 1;
     private float dissolvePerSec = 0.15f;
@@ -16,6 +17,8 @@ public class Dissolve : MonoBehaviour
 
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        material = spriteRenderer.material;
         material.SetFloat("_dissolveAmount", 1);
     }
 

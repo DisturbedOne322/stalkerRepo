@@ -9,6 +9,8 @@ public class ExecutionerHealth : MonoBehaviour, IDamagable
     [SerializeField]
     private int healthPoint;
 
+    private int maxHealth;
+
     private bool underLight = false;
 
     public void TakeDamage(int damage)
@@ -22,11 +24,16 @@ public class ExecutionerHealth : MonoBehaviour, IDamagable
     }
 
     public event Action OnDeath;
-    
+
+    private void OnEnable()
+    {
+        healthPoint = maxHealth;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        maxHealth = healthPoint;
         ExecutionerVisuals executionerVisuals = GetComponent<ExecutionerVisuals>();
         executionerVisuals.OnLighten += ExecutionerVisuals_OnLighten;
     }

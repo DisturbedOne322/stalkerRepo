@@ -10,4 +10,9 @@ public class CloseWindow : MonoBehaviour
     {
         window.SetActive(false);
     }
+
+    private void Instance_OnPauseAction()
+    {
+        OnButtonPress();
+    }
 }

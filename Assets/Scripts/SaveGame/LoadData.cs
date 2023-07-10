@@ -9,6 +9,9 @@ public class LoadData : MonoBehaviour
 
     private bool saveDataExists = false;
 
+    [SerializeField]
+    private Transform initialSpawnPoint;
+
     private void Awake()
     {
         try
@@ -27,19 +30,24 @@ public class LoadData : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(saveDataExists)
+        PlayerMovement player = GameManager.Instance.GetPlayerReference();
+
+        if (saveDataExists)
         {
             GameObject[] savePoints = GameObject.FindGameObjectsWithTag("SavePoint");
-            PlayerMovement player = GameManager.Instance.GetPlayerReference();
-            player.GetComponentInChildren<Shoot>().currentBulletNum = saveData.bulletAmount;
             for(int i = 0; i < savePoints.Length; i++)
             {
                 if (savePoints[i].GetComponent<SaveGame>().uniqueSavePointID == saveData.savePoint) 
                 {
+                    player.GetComponentInChildren<Shoot>().currentBulletNum = saveData.bulletAmount;
                     player.transform.position = savePoints[i].transform.position;
                     return;
                 }
             }
+        }
+        else
+        {
+            player.transform.position = initialSpawnPoint.position;
         }
     }
 

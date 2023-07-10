@@ -101,19 +101,12 @@ public class GameManager : MonoBehaviour
         InitiateBossfight.OnBossFightInitiated -= InitiateBossfight_OnBossFightInitiated;
     }
 
-    private void PauseMenuManager_OnGamePaused(bool paused)
+    public void PauseMenuManager_OnGamePaused(bool paused)
     {
-        Cursor.visible = !paused;
         gamePaused = paused;
+        Cursor.visible = paused;
         Time.timeScale = gamePaused ? 0 : 1;
     }
-
-    public void UnpauseGameOnButtonPress()
-    {
-        gamePaused = false;
-        Time.timeScale = 1;
-    }
-
     private void InitiateBossfight_OnBossFightInitiated()
     {
         boss.gameObject.SetActive(true);

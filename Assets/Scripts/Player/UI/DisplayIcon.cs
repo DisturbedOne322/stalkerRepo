@@ -27,7 +27,8 @@ public class DisplayIcon : MonoBehaviour
         playerInRange = GetComponentInParent<IsPlayerInRange>();
         playerInRange.OnPlayerInRange += PlayerInRange_OnPlayerInRange;
 
-        GetComponentInParent<SaveGame>().OnDisplayIcon += DisplayIcon_OnDisplayIcon;
+        if(GetComponentInParent<SaveGame>() != null)
+            GetComponentInParent<SaveGame>().OnDisplayIcon += DisplayIcon_OnDisplayIcon;
     }
 
     private void DisplayIcon_OnDisplayIcon()

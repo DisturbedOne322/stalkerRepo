@@ -35,7 +35,6 @@ public class CameraShootShake : MonoBehaviour
     [SerializeField]
     private bool AimCamera;
 
-
     #region QTE
     private readonly float qteShakeFreq = 5f;
     #endregion

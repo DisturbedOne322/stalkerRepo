@@ -20,8 +20,6 @@ public class LookAtMouse : MonoBehaviour
     private PlayerMovement player;
     private bool isAlive = true;
 
-    private bool isGamePaused = false;
-
     public bool Focused
     {
         get { return focused; }

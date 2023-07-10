@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseMenuManager : MonoBehaviour
 {
+
     public static event Action<bool> OnGamePaused;
 
     [SerializeField]
@@ -43,12 +45,11 @@ public class PauseMenuManager : MonoBehaviour
             return;
         }
         pauseScreen.SetActive(!pauseScreen.activeSelf);
-        OnGamePaused?.Invoke(pauseScreen.activeSelf);
+        OnGamePaused?.Invoke(pauseScreen.activeSelf);      
     }
 
     public void ExitGame()
     {
-        //save some info i dunno
         Application.Quit();
     }
 }

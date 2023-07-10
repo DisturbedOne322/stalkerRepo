@@ -151,7 +151,7 @@ public class FlameballspawnManager : MonoBehaviour
         spawnCD = spawnCDTotal;
         for(int i = 0;i < pool.Length; i++)
         {
-            if (!pool[i].active)
+            if (!pool[i].activeSelf)
             {
                 pool[i].SetActive(true);
                 pool[i].GetComponent<Flameball>().SwitchState(new FlameballFallingState());
@@ -183,7 +183,7 @@ public class FlameballspawnManager : MonoBehaviour
     {
         for(int i = 0; i < pool.Length; i++)
         {
-            if (pool[i].active)
+            if (pool[i].activeSelf)
             {
                 if(pos <= pool[i].transform.position.x + colliderSizeX  && pos >= pool[i].transform.position.x - colliderSizeX)
                 {

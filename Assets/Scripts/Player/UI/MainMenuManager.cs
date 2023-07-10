@@ -21,7 +21,7 @@ public class MainMenuManager : MonoBehaviour
 
     private const string LOAD_SCREEN_TRIGGER = "OnLoad";
 
-    private readonly float playAnimDuration = 6;
+    private readonly float playAnimDuration = 4;
     private readonly float exitAnimDuration = 4;
 
     public static bool playerActed { get; private set; }

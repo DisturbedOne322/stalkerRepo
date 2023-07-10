@@ -9,7 +9,6 @@ public class LoadSettings : MonoBehaviour
     private AudioMixer audioMixer;
 
     private SettingsSaveData saveData;
-    private bool saveDataExists = false;
 
     private const string MASTER_VOLUME = "Master Volume";
     private const string EFFECTS_VOLUME = "Effects Volume";
@@ -22,7 +21,6 @@ public class LoadSettings : MonoBehaviour
         {
             string data = System.IO.File.ReadAllText(Application.persistentDataPath + "/Settings.json");
             saveData = JsonUtility.FromJson<SettingsSaveData>(data);
-            saveDataExists = true;
 
             audioMixer.SetFloat(MASTER_VOLUME, saveData.masterVolume);
             audioMixer.SetFloat(EFFECTS_VOLUME, saveData.effectsVolume);

@@ -40,15 +40,23 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
     [SerializeField]
     private AudioClip shrinkAndSpreadSound;
 
+    private enum InitialState
+    {
+        attackState,
+        idleState
+    }
+
+    [SerializeField]
+    private InitialState initialState;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         audioSource = GetComponent<AudioSource>();
-        currentState = Random.Range(0,1f) > 0.5f? attackState:idleState;
+        currentState = initialState == InitialState.attackState? attackState:idleState;
         prevState = currentState;
         currentState.EnterState(this);
-
     }
 
     // Start is called before the first frame update

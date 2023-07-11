@@ -139,7 +139,7 @@ public class CameraShootShake : MonoBehaviour
         {
             float offsetLerp = Mathf.Lerp(transposer.m_FollowOffset.x, mousPos.MousePosition == FollowMouseInput.Position.LeftOfPlayer ? leftBodyOffset : rightBodyOffset, aimCameraSpeed * Time.deltaTime);
             transposer.m_FollowOffset.x = offsetLerp;
-            composer.m_TrackedObjectOffset.x = offsetLerp;
+            //composer.m_TrackedObjectOffset.x = offsetLerp;
         }
     }
 }

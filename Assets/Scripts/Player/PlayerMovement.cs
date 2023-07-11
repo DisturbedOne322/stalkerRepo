@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private readonly float jumpStaminaConsumption = 0.1f;
     private readonly float staminaRegen = 0.1f;
-    private readonly float staminaSpentPerSecond = 0.15f;
+    private readonly float staminaSpentPerSecond = 0.1f;
     #endregion
 
     private bool isSprinting = false;

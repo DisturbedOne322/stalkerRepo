@@ -40,14 +40,14 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
     [SerializeField]
     private AudioClip shrinkAndSpreadSound;
 
-    private enum InitialState
+    public enum InitialState
     {
         attackState,
         idleState
     }
 
     [SerializeField]
-    private InitialState initialState;
+    public InitialState initialState;
 
     private void Awake()
     {

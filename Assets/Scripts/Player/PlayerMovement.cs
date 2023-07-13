@@ -29,9 +29,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     [SerializeField]
-    private readonly float originalSpeed = 0.8f;
-    private float moveSpeed = 0.8f;
-    private readonly float sprintSpeed = 1.3f;
+    private readonly float originalSpeed = 0.85f;
+    private float moveSpeed = 0.85f;
+    private readonly float sprintSpeed = 1.35f;
     private readonly float backwardMoveSpeedMultiplier = 0.9f;
 
     private float stamina = 1;
@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     private bool isSprinting = false;
-    private bool isMoving =false;
+    private bool isMoving = false;
     private bool canMove = true;
 
     private readonly float jumpForce = 0.0065f;
@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        distanceToTheGround = capsuleCollider.bounds.extents.y;
+        distanceToTheGround = capsuleCollider.bounds.extents.y / 2;
     }
 
     // Start is called before the first frame update
@@ -184,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
 
         movementDirection = InputManager.Instance.GetMovementVector();
         isMoving = movementDirection != 0;
-        if (isMoving)
+        if (isMoving && isGrounded)
         {
             float moveSpeedMultiplier = (movementDirection > 0 && transform.localScale.x > 0)
                 || (movementDirection < 0 && transform.localScale.x < 0) ? 1 : backwardMoveSpeedMultiplier;  
@@ -205,6 +205,7 @@ public class PlayerMovement : MonoBehaviour
         healthPoints = MaxHealthPoint;
         OnHealthChanged?.Invoke(GameManager.PlayerHealthStatus.HighHP);
         OnPlayerRespawned?.Invoke();
+        stamina = 1;
     }
 
     private void DepleteStamina()
@@ -235,7 +236,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CheckIsGrounded()
     {
-        RaycastHit2D rayHit = Physics2D.Raycast(capsuleCollider.bounds.center, Vector2.down, distanceToTheGround + 0.1f, groundLayerMask);
+        RaycastHit2D rayHit = Physics2D.BoxCast(capsuleCollider.bounds.center, new Vector2(1,2),0, Vector2.down, distanceToTheGround + 0.1f, groundLayerMask);
+        BoxCastDrawer.Draw(rayHit,capsuleCollider.bounds.center, new Vector2(1, 0.001f), 0, Vector2.down, distanceToTheGround);
         return rayHit.collider != null;
     }
 

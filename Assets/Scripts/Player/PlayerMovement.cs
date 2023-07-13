@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public event Action<StaminaState> OnStaminaStateChange;
     public event Action<GameManager.PlayerHealthStatus> OnHealthChanged;
+    public event Action OnPlayerRespawned;
     public event Action OnPlayerTeleported;
     public event Action OnPlayerDied;
     private Rigidbody2D rb2D;
@@ -55,15 +56,12 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving =false;
     private bool canMove = true;
 
-    private readonly float jumpForce = 0.0075f;
+    private readonly float jumpForce = 0.0065f;
 
     private CapsuleCollider2D capsuleCollider;
 
     private float distanceToTheGround;
     private bool isFalling = false;
-
-    private bool isAlive = true;
-    private float delayAfterDeath = 3f;
 
     [SerializeField]
     private GameObject[] lightSources;
@@ -146,8 +144,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (inAnimation)
             return;
-        if (!isAlive)
-            return;
         if(!canMove)        
             return;
         
@@ -182,8 +178,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isAlive)
-            return;
         if (!canMove)       
             return;
         
@@ -210,6 +204,7 @@ public class PlayerMovement : MonoBehaviour
     {
         healthPoints = MaxHealthPoint;
         OnHealthChanged?.Invoke(GameManager.PlayerHealthStatus.HighHP);
+        OnPlayerRespawned?.Invoke();
     }
 
     private void DepleteStamina()
@@ -251,9 +246,7 @@ public class PlayerMovement : MonoBehaviour
             healthPoints * 1.0f / maxHealthPoints > 0.25f ? GameManager.PlayerHealthStatus.MidHP : GameManager.PlayerHealthStatus.LowHP);
         if(healthPoints <= 0)
         {
-            isAlive = false;
             OnPlayerDied?.Invoke();
-            StartCoroutine(DisableAfterDeath(delayAfterDeath));
         }
         SoundManager.Instance.PlayGetHurtSound();
     }
@@ -263,13 +256,6 @@ public class PlayerMovement : MonoBehaviour
         healthPoints = 1;
         OnHealthChanged?.Invoke(GameManager.PlayerHealthStatus.LowHP);
         SoundManager.Instance.PlayGetHurtSound();
-    }
-
-    private IEnumerator DisableAfterDeath(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        //this.gameObject.SetActive(false);
     }
 }
 

@@ -44,8 +44,6 @@ public class LookAtMouse : MonoBehaviour
             InputManager.Instance.OnFocusActionEnded += InputManager_OnFocusActionEnded;
         }
         player = GameManager.Instance.GetPlayerReference();
-        player.OnPlayerDied += Player_OnPlayerDied;
-
     }
 
     private void OnDestroy()
@@ -55,8 +53,6 @@ public class LookAtMouse : MonoBehaviour
             InputManager.Instance.OnFocusActionStarted -= InputManager_OnFocusAction;
             InputManager.Instance.OnFocusActionEnded -= InputManager_OnFocusActionEnded;
         }
-
-        player.OnPlayerDied -= Player_OnPlayerDied;
     }
 
     private void InputManager_OnFocusActionEnded()

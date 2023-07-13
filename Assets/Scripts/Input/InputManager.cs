@@ -55,7 +55,22 @@ public class InputManager : MonoBehaviour
         playerInputActions.Player.Headlight.performed += Headlight_performed;
         playerInputActions.Player.Pause.performed += Pause_performed;
         playerInputActions.Player.Interact.performed += Interact_performed;
+
+        GameManager.Instance.GetPlayerReference().OnPlayerDied += InputManager_OnPlayerDied;
+        GameManager.Instance.GetPlayerReference().OnPlayerRespawned += InputManager_OnPlayerRespawned;
     }
+
+    private void InputManager_OnPlayerDied()
+    {
+        playerInputActions.Player.Disable();
+    }
+
+    private void InputManager_OnPlayerRespawned()
+    {
+        playerInputActions.Player.Enable();
+    }
+
+
     private void OnDestroy()
     {
         playerInputActions.Player.Focus.started -= Focus_started;

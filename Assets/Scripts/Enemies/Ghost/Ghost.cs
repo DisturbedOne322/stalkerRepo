@@ -28,22 +28,26 @@ public class Ghost : Enemy, IQTECaller
     private PlayerMovement player;
 
     //when attacked with light, move to Y, then at high speed burst to player pos.x with -1 to 1 range
-    private readonly float moveToYCoord = 10;
-    private readonly float burstSpeed = 20f;
+    private float moveToYCoord;
+    private readonly float burstSpeed = 13f;
 
     private readonly float spawnOffset = 2f;
 
     private bool isBurstAttacking = false;
 
+    private void Awake()
+    {
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        attackParticle = GetComponent<ParticleSystem>();
+        rb2D = GetComponent<Rigidbody2D>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         healthPoints = 10;
-        moveSpeed = 5f;
+        moveSpeed = 7f;
 
-        boxCollider2D = GetComponent<BoxCollider2D>();
-        rb2D = GetComponent<Rigidbody2D>();
-        attackParticle = GetComponent<ParticleSystem>();
 
         FocusedHeadlight.OnGhostFound += FocusedHeadlight_OnGhostFound;
         player = GameManager.Instance.GetPlayerReference();
@@ -59,6 +63,7 @@ public class Ghost : Enemy, IQTECaller
         if (isDetected || isBurstAttacking)
             return;
 
+        moveToYCoord = transform.position.y + 10;
         OnGhostSpotted?.Invoke();
         isDetected = true;
         ReactToLight();
@@ -158,5 +163,12 @@ public class Ghost : Enemy, IQTECaller
     {
         OnBurstAttackEnd?.Invoke();
         gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        boxCollider2D.enabled = true;
+        isDetected = false;
+        isBurstAttacking = false;
     }
 }

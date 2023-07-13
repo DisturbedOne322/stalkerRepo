@@ -12,17 +12,23 @@ public class GhostVisuals : MonoBehaviour
     private readonly string DETECTED_ANIM = "DetectedPlayer";
     private readonly string DISAPPEAR_ANIM = "AttackFinished";
     private readonly string GET_DAMAGED_ANIM = "IsAttacked";
+    private readonly string DISAPPEAR_TRIGGER = "OnDisappear";
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        ghost = GetComponent<Ghost>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
         FocusedHeadlight.OnGhostFound += FocusedHeadlight_OnGhostFound;
         QTE.instance.OnQTEEnd += Instance_OnQTEEnd;
-        ghost = GetComponent<Ghost>();
         ghost.OnAttack += Ghost_OnAttack;
         ghost.OnPlayerDetected += Ghost_OnPlayerDetected;
     }
+
 
     private void OnDestroy()
     {
@@ -53,6 +59,11 @@ public class GhostVisuals : MonoBehaviour
     private void FocusedHeadlight_OnGhostFound()
     {
         animator.SetBool(GET_DAMAGED_ANIM, true);
+    }
+    private void OnEnable()
+    {
+        animator.Rebind();
+        animator.Update(0f);
     }
 
 }

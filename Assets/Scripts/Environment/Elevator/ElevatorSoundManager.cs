@@ -29,7 +29,7 @@ public class ElevatorSoundManager : MonoBehaviour
 
     private void Update()
     {
-        audioSource.volume = DynamicSoundVolume.GetDynamicVolume(80, Vector2.Distance(transform.position, player.transform.position));
+        audioSource.volume = DynamicSoundVolume.GetDynamicVolume(100, Vector2.Distance(transform.position, player.transform.position));
     }
 
     private void ElevatorSoundManager_OnDeparted()

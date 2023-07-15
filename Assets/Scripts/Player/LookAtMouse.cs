@@ -8,17 +8,14 @@ public class LookAtMouse : MonoBehaviour
     private Quaternion lastRotation;
     private Vector3 lastMousePosition;
 
-    private readonly float topLookAtAngleBound = 45;
-    private readonly float bottomLookAtAngleBound = -30f;
+    private readonly float topLookAtAngleBound = 60;
+    private readonly float bottomLookAtAngleBound = -40f;
 
     private readonly float returnToOriginalRotationSpeed = 2f;
 
     [SerializeField]
     private bool focusFeature;
     private bool focused;
-
-    private PlayerMovement player;
-    private bool isAlive = true;
 
     public bool Focused
     {
@@ -31,10 +28,7 @@ public class LookAtMouse : MonoBehaviour
         originalRotation = transform.rotation;
     }
 
-    private void Player_OnPlayerDied()
-    {
-        isAlive = false;
-    }
+    private PlayerMovement player;
 
     private void Start()
     {
@@ -43,7 +37,7 @@ public class LookAtMouse : MonoBehaviour
             InputManager.Instance.OnFocusActionStarted += InputManager_OnFocusAction;
             InputManager.Instance.OnFocusActionEnded += InputManager_OnFocusActionEnded;
         }
-        player = GameManager.Instance.GetPlayerReference();
+        player = GetComponentInParent<PlayerMovement>();
     }
 
     private void OnDestroy()
@@ -69,9 +63,7 @@ public class LookAtMouse : MonoBehaviour
     {
         if (GameManager.Instance.gamePaused)
             return;
-        if (!isAlive)
-            return;
-        if(Idle.IsIdle) 
+        if (Idle.IsIdle)
         {
             ReturnToOriginalPosition();
         }
@@ -83,35 +75,39 @@ public class LookAtMouse : MonoBehaviour
 
     private void LookAt()
     {
-        //convert mouse position into world coordinates
         Vector2 direction = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
 
-        if(Input.mousePosition != lastMousePosition)
+        if (Input.mousePosition != lastMousePosition)
         {
             Idle.ReportAction();
             lastRotation = transform.localRotation;
         }
 
-        if(transform.position.x > direction.x)
+        float bottomMaxAngle = bottomLookAtAngleBound;
+        float topMaxAngle = topLookAtAngleBound;
+
+        if (direction.x < 0)
         {
             direction = -direction;
+            bottomMaxAngle = -topLookAtAngleBound;
+            topMaxAngle = -bottomLookAtAngleBound;
         }
 
-        if(focusFeature && focused) 
+
+        if (focusFeature && focused)
         {
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            angle = Mathf.Clamp(angle, bottomMaxAngle, topMaxAngle);
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
-        if(!focusFeature)
+        if (!focusFeature)
         {
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            angle = Mathf.Clamp(angle, bottomMaxAngle, topMaxAngle);
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
-        Vector3 eulerDir = transform.localEulerAngles;
-        eulerDir.z = Mathf.Clamp(eulerDir.z - (eulerDir.z > 180 ? 360 : 0), bottomLookAtAngleBound, topLookAtAngleBound);
-        transform.localEulerAngles = eulerDir;
 
         lastMousePosition = Input.mousePosition;
     }

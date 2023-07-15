@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - PlayerFake
   - SavePoint
+  - Elevator
   layers:
   - Default
   - TransparentFX

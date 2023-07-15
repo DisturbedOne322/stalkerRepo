@@ -18,8 +18,17 @@ public class Terminal : MonoBehaviour
 
     private bool playerInRange;
 
+    private bool calledElevator = false;
+
+    private bool elevatorArrived = false;
+
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip buttonPress;
+
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         isPlayerInRange = GetComponent<IsPlayerInRange>();
     }
     private void Start()
@@ -29,6 +38,7 @@ public class Terminal : MonoBehaviour
         elevator.OnArrived += Elevator_OnArrived;
     }
 
+
     private void Elevator_OnArrived()
     {
         light.intensity = 2;
@@ -36,8 +46,17 @@ public class Terminal : MonoBehaviour
 
     private void Instance_OnInteract()
     {
+
+        if (elevatorArrived)
+            return;
+
+        if (calledElevator)
+            return;
+
         if(playerInRange)
         {
+            audioSource.PlayOneShot(buttonPress);
+            calledElevator = true;
             light.intensity = 5;
             OnCallElevator?.Invoke();
         }
@@ -46,5 +65,9 @@ public class Terminal : MonoBehaviour
     private void IsPlayerInRange_OnPlayerInRange(bool obj)
     {
         playerInRange = obj;
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        elevatorArrived = collision.gameObject.CompareTag("Elevator");
     }
 }

@@ -13,47 +13,48 @@ public class ElevatorFence : MonoBehaviour
     [SerializeField]
     private Transform raisedPosition;
 
-    private float fanceSmDampVelocity;
-    private readonly float fenceSmoothTime = 1;
-
-    private float fenceLowerDistance;
+    private float lerpTime = 1f;
 
     // Start is called before the first frame update
     void Start()
     {
-        fenceLowerDistance = GetComponent<BoxCollider2D>().bounds.size.y;
         elevator.OnArrived += Elevator_OnArrived;
         elevator.OnDeparted += Elevator_OnDeparted;
     }
 
     private void Elevator_OnDeparted()
     {
+        StopAllCoroutines();
         StartCoroutine(RaiseFence());
     }
 
     private void Elevator_OnArrived()
     {
+        StopAllCoroutines();
         StartCoroutine(LowerFence());
     }
 
     private IEnumerator LowerFence()
     {
-        while (Vector2.Distance(transform.position, loweredPosition.position) > 0.2f)
+        while (Vector2.Distance(transform.position, loweredPosition.position) > 0.1f)
         {
             Vector2 newPosition = transform.position;
-            newPosition.y = Mathf.SmoothDamp(transform.position.y, loweredPosition.position.y, ref fanceSmDampVelocity, fenceSmoothTime);
+            newPosition.y = Mathf.Lerp(transform.position.y, loweredPosition.position.y, loweredPosition.position.y / transform.position.y * Time.deltaTime * lerpTime);
             transform.position = newPosition;
+
             yield return null;
         }
     }
 
     private IEnumerator RaiseFence()
     {
-        while (Vector2.Distance(transform.position, raisedPosition.position) > 0.2f)
+        while (Vector2.Distance(transform.position, raisedPosition.position) > 0.1f)
         {
             Vector2 newPosition = transform.position;
-            newPosition.y = Mathf.SmoothDamp(transform.position.y, raisedPosition.position.y, ref fanceSmDampVelocity, fenceSmoothTime);
+            newPosition.y = Mathf.Lerp(transform.position.y, raisedPosition.position.y, transform.position.y/raisedPosition.position.y * Time.deltaTime * lerpTime);
+
             transform.position = newPosition;
+
             yield return null;
         }
     }

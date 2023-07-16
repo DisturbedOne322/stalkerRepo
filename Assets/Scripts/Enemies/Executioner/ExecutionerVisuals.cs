@@ -47,13 +47,14 @@ public class ExecutionerVisuals : MonoBehaviour
 
     private void FocusedHeadlight_OnExecutionerFound()
     {
+        lastLightenTime = Time.time;
+
         if (underLight)
             return;
 
         underLight = true;
         StartCoroutine(IncreaseAlpha());
         OnLighten?.Invoke(true);
-        lastLightenTime = Time.time;
     }
 
     private IEnumerator IncreaseAlpha()

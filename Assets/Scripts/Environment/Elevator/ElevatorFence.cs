@@ -48,6 +48,7 @@ public class ElevatorFence : MonoBehaviour
 
     private IEnumerator RaiseFence()
     {
+        yield return new WaitForSeconds(1.5f);
         while (Vector2.Distance(transform.position, raisedPosition.position) > 0.1f)
         {
             Vector2 newPosition = transform.position;

@@ -69,7 +69,7 @@ public class Elevator : MonoBehaviour
 
     private IEnumerator CallElevator(Vector3 destination)
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.5f);
         while (Vector2.Distance(transform.position, destination) > 5f)
         {
             Vector2 newPosition = transform.position;

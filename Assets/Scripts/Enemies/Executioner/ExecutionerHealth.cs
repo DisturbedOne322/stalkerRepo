@@ -6,9 +6,9 @@ using Unity.VisualScripting;
 
 public class ExecutionerHealth : MonoBehaviour, IDamagable
 {
-    [SerializeField]
     private int healthPoint;
 
+    [SerializeField]
     private int maxHealth;
 
     private bool underLight = false;
@@ -33,7 +33,6 @@ public class ExecutionerHealth : MonoBehaviour, IDamagable
     // Start is called before the first frame update
     void Start()
     {
-        maxHealth = healthPoint;
         ExecutionerVisuals executionerVisuals = GetComponent<ExecutionerVisuals>();
         executionerVisuals.OnLighten += ExecutionerVisuals_OnLighten;
     }

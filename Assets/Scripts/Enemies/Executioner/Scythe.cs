@@ -23,20 +23,15 @@ public class Scythe : MonoBehaviour
         {
             if (player.transform.position.x > transform.position.x)
             {
-                throwbackVector = new Vector2(1, 1);
+                throwbackVector = new Vector2(1, -1);
             }
             else
             {
-                throwbackVector = new Vector2(-1, 1);
+                throwbackVector = new Vector2(-1, -1);
             }
 
             player.GetDamaged(1);
             playerRb.AddForce(throwbackVector * throwbackForce, ForceMode2D.Impulse);
         }
-    }
-
-    public void ABS()
-    {
-
     }
 }

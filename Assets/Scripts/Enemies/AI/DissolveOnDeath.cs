@@ -23,19 +23,23 @@ public class DissolveOnDeath : MonoBehaviour, IDefeatable
     private void Start()
     {
         damagable = GetComponent<IDamagable>();
-        damagable.OnDeath += Damagable_OnDeath;
+        damagable.OnDeath += Damagable_OnDeath;        
+    }
 
+    private void OnEnable()
+    {
         dissolveMaterialArray = new Material[spriteRendererArray.Length];
-        for(int i = 0; i < spriteRendererArray.Length; i++)
+        for (int i = 0; i < spriteRendererArray.Length; i++)
         {
             dissolveMaterialArray[i] = spriteRendererArray[i].material;
         }
-        SetDissolveOnRenderer(maxDissolve);    
+        SetDissolveOnRenderer(maxDissolve);
     }
 
     private void OnDestroy()
     {
-        damagable.OnDeath -= Damagable_OnDeath;
+        if(damagable != null)
+            damagable.OnDeath -= Damagable_OnDeath;
     }
 
     private void Damagable_OnDeath()

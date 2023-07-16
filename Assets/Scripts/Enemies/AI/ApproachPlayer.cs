@@ -39,12 +39,18 @@ public class ApproachPlayer : MonoBehaviour
 
     private void OnDestroy()
     {
-        damagable.OnDeath -= Damagable_OnDeath;
+        if (damagable != null) { }
+            damagable.OnDeath -= Damagable_OnDeath;
     }
 
     private void Damagable_OnDeath()
     {
         isAlive = false;
+    }
+
+    private void OnEnable()
+    {
+        isAlive = true;
     }
 
     private void FixedUpdate()
@@ -74,7 +80,5 @@ public class ApproachPlayer : MonoBehaviour
         }
 
         OnPlayerInRange?.Invoke(playerInRange);
-
-
     }
 }

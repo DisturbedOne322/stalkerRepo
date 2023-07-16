@@ -12,6 +12,6 @@ public class InstantDeathArea : MonoBehaviour
             return;
         }
 
-        collision.gameObject.SetActive(false);
+        //collision.gameObject.SetActive(false);
     }
 }

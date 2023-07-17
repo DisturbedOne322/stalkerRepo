@@ -15,4 +15,5 @@ public class AudioClipsSO : ScriptableObject
     public AudioClip getHurtSound;
     public AudioClip heartbeatSound;
     public AudioClip boneCrackSound;
+    public AudioClip focusedLightStartup;
 }

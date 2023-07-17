@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -21,14 +23,20 @@ public class EnemySpawnManager : MonoBehaviour
     [Header("Executioner")]
     #region Executioner
     [SerializeField]
-    private GameObject executionerParent;
+    private GameObject executionerParentTransform;
     [SerializeField]
     private GameObject executionerPrefab;
     private GameObject executioner;
     private ExecutionerTriggerArea[] executionerTriggerAreas;
     #endregion
+    [Header("Executioner Mini Boss Fight")]
+    #region Executiner Mini Boss Fight
+    [SerializeField]
+    private ExecutionerMiniBossFightAreaTrigger executionerMiniBossFightTriggerArea;
+    public event Action OnBossFightStarted;
+    public event Action OnBossFightFinished;
+    #endregion
 
-    bool wtf = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +49,7 @@ public class EnemySpawnManager : MonoBehaviour
         #endregion
 
         #region Executiner Subscribe to trigger area events
-        executionerTriggerAreas = executionerParent.GetComponentsInChildren<ExecutionerTriggerArea>();
+        executionerTriggerAreas = executionerParentTransform.GetComponentsInChildren<ExecutionerTriggerArea>();
         executioner = Instantiate(executionerPrefab, Vector3.zero , Quaternion.identity);
         executioner.SetActive(false);
         for(int i = 0; i < executionerTriggerAreas.Length;i++)
@@ -49,7 +57,39 @@ public class EnemySpawnManager : MonoBehaviour
             executionerTriggerAreas[i].OnPlayerEnteredTriggerArea += EnemySpawnManager_OnPlayerEnteredTriggerArea;
         }
         #endregion
+
+        executionerMiniBossFightTriggerArea.OnPlayerStartedBossFight += ExecutionerMiniBossFightTriggerArea_OnPlayerStartedBossFight; ;
     }
+
+    private bool bossFightStarted = false;
+
+    private void ExecutionerMiniBossFightTriggerArea_OnPlayerStartedBossFight(Transform[] spawnPositions)
+    {
+        if(bossFightStarted)      
+            return;
+        
+        bossFightStarted = true;
+        OnBossFightStarted?.Invoke();
+        StartCoroutine(SpawnExecutioners(spawnPositions));
+    }
+
+    private IEnumerator SpawnExecutioners(Transform[] spawnPositions)
+    {
+        float delayBetweenSpawns = 4f;
+        for(int i = 1; i < spawnPositions.Length; i++)
+        {
+            GameObject exec = Instantiate(executionerPrefab, spawnPositions[i].position, Quaternion.identity);
+            exec.GetComponent<ExecutionerHealth>().SetHealthTo1();
+            exec.GetComponent<ApproachPlayer>().SetSpeed(0.2f);
+            exec.GetComponent<DissolveOnDeath>().SetDissolveTicktime(0.015f);
+            delayBetweenSpawns -= 0.05f;
+            yield return new WaitForSeconds(delayBetweenSpawns);
+        }
+
+        yield return new WaitForSeconds(8);
+        OnBossFightFinished?.Invoke();
+    }
+
 
     private void EnemySpawnManager_OnPlayerEnteredTriggerArea(Transform parent)
     {

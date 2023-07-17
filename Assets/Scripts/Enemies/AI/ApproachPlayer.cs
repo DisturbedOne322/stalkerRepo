@@ -43,9 +43,16 @@ public class ApproachPlayer : MonoBehaviour
             damagable.OnDeath -= Damagable_OnDeath;
     }
 
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+
     private void Damagable_OnDeath()
     {
         isAlive = false;
+        speed = 0;
+        cdAfterAttack = 999f;
     }
 
     private void OnEnable()

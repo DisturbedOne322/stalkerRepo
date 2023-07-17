@@ -15,7 +15,13 @@ public class ElevatorSoundManager : MonoBehaviour
     [SerializeField]
     private AudioClip elevatorDoorsOpen;
 
+    [SerializeField]
+    private AudioClip breakSound;
+
     private PlayerMovement player;
+
+    [SerializeField]
+    private EnemySpawnManager enemySpawnManager;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +31,22 @@ public class ElevatorSoundManager : MonoBehaviour
         GetComponent<Elevator>().OnDeparted += ElevatorSoundManager_OnDeparted;
 
         player = GameManager.Instance.GetPlayerReference();
+        if (enemySpawnManager != null)
+        {
+            enemySpawnManager.OnBossFightStarted += EnemySpawnManager_OnBossFightStarted;
+            enemySpawnManager.OnBossFightFinished += EnemySpawnManager_OnBossFightFinished;
+        }
+    }
+
+    private void EnemySpawnManager_OnBossFightFinished()
+    {
+        audioSource.Play();
+    }
+
+    private void EnemySpawnManager_OnBossFightStarted()
+    {
+        audioSource.Stop();
+        audioSource.PlayOneShot(breakSound);
     }
 
     private void Update()

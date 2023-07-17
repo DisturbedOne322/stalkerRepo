@@ -86,6 +86,7 @@ public class SoundManager : MonoBehaviour
     {
         if (isFocusedLightEnabled)
         {
+            focusedLightAudioSource.PlayOneShot(audioClipsSO.focusedLightStartup);
             focusedLightCoolingAudioSource.Stop();
             focusedLightAudioSource.Play();
         }

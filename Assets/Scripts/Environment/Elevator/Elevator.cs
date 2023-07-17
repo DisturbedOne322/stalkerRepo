@@ -29,12 +29,31 @@ public class Elevator : MonoBehaviour
 
     private bool moving = false;
 
+    [SerializeField]
+    private EnemySpawnManager spawnManager;
+
     // Start is called before the first frame update
     void Start()
     {
         terminalUpper.OnCallElevator += TerminalUpper_OnCallElevator;
         terminalButtom.OnCallElevator += TerminalButtom_OnCallElevator;
         player = GameManager.Instance.GetPlayerReference();
+
+        if (spawnManager != null)
+        {
+            spawnManager.OnBossFightStarted += SpawnManager_OnBossFightStarted;
+            spawnManager.OnBossFightFinished += SpawnManager_OnBossFightFinished;
+        }
+    }
+
+    private void SpawnManager_OnBossFightStarted()
+    {
+        StopAllCoroutines();
+    }
+
+    private void SpawnManager_OnBossFightFinished()
+    {
+        StartCoroutine(CallElevator(startPoint.position));
     }
 
     private void TerminalButtom_OnCallElevator()
@@ -54,6 +73,8 @@ public class Elevator : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (moving)
+            return;
+        if (!collision.gameObject.CompareTag("Player"))
             return;
 
         OnDeparted?.Invoke();

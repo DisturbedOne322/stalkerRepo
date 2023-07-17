@@ -30,6 +30,11 @@ public class ExecutionerHealth : MonoBehaviour, IDamagable
         healthPoint = maxHealth;
     }
 
+    public void SetHealthTo1()
+    {
+        healthPoint = 1;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

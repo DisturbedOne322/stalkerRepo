@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832b48f33dedbe846979b3377f7d7ad3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 13
+  maxHealth: 7
 --- !u!114 &2115405925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,6 +377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sliceSound1: {fileID: 8300000, guid: 50f04aac2c9b4174382db9d71e2e9b75, type: 3}
   sliceSound2: {fileID: 8300000, guid: ad273c016655c4945ad08669badc54a8, type: 3}
+  spawnSound: {fileID: 0}
 --- !u!114 &1695624022
 MonoBehaviour:
   m_ObjectHideFlags: 0

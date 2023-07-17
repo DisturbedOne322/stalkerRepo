@@ -62,6 +62,11 @@ public class DissolveOnDeath : MonoBehaviour, IDefeatable
         gameObject.SetActive(false);
     }
 
+    public void SetDissolveTicktime(float time)
+    {
+        dissolveTickTime = time;
+    }
+
     private void SetDissolveOnRenderer(float amount)
     {
         for (int i = 0; i < spriteRendererArray.Length; i++)

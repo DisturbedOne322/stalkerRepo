@@ -15,7 +15,7 @@ public class FocusedHeadlight : MonoBehaviour
     public static event Action OnGhostFound;
     public static event Action<TentacleStateManager> OnTentacleFound;
 
-    public static event Action OnExecutionerFound;
+    public event Action<ExecutionerVisuals> OnExecutionerFound;
 
     private float focusSpeed = 1;
     private float lightSmDampVelocity;
@@ -28,7 +28,7 @@ public class FocusedHeadlight : MonoBehaviour
     {
         get { return currentFocusedLightCapacity; }
     }
-    private readonly float focusedLightSpendRate = 0.15f;//0.2f;
+    private float focusedLightSpendRate = 0.15f;//0.2f;
     private readonly float focusedLightRestoreRate = 0.075f;
 
 
@@ -55,6 +55,11 @@ public class FocusedHeadlight : MonoBehaviour
     private float headlightBoxSizeMultiplier = 0.4f;
     private float growSpeed = 0.25f;
 
+    private bool automaticLight = false;
+
+    [SerializeField]
+    private EnemySpawnManager enemySpawnManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +69,23 @@ public class FocusedHeadlight : MonoBehaviour
         InvokeRepeating("TryToBrakeHeadlight", 0, 0.5f);
         currentFocusedLightCapacity = focusedLightCapacity;
         focusedHeadlightBoxPoints = new Vector2[3];
+        enemySpawnManager.OnBossFightStarted += EnemySpawnManager_OnBossFightStarted;
+        enemySpawnManager.OnBossFightFinished += EnemySpawnManager_OnBossFightFinished;
+    }
+
+    private void EnemySpawnManager_OnBossFightFinished()
+    {
+        focusedLightSpendRate = 0.15f;
+        focusedLightEnabled = false;
+        automaticLight = false;
+    }
+
+    private void EnemySpawnManager_OnBossFightStarted()
+    {
+        focusedLightSpendRate = 0f;
+        focusedLightEnabled = true;
+        automaticLight = true;
+        SoundManager.Instance.PlayFocusedLightSound(focusedLightEnabled);
     }
 
     private void OnDestroy()
@@ -89,13 +111,16 @@ public class FocusedHeadlight : MonoBehaviour
             hit = Physics2D.BoxCast(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, executionerLayerMask);
             if (hit)
             {
-                OnExecutionerFound?.Invoke();
+                OnExecutionerFound?.Invoke(hit.collider.GetComponent<ExecutionerVisuals>());
             }
             BoxCastDrawer.Draw(hit, transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right);
          }
     }
     private void Instance_OnHeadlightAction()
     {
+        if (automaticLight)
+            return;
+
         if(!focusedLightEnabled)
         {
             if(currentFocusedLightCapacity < 0.2f)

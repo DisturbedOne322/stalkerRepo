@@ -28,10 +28,11 @@ public class ExecutionerVisuals : MonoBehaviour
 
     private ApproachPlayer approachPlayer;
 
+
     private void Start()
     {
-        defaultAlpha = spriteRenderer.color.a;
-        FocusedHeadlight.OnExecutionerFound += FocusedHeadlight_OnExecutionerFound;
+        defaultAlpha = 0.25f;
+        GameManager.Instance.GetPlayerReference().GetComponentInChildren<FocusedHeadlight>().OnExecutionerFound += FocusedHeadlight_OnExecutionerFound;
         approachPlayer = GetComponent<ApproachPlayer>();
         approachPlayer.OnPlayerInRange += ApproachPlayer_OnPlayerInRange;
         animator = GetComponent<Animator>();
@@ -45,8 +46,11 @@ public class ExecutionerVisuals : MonoBehaviour
         }
     }
 
-    private void FocusedHeadlight_OnExecutionerFound()
+    private void FocusedHeadlight_OnExecutionerFound(ExecutionerVisuals obj)
     {
+        if (obj != this)
+            return;
+
         lastLightenTime = Time.time;
 
         if (underLight)
@@ -96,5 +100,12 @@ public class ExecutionerVisuals : MonoBehaviour
             underLight = false;
             StartCoroutine(ReduceAlpha());
         }
+    }
+
+    private void OnEnable()
+    {
+        Color temp = spriteRenderer.color;
+        temp.a = defaultAlpha;
+        spriteRenderer.color = temp;
     }
 }

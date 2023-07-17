@@ -12,7 +12,8 @@ public class ExecutionerSoundManager : MonoBehaviour
     private AudioClip sliceSound1;
     [SerializeField] 
     private AudioClip sliceSound2;
-
+    [SerializeField]
+    private AudioClip spawnSound;
     private ExecutionerHealth health;
 
     // Start is called before the first frame update
@@ -43,6 +44,7 @@ public class ExecutionerSoundManager : MonoBehaviour
     private void OnEnable()
     {
         audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(spawnSound);
         audioSource.volume = 1;
     }
 

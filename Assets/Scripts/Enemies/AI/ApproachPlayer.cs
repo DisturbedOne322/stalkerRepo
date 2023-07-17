@@ -39,7 +39,7 @@ public class ApproachPlayer : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (damagable != null) { }
+        if (damagable != null)
             damagable.OnDeath -= Damagable_OnDeath;
     }
 

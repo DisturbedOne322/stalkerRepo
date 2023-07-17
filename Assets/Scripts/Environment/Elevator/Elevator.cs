@@ -39,17 +39,37 @@ public class Elevator : MonoBehaviour
 
     private void TerminalButtom_OnCallElevator()
     {
+        StopAllCoroutines();
         StartCoroutine(CallElevator(endPoint.position));
         OnDeparted?.Invoke();
     }
 
     private void TerminalUpper_OnCallElevator()
     {
+        StopAllCoroutines();
         StartCoroutine(CallElevator(startPoint.position));
         OnDeparted?.Invoke();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (moving)
+            return;
+
+        OnDeparted?.Invoke();
+
+        destination = Vector2.Distance(transform.position, startPoint.position)
+            > Vector2.Distance(transform.position, endPoint.position) ?
+            startPoint.position : endPoint.position;
+
+        StartCoroutine(CallElevator(destination));
+
+        player.transform.parent = this.transform;
+
+        moving = true;
+    }
+
+    private void OnTriggerEnter2D(Collision2D collision)
     {
         if (moving)
             return;
@@ -69,7 +89,7 @@ public class Elevator : MonoBehaviour
 
     private IEnumerator CallElevator(Vector3 destination)
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(4f);
         while (Vector2.Distance(transform.position, destination) > 5f)
         {
             Vector2 newPosition = transform.position;

@@ -8,6 +8,9 @@ public class ElevatorFence : MonoBehaviour
     private Elevator elevator;
 
     [SerializeField]
+    private Terminal terminal;
+
+    [SerializeField]
     private Transform loweredPosition;
 
     [SerializeField]
@@ -30,6 +33,8 @@ public class ElevatorFence : MonoBehaviour
 
     private void Elevator_OnArrived()
     {
+        if (!terminal.ElevatorArrived)
+            return;
         StopAllCoroutines();
         StartCoroutine(LowerFence());
     }

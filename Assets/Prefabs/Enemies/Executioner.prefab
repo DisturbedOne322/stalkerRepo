@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetDistance: 3
-  speed: 1
+  speed: 0.8
   cdAfterAttack: 2.5
 --- !u!114 &73500546113893035
 MonoBehaviour:

@@ -21,6 +21,10 @@ public class Terminal : MonoBehaviour
     private bool calledElevator = false;
 
     private bool elevatorArrived = false;
+    public bool ElevatorArrived
+    {
+        get { return elevatorArrived; }
+    }
 
     private AudioSource audioSource;
     [SerializeField]
@@ -38,10 +42,10 @@ public class Terminal : MonoBehaviour
         elevator.OnArrived += Elevator_OnArrived;
     }
 
-
     private void Elevator_OnArrived()
     {
         light.intensity = 2;
+        calledElevator = false;
     }
 
     private void Instance_OnInteract()
@@ -66,8 +70,20 @@ public class Terminal : MonoBehaviour
     {
         playerInRange = obj;
     }
-    private void OnTriggerStay2D(Collider2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        elevatorArrived = collision.gameObject.CompareTag("Elevator");
+        if(collision.gameObject.CompareTag("Elevator"))
+        {
+            elevatorArrived = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Elevator"))
+        {
+            elevatorArrived = false;
+        }
     }
 }

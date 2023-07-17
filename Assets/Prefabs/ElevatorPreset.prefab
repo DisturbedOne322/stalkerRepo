@@ -588,7 +588,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 933083889501028015}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 337.93, y: -219.1, z: 0}
+  m_LocalPosition: {x: 337.93, y: -134.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -813,6 +813,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 933083889541951991}
+  - component: {fileID: 2143156159}
   m_Layer: 0
   m_Name: TowerLeft (1)
   m_TagString: Untagged
@@ -847,6 +848,32 @@ Transform:
   m_Father: {fileID: 933083890792415883}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &2143156159
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933083889541951988}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.24264526, y: -48.911835}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5147095, y: 109.197845}
+  m_EdgeRadius: 0
 --- !u!1 &933083889603960989
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,7 +1424,7 @@ GameObject:
   - component: {fileID: 933083889913598745}
   - component: {fileID: 1099224404}
   m_Layer: 0
-  m_Name: TerminalButtom
+  m_Name: TerminalBottom
   m_TagString: Elevator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1817,7 +1844,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 933083890195103222}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 338.02, y: -223.631, z: 0}
+  m_LocalPosition: {x: 337.93, y: -223.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2343,7 +2370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 933083890342396221}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.964, y: -0.93, z: 0}
+  m_LocalPosition: {x: -1.964, y: -0.96, z: 0}
   m_LocalScale: {x: 2.45, y: 3.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3084,6 +3111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elevator: {fileID: 933083889501028001}
+  thisTerminal: {fileID: 933083889913598745}
   loweredPosition: {fileID: 933083890342396220}
   raisedPosition: {fileID: 933083891297856118}
 --- !u!1 &933083890643113160
@@ -3480,6 +3508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elevator: {fileID: 933083889501028001}
+  thisTerminal: {fileID: 933083890304247084}
   loweredPosition: {fileID: 933083889380383148}
   raisedPosition: {fileID: 933083889750959934}
 --- !u!1 &933083890713523524
@@ -3911,6 +3940,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 933083890789589126}
+  - component: {fileID: 173237968}
   m_Layer: 0
   m_Name: TowerLeft
   m_TagString: Untagged
@@ -3945,6 +3975,32 @@ Transform:
   m_Father: {fileID: 933083890792415883}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &173237968
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933083890789589127}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.6848297, y: -63.82785}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.70224, y: 87.44815}
+  m_EdgeRadius: 0
 --- !u!1 &933083890792415880
 GameObject:
   m_ObjectHideFlags: 0
@@ -4880,7 +4936,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 933083891304489545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 338.02, y: -125.4, z: 0}
+  m_LocalPosition: {x: 337.93, y: -125.649, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4960,6 +5016,14 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2541596936989211227, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Size.x
+      value: 2.047146
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541596936989211227, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.7035732
+      objectReference: {fileID: 0}
     - target: {fileID: 2541596937808371516, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_Name
       value: ElevatorEntrance (1)
@@ -5014,6 +5078,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+--- !u!1 &3438333561209950349 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2541596936989211230, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+  m_PrefabInstance: {fileID: 933083889584270035}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1111652797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3438333561209950349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 499c1978054339945b9fc7d60dfebe68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3438333562297169388 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2541596937808371519, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
@@ -5096,6 +5177,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 933083889244826689}
     m_Modifications:
+    - target: {fileID: 2541596936989211227, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Size.x
+      value: 1.8841639
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541596936989211227, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.622082
+      objectReference: {fileID: 0}
     - target: {fileID: 2541596937808371516, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_Name
       value: ElevatorEntrance
@@ -5146,6 +5235,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+--- !u!1 &933083889768718378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2541596936989211230, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+  m_PrefabInstance: {fileID: 3438333561025567348}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1768597683838243348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933083889768718378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 499c1978054339945b9fc7d60dfebe68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &933083890995840331 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2541596937808371519, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}

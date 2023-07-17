@@ -5,7 +5,7 @@ using static UnityEditor.PlayerSettings;
 
 public class EnemySpawnManager : MonoBehaviour
 {
-
+    [Header("Tentacle")]
     #region Tentacles
     [SerializeField]
     private GameObject tentaclePrefab;
@@ -18,6 +18,7 @@ public class EnemySpawnManager : MonoBehaviour
     private Transform[] tentacleIdleSpawnPoints;
     private Transform[] tentacleAttackSpawnPoints;
     #endregion
+    [Header("Executioner")]
     #region Executioner
     [SerializeField]
     private GameObject executionerParent;

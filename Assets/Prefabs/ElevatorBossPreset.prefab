@@ -1752,6 +1752,7 @@ MonoBehaviour:
   terminalButtom: {fileID: 3547438333905829089}
   endPoint: {fileID: 3547438333657879153}
   startPoint: {fileID: 3547438334763077040}
+  spawnManager: {fileID: 0}
 --- !u!114 &3547438334049964379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1914,6 +1915,8 @@ MonoBehaviour:
   elevatorArrivedScreech: {fileID: 8300000, guid: 08bd120d30197db4ca0ac1f3c861a621, type: 3}
   elevatorDepartedScreech: {fileID: 8300000, guid: b76e3ff78eb4a13488c2370d94e1515c, type: 3}
   elevatorDoorsOpen: {fileID: 8300000, guid: eaeb2c1d5c5961145b422f429bad4ebe, type: 3}
+  breakSound: {fileID: 0}
+  enemySpawnManager: {fileID: 0}
 --- !u!1 &3547438334076149260
 GameObject:
   m_ObjectHideFlags: 0
@@ -5602,7 +5605,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3547438335562730063}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 219.3, y: -87, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

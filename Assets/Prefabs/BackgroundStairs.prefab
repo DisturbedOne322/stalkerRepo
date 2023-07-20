@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 10222157}
   - component: {fileID: 3984015015715496119}
   - component: {fileID: 157100675}
+  - component: {fileID: 4475235826239338233}
   m_Layer: 8
   m_Name: stairs
   m_TagString: Untagged
@@ -122,10 +123,22 @@ SurfaceEffector2D:
     m_Bits: 4294967295
   m_Speed: -2.3
   m_SpeedVariation: 0
-  m_ForceScale: 0.1
+  m_ForceScale: 0.7
   m_UseContactForce: 1
   m_UseFriction: 1
   m_UseBounce: 0
+--- !u!114 &4475235826239338233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10222155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2c05d419b502247935f66e77a41272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &35713571
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,7 +415,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7711778848219224275}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.36026, y: -7.3313694, z: -0.08869688}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 12, y: 7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

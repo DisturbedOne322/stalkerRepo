@@ -45,5 +45,6 @@ public class TentacleAttackState : TentaclesBaseState
     {
         QTE.instance.StartQTE(manager, QTE.QTE_TYPE.SmashingButtons);
         manager.SwitchState(manager.shrinkState);
+        manager.pullingPlayer = true;
     }
 }

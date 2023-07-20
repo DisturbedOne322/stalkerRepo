@@ -16,6 +16,7 @@ public class HellHoundVisuals : MonoBehaviour
 
     [SerializeField]
     private PlayerInRange playerDetection;
+    private bool playerFound = false;
 
     private PlayerMovement player;
 
@@ -79,12 +80,12 @@ public class HellHoundVisuals : MonoBehaviour
     private void PlayerDetection_OnPlayerInRange(PlayerMovement player)
     {
         animator.SetBool(WALK_ANIM, true);
-        this.player = player;
+        playerFound = true;
     }
 
     private void Update()
     {
-        if(player!=null)
+        if(player!=null && playerFound)
         {
             var scale = transform.localScale;
             scale.x = transform.position.x > player.transform.position.x? 5 : -5;

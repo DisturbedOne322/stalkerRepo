@@ -182,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         
 
-        movementDirection = InputManager.Instance.GetMovementVector();
+        movementDirection = InputManager.Instance.GetMovementDirection();
         isMoving = movementDirection != 0;
         if (isMoving && isGrounded)
         {
@@ -243,6 +243,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void GetDamaged(int damage)
     {
+        if (healthPoints <= 0)
+            return;
+
         healthPoints -= damage;
         OnHealthChanged?.Invoke(healthPoints * 1.0f / maxHealthPoints > 0.5f? GameManager.PlayerHealthStatus.HighHP:
             healthPoints * 1.0f / maxHealthPoints > 0.25f ? GameManager.PlayerHealthStatus.MidHP : GameManager.PlayerHealthStatus.LowHP);

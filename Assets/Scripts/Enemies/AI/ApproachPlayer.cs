@@ -13,9 +13,12 @@ public class ApproachPlayer : MonoBehaviour
 
     //approach player until this distance
     [SerializeField]
+    private float targetDistanceInitial;
     private float targetDistance;
+    private float maxTargetOffset = 3;
 
     [SerializeField]
+    private float initialSpeed;
     private float speed;
 
     [SerializeField]
@@ -31,10 +34,13 @@ public class ApproachPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        speed = initialSpeed; 
         rb = GetComponent<Rigidbody2D>();   
         player = GameManager.Instance.GetPlayerReference();
         damagable = GetComponentInParent<IDamagable>();
         damagable.OnDeath += Damagable_OnDeath;
+
+        targetDistance = UnityEngine.Random.Range(targetDistanceInitial - maxTargetOffset, targetDistanceInitial);
     }
 
     private void OnDestroy()
@@ -45,7 +51,7 @@ public class ApproachPlayer : MonoBehaviour
 
     public void SetSpeed(float speed)
     {
-        this.speed = speed;
+        this.initialSpeed = speed;
     }
 
     private void Damagable_OnDeath()
@@ -53,11 +59,14 @@ public class ApproachPlayer : MonoBehaviour
         isAlive = false;
         speed = 0;
         cdAfterAttack = 999f;
+        rb.velocity = Vector3.zero;
     }
 
     private void OnEnable()
     {
         isAlive = true;
+        cdAfterAttack = 0f;
+        speed = initialSpeed;
     }
 
     private void FixedUpdate()

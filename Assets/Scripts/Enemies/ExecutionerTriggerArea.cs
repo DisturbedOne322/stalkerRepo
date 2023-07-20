@@ -14,7 +14,7 @@ public class ExecutionerTriggerArea : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             OnPlayerEnteredTriggerArea?.Invoke(spawnPos.transform);
-            this.enabled = false;
+            gameObject.SetActive(false);
         }
     }
 }

@@ -106,7 +106,7 @@ public class Animations : MonoBehaviour
             animator.SetBool(RUNNING_ANIMATION, false);
             return;
         }
-        float movement = InputManager.Instance.GetMovementVector();
+        float movement = InputManager.Instance.GetMovementDirection();
         if(movement != 0) 
         {
             animator.SetBool(RUNNING_ANIMATION, true);

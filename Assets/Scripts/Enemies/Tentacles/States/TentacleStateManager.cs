@@ -102,7 +102,7 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
         Vector2 newColliderPosition = new Vector2(0, spriteRenderer.gameObject.transform.localPosition.y);
         boxCollider2D.offset = newColliderPosition;
 
-        if (pullingPlayer)
+        if (pullingPlayer && !playerFreed)
         {
             player.transform.position = playerHoldPoint.position;
         }
@@ -123,7 +123,6 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        pullingPlayer = true;
         currentState.OnCollisionEnter(this, collision);
     }
 

@@ -546,6 +546,7 @@ MonoBehaviour:
   shootTargerPoint: {fileID: 0}
   barrellParticles: {fileID: 6635067745820218116}
   sparksParticles: {fileID: 6635067745092895802}
+  currentBulletNum: 12
 --- !u!114 &6635067744286494363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,6 +970,10 @@ MonoBehaviour:
   tentacleLayerMask:
     serializedVersion: 2
     m_Bits: 4096
+  executionerLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  enemySpawnManager: {fileID: 0}
 --- !u!1 &6635067744503959453
 GameObject:
   m_ObjectHideFlags: 0
@@ -6078,7 +6083,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6635067745223172612}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.441656, y: -3.87, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

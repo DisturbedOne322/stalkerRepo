@@ -15,14 +15,20 @@ public class ApproachPlayer : MonoBehaviour
     [SerializeField]
     private float targetDistanceInitial;
     private float targetDistance;
-    private float maxTargetOffset = 3;
+
+    [SerializeField]
+    private float maxFollowDistance;
+
+    [SerializeField]
+    private float maxTargetOffset = 0;
 
     [SerializeField]
     private float initialSpeed;
     private float speed;
 
     [SerializeField]
-    private float cdAfterAttack = 0;
+    private float cdAfterAttackTotal = 3;
+    private float cdAfterAttack;
     private float lastAttackTime;
 
     private bool inCD = false;
@@ -65,7 +71,7 @@ public class ApproachPlayer : MonoBehaviour
     private void OnEnable()
     {
         isAlive = true;
-        cdAfterAttack = 0f;
+        cdAfterAttack = cdAfterAttackTotal;
         speed = initialSpeed;
     }
 
@@ -84,7 +90,12 @@ public class ApproachPlayer : MonoBehaviour
         }
 
         Vector2 vectorToPlayer = (player.transform.position - transform.position).normalized;
-        bool playerInRange = Vector2.Distance(player.transform.position, transform.position) < targetDistance;
+
+        float distance = Vector2.Distance(player.transform.position, transform.position);
+        bool playerInRange = distance < targetDistance;
+
+        if (distance > maxFollowDistance)
+            return;
 
         if (!playerInRange)
             rb.AddForce(vectorToPlayer * speed);

@@ -17,6 +17,8 @@ public class LookAtMouse : MonoBehaviour
     private bool focusFeature;
     private bool focused;
 
+    private bool playerDead = false;
+
     public bool Focused
     {
         get { return focused; }
@@ -38,6 +40,12 @@ public class LookAtMouse : MonoBehaviour
             InputManager.Instance.OnFocusActionEnded += InputManager_OnFocusActionEnded;
         }
         player = GetComponentInParent<PlayerMovement>();
+        player.OnPlayerDied += Player_OnPlayerDied;
+    }
+
+    private void Player_OnPlayerDied()
+    {
+        playerDead = true;
     }
 
     private void OnDestroy()
@@ -47,6 +55,7 @@ public class LookAtMouse : MonoBehaviour
             InputManager.Instance.OnFocusActionStarted -= InputManager_OnFocusAction;
             InputManager.Instance.OnFocusActionEnded -= InputManager_OnFocusActionEnded;
         }
+        player.OnPlayerDied -= Player_OnPlayerDied;
     }
 
     private void InputManager_OnFocusActionEnded()
@@ -61,6 +70,9 @@ public class LookAtMouse : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (playerDead)
+            return;
+
         if (GameManager.Instance.gamePaused)
             return;
         if (Idle.IsIdle)

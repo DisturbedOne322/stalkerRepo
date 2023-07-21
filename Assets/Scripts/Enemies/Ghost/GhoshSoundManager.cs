@@ -23,8 +23,11 @@ public class GhoshSoundManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        ghost.OnBurstAttack -= Ghost_OnBurstAttack;
-        ghost.OnGhostSpotted -= Ghost_OnGhostSpotted;
+        if(ghost!=null)
+        {
+            ghost.OnBurstAttack -= Ghost_OnBurstAttack;
+            ghost.OnGhostSpotted -= Ghost_OnGhostSpotted;
+        }
     }
 
     private void Ghost_OnGhostSpotted()

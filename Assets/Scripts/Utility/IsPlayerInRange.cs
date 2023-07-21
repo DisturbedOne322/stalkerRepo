@@ -19,12 +19,14 @@ public class IsPlayerInRange : MonoBehaviour
         StartCoroutine(EvaluatePlayerInRange());
     }
 
+    private WaitForSeconds delay = new WaitForSeconds(0.01f);
+
     private IEnumerator EvaluatePlayerInRange()
     {
         while(true)
         {
             OnPlayerInRange?.Invoke(Vector2.Distance(transform.position, player.transform.position) < desiredDistance);
-            yield return new WaitForSeconds(0.01f);
+            yield return delay;
         }
     }
 }

@@ -800,8 +800,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetDistanceInitial: 10
+  maxFollowDistance: 35
+  maxTargetOffset: 4
   initialSpeed: 0.02
-  cdAfterAttack: 0
+  cdAfterAttackTotal: 1.5
 --- !u!114 &1687306631
 MonoBehaviour:
   m_ObjectHideFlags: 0

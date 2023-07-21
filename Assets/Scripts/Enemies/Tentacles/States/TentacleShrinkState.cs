@@ -55,7 +55,5 @@ public class TentacleShrinkState : TentaclesBaseState
     }
     public override void OnCollisionEnter(TentacleStateManager manager, Collider2D collision)
     {
-        manager.pullingPlayer = true;
-        QTE.instance.StartQTE(manager, QTE.QTE_TYPE.SmashingButtons);
     }
 }

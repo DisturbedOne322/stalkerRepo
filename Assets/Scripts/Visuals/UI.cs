@@ -14,6 +14,10 @@ public class UI : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI weaponJammedNotification;
+    [SerializeField]
+    private Transform weaponJamNotificationStartPos;
+    [SerializeField]
+    private Transform weaponJamNotificationEndPos;
 
     [SerializeField]
     private Slider staminaSlider;
@@ -29,9 +33,6 @@ public class UI : MonoBehaviour
 
     [SerializeField]
     private Image saveGameIcon;
-
-    private float notificationEnabledTimer;
-    private float notificationEnabledTimerTotal = 2f;
 
     //magazine UI
     [SerializeField]
@@ -179,16 +180,77 @@ public class UI : MonoBehaviour
     private void Shoot_OnSuccessfulReload(int magSize)
     {
         magazineBulletCountText.text = magSize + "/" + magSize;
-        StopAllCoroutines();
+
+        StopCoroutine(HideBullet(0));
+        StopCoroutine(ReappearBullets(0));
+        StopCoroutine(ShowBullet(0)); 
+
         StartCoroutine(ReappearBullets(magSize));
         bulletsShot = 0;
     }
 
+    #region Weapon Jam Notification
+
+    private bool notificationShown = false;
+
+    private readonly float jamNotificationStayDurationTotal = 1f;
+    private float jamNotificationStayDuration;
+
+    private Vector3 smDampJamNotificationVelocity;
+
+    private readonly float smDampJamNotificationAppearTime = 0.5f;
+    private readonly float smDampJamNotificationDisappearTime = 1;
+
     private void Shoot_OnWeaponJammed()
     {
-        weaponJammedNotification.enabled = true;
-        notificationEnabledTimer = notificationEnabledTimerTotal;
+        jamNotificationStayDuration = jamNotificationStayDurationTotal;
+        
+        if(!notificationShown)
+            StartCoroutine(ShowJamNotification(smDampJamNotificationAppearTime));
     }
+    
+    private IEnumerator ShowJamNotification(float duration)
+    {
+        notificationShown = true;
+
+        while(duration > 0)
+        {
+            weaponJammedNotification.transform.position =
+                Vector3.SmoothDamp(weaponJammedNotification.transform.position,
+                weaponJamNotificationEndPos.transform.position, ref smDampJamNotificationVelocity, duration);
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+
+        StartCoroutine(StayJamNotification());
+    }
+
+    private IEnumerator StayJamNotification()
+    {
+        while(jamNotificationStayDuration > 0)
+        {
+            jamNotificationStayDuration -= Time.deltaTime;
+            yield return null;
+        }
+
+        StartCoroutine(HideJamNotification(smDampJamNotificationDisappearTime));
+    }
+
+    private IEnumerator HideJamNotification(float duration)
+    {
+        while(duration > 0)
+        {
+            weaponJammedNotification.transform.position =
+                Vector3.SmoothDamp(weaponJammedNotification.transform.position,
+                weaponJamNotificationStartPos.transform.position, ref smDampJamNotificationVelocity, duration);
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+        notificationShown = false;
+    }
+
+    #endregion
+
 
     private void Shoot_OnSuccessfulShoot(int bullets, int magSize)
     {
@@ -248,11 +310,5 @@ public class UI : MonoBehaviour
         staminaSlider.value = player.Stamina;
 
         headlightCapacitySlider.value = focusedHeadlight.CurrentFocusedLightCapacity;
-
-        notificationEnabledTimer -= Time.deltaTime;
-        if (notificationEnabledTimer < 0)
-        {
-            weaponJammedNotification.enabled = false;
-        }
     }
 }

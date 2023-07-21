@@ -11,15 +11,24 @@ public class PlayerVisuals : MonoBehaviour
 
     public static float PlayerScale;
 
-    private bool isAlive = true;
+    private bool playerDead = false;
 
     private void Start()
     {
         player = GetComponent<PlayerMovement>();
+        player.OnPlayerDied += Player_OnPlayerDied;
+    }
+
+    private void Player_OnPlayerDied()
+    {
+        playerDead = true;
     }
 
     private void Update()
     {
+        if (playerDead)
+            return;
+
         if(pointingDirection.position.x > transform.position.x)
         {
             var scale = transform.localScale;

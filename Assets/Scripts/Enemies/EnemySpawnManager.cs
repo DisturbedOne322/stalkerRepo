@@ -1,12 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Profiling;
-using static UnityEditor.PlayerSettings;
 
 public class EnemySpawnManager : MonoBehaviour
 {
@@ -35,7 +30,7 @@ public class EnemySpawnManager : MonoBehaviour
     [Header("Executioner Mini Boss Fight")]
     [SerializeField]
     private ExecutionerMiniBossFightAreaTrigger executionerMiniBossFightTriggerArea;
-    public event Action OnBossFightStarted;
+    public event Action OnMiniBossFightStarted;
     public event Action OnBossFightFinished;
     #endregion
     #region Ghost
@@ -58,7 +53,6 @@ public class EnemySpawnManager : MonoBehaviour
     private GameObject fakePrefab;
     #endregion
 
-    List<GameObject> spawnedEnemies = new List<GameObject>();
     List<GameObject> spawnedExecutioners = new List<GameObject>();
 
     #region Checkpoints
@@ -80,19 +74,12 @@ public class EnemySpawnManager : MonoBehaviour
         teleporter = Instantiate(teleportedPrefab, Vector3.zero, Quaternion.identity);
         teleporter.SetActive(false);
 
-
-        //executionerMiniBossFightTriggerArea.OnPlayerStartedBossFight += ExecutionerMiniBossFightTriggerArea_OnPlayerStartedBossFight; ;
+        executionerMiniBossFightTriggerArea.OnPlayerStartedBossFight += ExecutionerMiniBossFightTriggerArea_OnPlayerStartedBossFight; ;
     }
 
-    private bool gameLoaded = false;
-
+    //instead of respawning enemies, scene is reloaded
     private void LoadData_OnGameLoaded(int lastCheckpointID)
     {
-        if(gameLoaded)
-        {
-            RespawnEnemies();
-        }    
-        gameLoaded = true;
         // + 1 to spawn enemies for the new checkpoint areas only
         lastCheckpointID = -1;
         for (int i = lastCheckpointID + 1; i < checkpoints.Length; i++)
@@ -101,42 +88,49 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
-    private void RespawnEnemies()
-    {
-        for(int i = spawnedEnemies.Count - 1; i >= 0;i--)
-        {
-            Destroy(spawnedEnemies[i]);
-            spawnedEnemies.RemoveAt(i);
-        }
+    //private void RespawnEnemies()
+    //{
+    //    for(int i = spawnedEnemies.Count - 1; i >= 0;i--)
+    //    {
+    //        Destroy(spawnedEnemies[i]);
+    //        spawnedEnemies.RemoveAt(i);
+    //    }
 
-        //foreach(GameObject enemy in spawnedExecutioners)
-        //{
-        //    Destroy(enemy);
-        //}
+    //    ResetMiniBossFight();
 
-        executioner = Instantiate(executionerPrefab, Vector3.zero, Quaternion.identity);
-        executioner.SetActive(false);
-
-        ghost = Instantiate(ghostPrefab, Vector3.zero, Quaternion.identity);
-        ghost.SetActive(false);
-
-        teleporter = Instantiate(teleportedPrefab, Vector3.zero, Quaternion.identity);
-        teleporter.SetActive(false);
-    }
+    //    executioner.SetActive(false);
+    //    ghost.SetActive(false);
+    //    teleporter.SetActive(false);
+    //}
 
     private void SpawnEnemies(int i)
     {
-        spawnedEnemies.AddRange(SpawnHellHoundPack(checkpoints[i].GetComponentsInChildren<HellHoundParentObject>()));
-        spawnedEnemies.AddRange(SpawnAttackTentacles(checkpoints[i].GetComponentsInChildren<TentacleAttackParentObject>()));
-        spawnedEnemies.AddRange(SpawnIdleTentacles(checkpoints[i].GetComponentsInChildren<TentaclesIdleParentObject>()));
-        ListenToOnPlayerEnterExecutionerTriggers(checkpoints[i].GetComponentsInChildren<ExecutionerTriggerArea>());
-        spawnedEnemies.Add(SpawnGhost(checkpoints[i].GetComponentInChildren<GhostParentObject>()));
-        spawnedEnemies.Add(SpawnTeleporter(checkpoints[i].GetComponentInChildren<TeleporterParentObject>()));
-        spawnedEnemies.AddRange(SpawnPlayerFakes(checkpoints[i].GetComponentsInChildren<PlayerFakeParentObject>()));
+        SpawnHellHoundPack(checkpoints[i].GetComponentsInChildren<HellHoundParentObject>());
+        SpawnAttackTentacles(checkpoints[i].GetComponentsInChildren<TentacleAttackParentObject>());
+        SpawnIdleTentacles(checkpoints[i].GetComponentsInChildren<TentaclesIdleParentObject>());
+        ListenToOnPlayerEnterExecutionerTriggers(checkpoints[i].GetComponentsInChildren<ExecutionerTriggerArea>(true));
+        SpawnGhost(checkpoints[i].GetComponentInChildren<GhostParentObject>());
+        SpawnTeleporter(checkpoints[i].GetComponentInChildren<TeleporterParentObject>());
+        SpawnPlayerFakes(checkpoints[i].GetComponentsInChildren<PlayerFakeParentObject>());
     }
 
+    #region regular enemies spawn logic
     private void ListenToOnPlayerEnterExecutionerTriggers(ExecutionerTriggerArea[] exec)
     {
+        bool respawn = false;
+        for(int i = 0; i < exec.Length; i++)
+        {
+            if (!exec[i].gameObject.activeSelf)
+            {
+                respawn = true;
+                exec[i].gameObject.SetActive(true);
+            }
+
+        }
+
+        if (respawn)
+            return;
+
         if (exec != null)
         {
             for(int i = 0; i < exec.Length;i++)
@@ -145,24 +139,21 @@ public class EnemySpawnManager : MonoBehaviour
     }
     private void Exec_OnPlayerEnteredTriggerArea(Transform parent)
     {
+        executioner.SetActive(false);
         executioner.SetActive(true);
         executioner.transform.position = parent.position;
     }
 
-    private List<GameObject> SpawnHellHoundPack(HellHoundParentObject[] parent)
+    private void SpawnHellHoundPack(HellHoundParentObject[] parent)
     {
         if (parent == null)
-            return null;
-
-        List<GameObject> spawned = new List<GameObject>();
+            return;
 
         for(int i = 0; i < parent.Length;i++)
         {
             GameObject corpse = Instantiate(corpsePrefab, new Vector3(0,0,0), Quaternion.identity);
             corpse.transform.position = parent[i].transform.position;
             corpse.transform.parent = parent[i].transform;
-
-            spawned.Add(corpse);
 
             int numOfDogs = UnityEngine.Random.Range(1, 4);
 
@@ -184,8 +175,6 @@ public class EnemySpawnManager : MonoBehaviour
                 GameObject temp = Instantiate(hellHoundPrefab, parent[i].transform);
                 temp.transform.position += new Vector3(offset, 0, 0);
 
-                spawned.Add(temp);
-
                 Vector3 scale = temp.transform.localScale;
                 scale.x *= side;
                 temp.transform.localScale = scale;
@@ -193,8 +182,6 @@ public class EnemySpawnManager : MonoBehaviour
                 side *= -1;
             }
         }
-
-        return spawned;
     }
 
     private bool IsPositionOccupied(float position, float[] positions, float offset)
@@ -210,22 +197,97 @@ public class EnemySpawnManager : MonoBehaviour
         return false;
     }
 
-    private bool bossFightStarted = false;
+    private void SpawnIdleTentacles(TentaclesIdleParentObject[] parent)
+    {
+        if(parent == null) 
+            return;
+
+
+        tentaclePrefab.GetComponent<TentacleStateManager>().initialState = TentacleStateManager.InitialState.idleState;
+
+        for (int i = 0; i < parent.Length; i++)
+        {
+            Instantiate(tentaclePrefab, parent[i].transform);
+        }
+
+    }
+
+    private void SpawnAttackTentacles(TentacleAttackParentObject[] parent)
+    {
+        if (parent == null)
+            return;
+
+        tentaclePrefab.GetComponent<TentacleStateManager>().initialState = TentacleStateManager.InitialState.attackState;
+
+        for (int i = 0; i < parent.Length; i++)
+        {
+            Instantiate(tentaclePrefab, parent[i].transform);
+        }
+    }
+
+    private void SpawnGhost(GhostParentObject parent)
+    {
+        if (parent == null)
+            return;
+
+        ghost.SetActive(true);
+        ghost.transform.parent = parent.transform;
+        ghost.transform.position = parent.transform.position;
+    }
+
+    private void SpawnTeleporter(TeleporterParentObject parent)
+    {
+        if (parent == null)
+            return;
+
+        teleporter.SetActive(true);
+        teleporter.transform.parent = parent.transform;
+        teleporter.transform.position = parent.transform.position;
+    }
+
+    private void SpawnPlayerFakes(PlayerFakeParentObject[] parent)
+    {
+        if (parent == null)
+            return;
+
+        for(int i = 0;i < parent.Length;i++)
+        {
+            GameObject temp = Instantiate(fakePrefab, parent[i].transform);
+            temp.SetActive(true);
+        }
+    }
+    #endregion
+
+    #region mini boss fight
+    private bool miniBossFightStarted = false;
+
+    //private void ResetMiniBossFight()
+    //{
+    //    StopAllCoroutines();
+
+    //    miniBossFightStarted = false;
+
+    //    for (int i = spawnedExecutioners.Count - 1; i >= 0; i--)
+    //    {
+    //        Destroy(spawnedExecutioners[i]);
+    //        spawnedExecutioners.RemoveAt(i);
+    //    }
+    //}
 
     private void ExecutionerMiniBossFightTriggerArea_OnPlayerStartedBossFight(Transform[] spawnPositions)
     {
-        if(bossFightStarted)      
+        if (miniBossFightStarted)
             return;
-        
-        bossFightStarted = true;
-        OnBossFightStarted?.Invoke();
+
+        miniBossFightStarted = true;
+        OnMiniBossFightStarted?.Invoke();
         StartCoroutine(SpawnExecutioners(spawnPositions));
     }
 
     private IEnumerator SpawnExecutioners(Transform[] spawnPositions)
     {
         float delayBetweenSpawns = 4f;
-        for(int i = 1; i < spawnPositions.Length; i++)
+        for (int i = 1; i < spawnPositions.Length; i++)
         {
             GameObject exec = Instantiate(executionerPrefab, spawnPositions[i].position, Quaternion.identity);
             exec.GetComponent<ExecutionerHealth>().SetHealthTo1();
@@ -238,80 +300,27 @@ public class EnemySpawnManager : MonoBehaviour
             yield return new WaitForSeconds(delayBetweenSpawns);
         }
 
-        yield return new WaitForSeconds(8);
+        StartCoroutine(CheckPlayerFinishedBossFight());
+    }
+
+    private IEnumerator CheckPlayerFinishedBossFight()
+    {
+        while(!CheckEveryExecutionerDead())
+        {
+            yield return new WaitForEndOfFrame();
+        }      
+
         OnBossFightFinished?.Invoke();
     }
 
-    private List<GameObject> SpawnIdleTentacles(TentaclesIdleParentObject[] parent)
+    private bool CheckEveryExecutionerDead()
     {
-        if(parent == null) 
-            return null;
-
-        List<GameObject> spawned = new List<GameObject>();  
-
-        tentaclePrefab.GetComponent<TentacleStateManager>().initialState = TentacleStateManager.InitialState.idleState;
-
-        for (int i = 0; i < parent.Length; i++)
+        for (int i = 0; i < spawnedExecutioners.Count; i++)
         {
-            spawned.Add(Instantiate(tentaclePrefab, parent[i].transform));
+            if (spawnedExecutioners[i].activeSelf)
+                return false;
         }
-
-        return spawned;
+        return true;
     }
-
-    private List<GameObject> SpawnAttackTentacles(TentacleAttackParentObject[] parent)
-    {
-        if (parent == null)
-            return null;
-
-        List<GameObject> spawned = new List<GameObject>();
-
-        tentaclePrefab.GetComponent<TentacleStateManager>().initialState = TentacleStateManager.InitialState.attackState;
-
-        for (int i = 0; i < parent.Length; i++)
-        {
-            spawned.Add(Instantiate(tentaclePrefab, parent[i].transform));
-        }
-        return spawned;
-    }
-
-    private GameObject SpawnGhost(GhostParentObject parent)
-    {
-        if (parent == null)
-            return null;
-
-        ghost.SetActive(true);
-        ghost.transform.parent = parent.transform;
-        ghost.transform.position = parent.transform.position;
-
-        return ghost;
-    }
-
-    private GameObject SpawnTeleporter(TeleporterParentObject parent)
-    {
-        if (parent == null)
-            return null;
-
-        teleporter.SetActive(true);
-        teleporter.transform.parent = parent.transform;
-        teleporter.transform.position = parent.transform.position;
-
-        return teleporter;
-    }
-
-    private List<GameObject> SpawnPlayerFakes(PlayerFakeParentObject[] parent)
-    {
-        if (parent == null)
-            return null;
-
-        List<GameObject> spawned = new List<GameObject>();
-        for(int i = 0;i < parent.Length;i++)
-        {
-            GameObject temp = Instantiate(fakePrefab, parent[i].transform);
-            temp.SetActive(true);
-            spawned.Add(temp);
-        }
-
-        return spawned;
-    }
+    #endregion
 }

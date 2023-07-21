@@ -41,7 +41,7 @@ public class Elevator : MonoBehaviour
 
         if (spawnManager != null)
         {
-            spawnManager.OnBossFightStarted += SpawnManager_OnBossFightStarted;
+            spawnManager.OnMiniBossFightStarted += SpawnManager_OnBossFightStarted;
             spawnManager.OnBossFightFinished += SpawnManager_OnBossFightFinished;
         }
     }

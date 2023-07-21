@@ -69,7 +69,7 @@ public class FocusedHeadlight : MonoBehaviour
         InvokeRepeating("TryToBrakeHeadlight", 0, 0.5f);
         currentFocusedLightCapacity = focusedLightCapacity;
         focusedHeadlightBoxPoints = new Vector2[3];
-        enemySpawnManager.OnBossFightStarted += EnemySpawnManager_OnBossFightStarted;
+        enemySpawnManager.OnMiniBossFightStarted += EnemySpawnManager_OnBossFightStarted;
         enemySpawnManager.OnBossFightFinished += EnemySpawnManager_OnBossFightFinished;
     }
 

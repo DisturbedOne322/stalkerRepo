@@ -18,7 +18,6 @@ public class TentacleDisappearState : TentaclesBaseState
     }
     public override void UpdateState(TentacleStateManager manager)
     {
-        
     }
     public override void OnCollisionEnter(TentacleStateManager manager, Collider2D collision)
     {

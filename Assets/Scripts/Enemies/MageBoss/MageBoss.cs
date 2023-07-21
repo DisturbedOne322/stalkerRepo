@@ -180,6 +180,8 @@ public class MageBoss : MonoBehaviour
         magicHoleVFX.SetActive(true);
     }
 
+    private WaitForSeconds outlineReturnDelay = new WaitForSeconds(0.05f);
+
     IEnumerator ReturnToNormalOutline()
     {
         Color c = new Color();
@@ -188,7 +190,7 @@ public class MageBoss : MonoBehaviour
         {
             c.r = red;
             material.SetColor(outlineColor, c);
-            yield return new WaitForSeconds(.05f);
+            yield return outlineReturnDelay;
         }
     }
 

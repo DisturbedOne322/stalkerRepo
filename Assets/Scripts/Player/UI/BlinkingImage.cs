@@ -27,6 +27,7 @@ public class BlinkingImage : MonoBehaviour
     {
         image = GetComponent<Image>();
         stepTime = step * animationTime * (maxAlpha / minAlpha);
+        stepTimeDelay = new WaitForSeconds(stepTime);
         if (maxAlpha < minAlpha)
         {
             Debug.LogError("Max alpha < min alpha");
@@ -45,6 +46,8 @@ public class BlinkingImage : MonoBehaviour
         }
     }
 
+    private WaitForSeconds stepTimeDelay;
+
     private IEnumerator IncreaseAlpha()
     {
         float currentAlpha = image.color.a;
@@ -55,7 +58,7 @@ public class BlinkingImage : MonoBehaviour
 
             image.color = temp;
 
-            yield return new WaitForSeconds(stepTime);
+            yield return stepTimeDelay;
         }
 
         StartCoroutine(ReduceAlpha());
@@ -71,7 +74,7 @@ public class BlinkingImage : MonoBehaviour
 
             image.color = temp;
 
-            yield return new WaitForSeconds(stepTime);
+            yield return stepTimeDelay;
         }
         StartCoroutine (IncreaseAlpha());
     }

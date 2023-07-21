@@ -33,7 +33,7 @@ public class ElevatorSoundManager : MonoBehaviour
         player = GameManager.Instance.GetPlayerReference();
         if (enemySpawnManager != null)
         {
-            enemySpawnManager.OnBossFightStarted += EnemySpawnManager_OnBossFightStarted;
+            enemySpawnManager.OnMiniBossFightStarted += EnemySpawnManager_OnBossFightStarted;
             enemySpawnManager.OnBossFightFinished += EnemySpawnManager_OnBossFightFinished;
         }
     }

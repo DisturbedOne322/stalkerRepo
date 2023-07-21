@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoadData : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class LoadData : MonoBehaviour
 
     private int LastCheckpointID;
 
+    private int sceneID = 1;
+    private float sceneReloadDelay = 4;
+
     private void Awake()
     {
         Instance = this;
@@ -45,7 +49,13 @@ public class LoadData : MonoBehaviour
     private void Player_OnPlayerDied()
     {
         loadScreenAnimator.SetTrigger(LOAD_SCREEN_TRIGGER);
-        StartCoroutine(LoadLastCheckpointAfterDeath());
+        StartCoroutine(ReloadScene());
+    }
+
+    private IEnumerator ReloadScene()
+    {
+        yield return new WaitForSeconds(sceneReloadDelay);
+        SceneManager.LoadScene(sceneID);
     }
 
     private void LoadGame(PlayerMovement player)
@@ -70,14 +80,14 @@ public class LoadData : MonoBehaviour
 
     }
 
-    private IEnumerator LoadLastCheckpointAfterDeath()
-    {
-        yield return new WaitForSeconds(4.3f);
+    //private IEnumerator LoadLastCheckpointAfterDeath()
+    //{
+    //    yield return new WaitForSeconds(4.3f);
 
-        player.RestoreFullHealth();
-        LoadSaveData();
-        LoadGame(player);
-    }
+    //    player.RestoreFullHealth();
+    //    LoadSaveData();
+    //    LoadGame(player);
+    //}
 
     private void LoadSaveData()
     {

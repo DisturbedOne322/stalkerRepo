@@ -32,6 +32,8 @@ public class Elevator : MonoBehaviour
     [SerializeField]
     private EnemySpawnManager spawnManager;
 
+    private ElevatorTerminal elevatorTerminal;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +46,22 @@ public class Elevator : MonoBehaviour
             spawnManager.OnMiniBossFightStarted += SpawnManager_OnBossFightStarted;
             spawnManager.OnBossFightFinished += SpawnManager_OnBossFightFinished;
         }
+
+        elevatorTerminal = GetComponentInChildren<ElevatorTerminal>();
+        elevatorTerminal.OnInteract += ElevatorTerminal_OnInteract;
+    }
+
+    private void ElevatorTerminal_OnInteract()
+    {
+        OnDeparted?.Invoke();
+
+        destination = Vector2.Distance(transform.position, startPoint.position)
+            > Vector2.Distance(transform.position, endPoint.position) ?
+            startPoint.position : endPoint.position;
+
+        StartCoroutine(CallElevator(destination));
+
+        player.transform.parent = this.transform;
     }
 
     private void SpawnManager_OnBossFightStarted()
@@ -72,22 +90,12 @@ public class Elevator : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (moving)
-            return;
-        if (!collision.gameObject.CompareTag("Player"))
-            return;
+        //if (moving)
+        //    return;
+        //if (!collision.gameObject.CompareTag("Player"))
+        //    return;
 
-        OnDeparted?.Invoke();
-
-        destination = Vector2.Distance(transform.position, startPoint.position)
-            > Vector2.Distance(transform.position, endPoint.position) ?
-            startPoint.position : endPoint.position;
-
-        StartCoroutine(CallElevator(destination));
-
-        player.transform.parent = this.transform;
-
-        moving = true;
+        //moving = true;
     }
 
     private void OnTriggerEnter2D(Collision2D collision)

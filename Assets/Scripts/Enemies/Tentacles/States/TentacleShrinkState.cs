@@ -41,6 +41,7 @@ public class TentacleShrinkState : TentaclesBaseState
 
         if(manager.pullingPlayer)
         {
+            manager.animator.SetFloat(PULL_SPEED, pullSpeed);
             var a = manager.animator.GetCurrentAnimatorStateInfo(0);
             float animTimeNormalized = a.normalizedTime > 1 ? 0.99f : a.normalizedTime;
             if(animTimeNormalized >= 0.6f &&  animTimeNormalized <= 0.65f)

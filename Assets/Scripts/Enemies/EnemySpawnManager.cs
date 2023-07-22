@@ -16,16 +16,16 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject executionerPrefab;
     private GameObject executioner;
+    #endregion
 
     [Header("Hell hound")]
     #region Hell hound
     [SerializeField]
     private GameObject hellHoundPrefab;
     [SerializeField]
-    private GameObject corpsePrefab;
+    private GameObject corpsePrefabs;
     #endregion
-
-    #endregion
+    
     #region Executiner Mini Boss Fight
     [Header("Executioner Mini Boss Fight")]
     [SerializeField]
@@ -38,7 +38,6 @@ public class EnemySpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject ghostPrefab;
-    private GameObject ghost;
     #endregion
     #region Teleporter
     [Header("Teleporter, must be only 1 in a map section")]
@@ -68,9 +67,6 @@ public class EnemySpawnManager : MonoBehaviour
         executioner = Instantiate(executionerPrefab, Vector3.zero, Quaternion.identity);
         executioner.SetActive(false);
 
-        ghost = Instantiate(ghostPrefab, Vector3.zero, Quaternion.identity);
-        ghost.SetActive(false);
-
         teleporter = Instantiate(teleportedPrefab, Vector3.zero, Quaternion.identity);
         teleporter.SetActive(false);
 
@@ -80,28 +76,13 @@ public class EnemySpawnManager : MonoBehaviour
     //instead of respawning enemies, scene is reloaded
     private void LoadData_OnGameLoaded(int lastCheckpointID)
     {
+        Debug.Log("Last check " + lastCheckpointID);
         // + 1 to spawn enemies for the new checkpoint areas only
-        lastCheckpointID = -1;
         for (int i = lastCheckpointID + 1; i < checkpoints.Length; i++)
         {
             SpawnEnemies(i);
         }
     }
-
-    //private void RespawnEnemies()
-    //{
-    //    for(int i = spawnedEnemies.Count - 1; i >= 0;i--)
-    //    {
-    //        Destroy(spawnedEnemies[i]);
-    //        spawnedEnemies.RemoveAt(i);
-    //    }
-
-    //    ResetMiniBossFight();
-
-    //    executioner.SetActive(false);
-    //    ghost.SetActive(false);
-    //    teleporter.SetActive(false);
-    //}
 
     private void SpawnEnemies(int i)
     {
@@ -144,6 +125,9 @@ public class EnemySpawnManager : MonoBehaviour
         executioner.transform.position = parent.position;
     }
 
+    int lastRandomIndex = -1;
+
+
     private void SpawnHellHoundPack(HellHoundParentObject[] parent)
     {
         if (parent == null)
@@ -151,11 +135,24 @@ public class EnemySpawnManager : MonoBehaviour
 
         for(int i = 0; i < parent.Length;i++)
         {
-            GameObject corpse = Instantiate(corpsePrefab, new Vector3(0,0,0), Quaternion.identity);
+            //int rand;
+            //do
+            //{
+            //    rand = UnityEngine.Random.Range(0, corpsePrefabs.Length);
+            //}while(rand == lastRandomIndex);
+
+            //rand = 0;
+
+            //lastRandomIndex = rand;
+
+            //Debug.Log(rand);
+
+            GameObject corpse = Instantiate(corpsePrefabs
+                , new Vector3(0,0,0), Quaternion.identity);
             corpse.transform.position = parent[i].transform.position;
             corpse.transform.parent = parent[i].transform;
 
-            int numOfDogs = UnityEngine.Random.Range(1, 4);
+            int numOfDogs = UnityEngine.Random.Range(2, 5);
 
             int side = 1;
 
@@ -230,7 +227,9 @@ public class EnemySpawnManager : MonoBehaviour
         if (parent == null)
             return;
 
-        ghost.SetActive(true);
+        GameObject ghost;
+
+        ghost = Instantiate(ghostPrefab, Vector3.zero, Quaternion.identity);
         ghost.transform.parent = parent.transform;
         ghost.transform.position = parent.transform.position;
     }
@@ -261,19 +260,6 @@ public class EnemySpawnManager : MonoBehaviour
     #region mini boss fight
     private bool miniBossFightStarted = false;
 
-    //private void ResetMiniBossFight()
-    //{
-    //    StopAllCoroutines();
-
-    //    miniBossFightStarted = false;
-
-    //    for (int i = spawnedExecutioners.Count - 1; i >= 0; i--)
-    //    {
-    //        Destroy(spawnedExecutioners[i]);
-    //        spawnedExecutioners.RemoveAt(i);
-    //    }
-    //}
-
     private void ExecutionerMiniBossFightTriggerArea_OnPlayerStartedBossFight(Transform[] spawnPositions)
     {
         if (miniBossFightStarted)
@@ -286,12 +272,12 @@ public class EnemySpawnManager : MonoBehaviour
 
     private IEnumerator SpawnExecutioners(Transform[] spawnPositions)
     {
-        float delayBetweenSpawns = 4f;
+        float delayBetweenSpawns = 2.5f;
         for (int i = 1; i < spawnPositions.Length; i++)
         {
             GameObject exec = Instantiate(executionerPrefab, spawnPositions[i].position, Quaternion.identity);
             exec.GetComponent<ExecutionerHealth>().SetHealthTo1();
-            exec.GetComponent<ApproachPlayer>().SetSpeed(0.15f);
+            exec.GetComponent<ApproachPlayer>().SetSpeed(UnityEngine.Random.Range(0.15f, 0.25f));
             exec.GetComponent<DissolveOnDeath>().SetDissolveTicktime(0.015f);
 
             spawnedExecutioners.Add(exec);
@@ -307,7 +293,7 @@ public class EnemySpawnManager : MonoBehaviour
     {
         while(!CheckEveryExecutionerDead())
         {
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }      
 
         OnBossFightFinished?.Invoke();

@@ -1,5 +1,327 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1135231813
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1135231814}
+  - component: {fileID: 1135231816}
+  - component: {fileID: 1135231815}
+  m_Layer: 2
+  m_Name: ElevatorTerminal (1)
+  m_TagString: Elevator
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1135231814
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135231813}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.59, y: 1.62, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1620034029}
+  m_Father: {fileID: 3547438334049964374}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1135231816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135231813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fba9f44701b4684fb47bcfcac414f9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredDistance: 2
+--- !u!114 &1135231815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135231813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ee1587ae9e242c40aa927d290776a22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1359734317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1359734318}
+  - component: {fileID: 1359734320}
+  - component: {fileID: 1359734319}
+  m_Layer: 2
+  m_Name: BossFightCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1359734318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359734317}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3547438334808215422}
+  m_RootOrder: 24
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1359734320
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359734317}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -4.3627625, y: -59.000145}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 8.069885, y: 69.29149}
+  m_EdgeRadius: 0
+--- !u!114 &1359734319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359734317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87b28da34bebfb4c8dd0f4c4ed4632f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elevator: {fileID: 3547438334049964377}
+--- !u!1 &1620034028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1620034029}
+  - component: {fileID: 1620034032}
+  - component: {fileID: 1620034031}
+  - component: {fileID: 1620034030}
+  m_Layer: 2
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1620034029
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620034028}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1936316754}
+  m_Father: {fileID: 1135231814}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 3.976509}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!223 &1620034032
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620034028}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 71239097
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &1620034031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620034028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!114 &1620034030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620034028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!1 &1936316753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1936316754}
+  - component: {fileID: 1936316757}
+  - component: {fileID: 1936316756}
+  - component: {fileID: 1936316755}
+  m_Layer: 2
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1936316754
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936316753}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1620034029}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -1.32}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1936316757
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936316753}
+  m_CullTransparentMesh: 1
+--- !u!114 &1936316756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936316753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 8bde1d2c6ef0a4b498460202ffaf2a24, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1936316755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936316753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef978db72997d504483bc894a6b4623c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 8bde1d2c6ef0a4b498460202ffaf2a24, type: 3}
 --- !u!1 &229473107217472542
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +416,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1388171526325521968}
   - component: {fileID: 141990653255875719}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorBackground (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +1004,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3547438333620311693}
   - component: {fileID: 3547438333620311690}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorBackground (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -765,7 +1087,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438333657879153}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ElevatorEndPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -797,7 +1119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3547438333691344079}
   - component: {fileID: 3547438333691344076}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: elevatorSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -964,7 +1286,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438333766469830}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RaisedFencePosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1252,7 +1574,7 @@ GameObject:
   - component: {fileID: 3547438333905829088}
   - component: {fileID: 3547438333905829089}
   - component: {fileID: 4452356357285952172}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TerminalBottom
   m_TagString: Elevator
   m_Icon: {fileID: 0}
@@ -1472,7 +1794,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 4}
+    oldSize: {x: 1, y: 1.85}
     newSize: {x: 3.54, y: 7}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1577,7 +1899,7 @@ GameObject:
   - component: {fileID: 3547438333995327440}
   - component: {fileID: 3547438333995327441}
   - component: {fileID: 3547438333995327470}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1682,7 +2004,7 @@ GameObject:
   - component: {fileID: 4452356356620588822}
   - component: {fileID: 4452356356620588820}
   - component: {fileID: 4452356356620588821}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: Elevator
   m_TagString: Elevator
   m_Icon: {fileID: 0}
@@ -1697,7 +2019,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3547438334049964375}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 337.93, y: -187.5, z: 0}
+  m_LocalPosition: {x: 337.93, y: -187, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1707,6 +2029,7 @@ Transform:
   - {fileID: 306798539223714670}
   - {fileID: 4067294354881286173}
   - {fileID: 4452356356824928925}
+  - {fileID: 1135231814}
   m_Father: {fileID: 3547438335562730062}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1915,7 +2238,7 @@ MonoBehaviour:
   elevatorArrivedScreech: {fileID: 8300000, guid: 08bd120d30197db4ca0ac1f3c861a621, type: 3}
   elevatorDepartedScreech: {fileID: 8300000, guid: b76e3ff78eb4a13488c2370d94e1515c, type: 3}
   elevatorDoorsOpen: {fileID: 8300000, guid: eaeb2c1d5c5961145b422f429bad4ebe, type: 3}
-  breakSound: {fileID: 0}
+  breakSound: {fileID: 8300000, guid: e45d7df1ad57e9a4fbb94fed5650e9c4, type: 3}
   enemySpawnManager: {fileID: 0}
 --- !u!1 &3547438334076149260
 GameObject:
@@ -1943,7 +2266,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3547438334076149260}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 345.26, y: -110.8, z: 0}
+  m_LocalPosition: {x: 345.26, y: -85.8, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1987,7 +2310,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.24264526, y: 11.585079}
+  m_Offset: {x: -6.314026, y: 5.459259}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1998,7 +2321,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5147095, y: 230.19168}
+  m_Size: {x: 13.196167, y: 242.44333}
   m_EdgeRadius: 0
 --- !u!61 &5007434211491147240
 BoxCollider2D:
@@ -2013,7 +2336,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 135.98004}
+  m_Offset: {x: -0.22259521, y: 136.6478}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2024,7 +2347,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 7.709717}
+  m_Size: {x: 1.4451904, y: 9.045227}
   m_EdgeRadius: 0
 --- !u!1 &3547438334148349797
 GameObject:
@@ -2372,7 +2695,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3547438334327195163}
   - component: {fileID: 3547438334327195162}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ButtonLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2482,7 +2805,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438334339711929}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: UpperElevatorEntrance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2497,7 +2820,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3547438334339711926}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 348.82, y: 16.73, z: 0}
+  m_LocalPosition: {x: 348.82, y: 40.84, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2519,7 +2842,7 @@ GameObject:
   - component: {fileID: 3547438334413343355}
   - component: {fileID: 3547438334413343354}
   - component: {fileID: 3547438334413343357}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorFence (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2712,7 +3035,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438334472599124}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LoweredFencePosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2744,7 +3067,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3547438334620772985}
   - component: {fileID: 3547438334620772984}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: OccupiedLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2941,7 +3264,7 @@ GameObject:
   - component: {fileID: 3547438334677238970}
   - component: {fileID: 3547438334677238971}
   - component: {fileID: 3547438334677238968}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3029,7 +3352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3547438334701927859}
   - component: {fileID: 3547438334701927856}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3112,7 +3435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438334763077040}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ElevatorStartPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3127,7 +3450,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3547438334763077041}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 337.93, y: -125.64, z: 0}
+  m_LocalPosition: {x: 337.93, y: 45.310005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3143,7 +3466,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438334769710478}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RaisedFencePosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3174,7 +3497,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438334805388659}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3233,7 +3556,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3547438334808215423}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 330.71, y: -110.8, z: 0}
+  m_LocalPosition: {x: 330.71, y: -85.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3261,6 +3584,7 @@ Transform:
   - {fileID: 316067618008063283}
   - {fileID: 5996512103178796502}
   - {fileID: 7642431165345306535}
+  - {fileID: 1359734318}
   m_Father: {fileID: 3547438334805388659}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3277,7 +3601,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.6848297, y: -87.014786}
+  m_Offset: {x: -4.00708, y: -99.40619}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3288,7 +3612,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.70224, y: 41.07428}
+  m_Size: {x: 8.450439, y: 16.291473}
   m_EdgeRadius: 0
 --- !u!61 &4452356357040026173
 BoxCollider2D:
@@ -3303,7 +3627,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.23098755, y: 57.17167}
+  m_Offset: {x: -4.828491, y: 57.17167}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -3314,7 +3638,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5380249, y: 165.32466}
+  m_Size: {x: 10.378052, y: 165.32466}
   m_EdgeRadius: 0
 --- !u!1 &3547438334938267188
 GameObject:
@@ -3410,7 +3734,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3547438334985222013}
   - component: {fileID: 3547438334985222010}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorBackground (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3579,7 +3903,7 @@ GameObject:
   - component: {fileID: 3547438335036823515}
   - component: {fileID: 3547438335036823517}
   - component: {fileID: 3547438335036823514}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorFence (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3689,7 +4013,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3547438335043711618}
   - component: {fileID: 3547438335043711621}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: FreeLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3968,7 +4292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3547438335130635450}
   - component: {fileID: 3547438335130635453}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ButtonLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4081,7 +4405,7 @@ GameObject:
   - component: {fileID: 3547438335154315547}
   - component: {fileID: 3547438335154315544}
   - component: {fileID: 3547438335154315545}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorFence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4377,7 +4701,7 @@ GameObject:
   - component: {fileID: 3547438335237596488}
   - component: {fileID: 3547438335237596491}
   - component: {fileID: 3547438335237596490}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorFence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4505,7 +4829,7 @@ GameObject:
   - component: {fileID: 3547438335243726312}
   - component: {fileID: 3547438335243726313}
   - component: {fileID: 3547438335243726310}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4688,7 +5012,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3547438335251213198}
   - component: {fileID: 3547438335251213199}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorBackground (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5112,7 +5436,7 @@ GameObject:
   - component: {fileID: 3547438335394220752}
   - component: {fileID: 3547438335394220756}
   - component: {fileID: 4452356355813199006}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TerminalUpper
   m_TagString: Elevator
   m_Icon: {fileID: 0}
@@ -5332,7 +5656,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 4}
+    oldSize: {x: 1, y: 1.85}
     newSize: {x: 3.54, y: 7}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -5350,7 +5674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438335423180484}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LoweredFencePosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5384,7 +5708,7 @@ GameObject:
   - component: {fileID: 3547438335529893672}
   - component: {fileID: 3547438335529893673}
   - component: {fileID: 3547438335529893670}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5471,7 +5795,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438335538209459}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BottomElevatorEntance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5590,7 +5914,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547438335562730062}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ElevatorBossPreset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5807,7 +6131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 618766039895818302}
   - component: {fileID: 6471286450844369370}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorBackground (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5891,7 +6215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356355384965166}
   - component: {fileID: 4452356355384965169}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: trash (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5975,7 +6299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356355565325201}
   - component: {fileID: 4452356355565325200}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: trash (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6059,8 +6383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356356047797126}
   - component: {fileID: 4452356356047797124}
-  - component: {fileID: 4452356356047797127}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: platform (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6134,32 +6457,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &4452356356047797127
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4452356356047797129}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.29, y: 0.98}
-    newSize: {x: 2.29, y: 0.98}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.29, y: 0.98}
-  m_EdgeRadius: 0
 --- !u!1 &4452356356121772518
 GameObject:
   m_ObjectHideFlags: 0
@@ -6170,7 +6467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356356121772516}
   - component: {fileID: 4452356356121772519}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pipeMiddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6312,7 +6609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356356851495596}
   - component: {fileID: 4452356356851495599}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: trash (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6396,7 +6693,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356356888178034}
   - component: {fileID: 4452356356888178035}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: trash (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6458,7 +6755,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -5
   m_Sprite: {fileID: 21300000, guid: e8e68e0c1f93e774d850ecc50656ea70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6480,7 +6777,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356357079729275}
   - component: {fileID: 4452356357079729274}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: trash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6564,7 +6861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356357171510904}
   - component: {fileID: 4452356357171510907}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pipeTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6648,7 +6945,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356357201197966}
   - component: {fileID: 4452356357201197969}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: trash (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6710,7 +7007,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: e8e68e0c1f93e774d850ecc50656ea70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6732,7 +7029,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356357403488419}
   - component: {fileID: 4452356357403488418}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6816,7 +7113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4452356357442226098}
   - component: {fileID: 4452356357442226101}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: trash (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6878,7 +7175,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: e8e68e0c1f93e774d850ecc50656ea70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6984,7 +7281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3672072397977847746}
   - component: {fileID: 7753135904194118849}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorBackground (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7152,7 +7449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2451047058477923398}
   - component: {fileID: 4063215784099029846}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorBackground (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7908,7 +8205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3654508091788726188}
   - component: {fileID: 7134601410033560239}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: elevatorBackground (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8597,9 +8894,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3547438335538209459}
     m_Modifications:
+    - target: {fileID: 2541596936499499181, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541596936989211230, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2541596937808371516, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_Name
       value: ElevatorEntrance
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541596937808371516, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2541596937808371519, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_RootOrder
@@ -8659,6 +8968,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3547438335538209459}
     m_Modifications:
+    - target: {fileID: 2541596936499499181, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2541596936989211225, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -8671,9 +8984,17 @@ PrefabInstance:
       propertyPath: m_Offset.x
       value: -0.7035732
       objectReference: {fileID: 0}
+    - target: {fileID: 2541596936989211230, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2541596937808371516, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_Name
       value: ElevatorEntrance (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541596937808371516, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2541596937808371519, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_RootOrder
@@ -8754,13 +9075,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3547438334339711929}
     m_Modifications:
+    - target: {fileID: 2541596936499499181, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2541596936989211225, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2541596936989211230, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2541596937808371516, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_Name
       value: ElevatorEntrance (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2541596937808371516, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2541596937808371519, guid: 1427b6920bdc15946be4ea3b019b9fc5, type: 3}
       propertyPath: m_RootOrder
@@ -8872,6 +9205,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ParticleElevator
       objectReference: {fileID: 0}
+    - target: {fileID: 5235632908431812191, guid: 8374309736dd104418e9b0a1646f5225, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8374309736dd104418e9b0a1646f5225, type: 3}
 --- !u!4 &306798539223714670 stripped
@@ -8946,6 +9283,10 @@ PrefabInstance:
     - target: {fileID: 5235632908431812191, guid: 8374309736dd104418e9b0a1646f5225, type: 3}
       propertyPath: m_Name
       value: ParticleElevator (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5235632908431812191, guid: 8374309736dd104418e9b0a1646f5225, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8374309736dd104418e9b0a1646f5225, type: 3}

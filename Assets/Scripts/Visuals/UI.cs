@@ -94,6 +94,8 @@ public class UI : MonoBehaviour
         magazineBulletCountText.text = player.GetComponentInChildren<Shoot>().currentBulletNum.ToString() +"/12";
 
         SaveGame.OnGameSaved += SaveGame_OnGameSaved;
+
+        saveGameIcon.gameObject.SetActive(false);
     }
 
     private void SaveGame_OnGameSaved()

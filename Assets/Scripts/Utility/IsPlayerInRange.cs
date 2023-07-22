@@ -8,7 +8,7 @@ public class IsPlayerInRange : MonoBehaviour
     private PlayerMovement player;
 
     [SerializeField]
-    private float desiredDistance;
+    public float desiredDistance;
 
     public event Action<bool> OnPlayerInRange;
 

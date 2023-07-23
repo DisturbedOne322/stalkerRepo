@@ -10,6 +10,7 @@ TagManager:
   - SavePoint
   - Elevator
   - Enemy
+  - GlobalLight
   layers:
   - Default
   - TransparentFX

@@ -47,15 +47,7 @@ public class PlayerInRange : MonoBehaviour
     {
         if (!foundPlayer)
         {
-            RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, new Vector2(10, 10), 0, Vector3.zero);
-            for(int i = 0; i < hits.Length; i++) 
-            {
-                Debug.Log(hits[i].collider.gameObject.name);
-                if(hits[i].collider.gameObject.TryGetComponent<HellHound>(out HellHound anotherHellHound))
-                {
-                    anotherHellHound.GetComponentInChildren<PlayerInRange>().OnAnotherHellHoundDamaged();
-                }
-            }
+            NotifyNearbyHound();
             OnPlayerInRange?.Invoke(GameManager.Instance.GetPlayerReference());
             foundPlayer = true;
         }
@@ -67,8 +59,21 @@ public class PlayerInRange : MonoBehaviour
 
         if (collider != null && !foundPlayer) 
         {
+            NotifyNearbyHound();
             foundPlayer = true;
             OnPlayerInRange?.Invoke(collider.gameObject.GetComponent<PlayerMovement>());
+        }
+    }
+
+    private void NotifyNearbyHound()
+    {
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, new Vector2(10, 10), 0, Vector3.zero);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i].collider.gameObject.TryGetComponent<HellHound>(out HellHound anotherHellHound))
+            {
+                anotherHellHound.GetComponentInChildren<PlayerInRange>().OnAnotherHellHoundDamaged();
+            }
         }
     }
 }

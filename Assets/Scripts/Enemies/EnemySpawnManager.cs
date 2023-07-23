@@ -88,23 +88,20 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
-    private void EnemySpawnManager_OnSpawnNextAreaEnemies(int id)
+    private void EnemySpawnManager_OnSpawnNextAreaEnemies(int nextCheckpointID)
     {
-        if (id > checkpoints.Length)
+        if (nextCheckpointID > checkpoints.Length)
             return;
 
-        SpawnEnemies(id);
+        SpawnEnemies(nextCheckpointID);
     }
 
     //instead of respawning enemies, scene is reloaded
     //spawn the enemies before the last checkpoint because otherwise player would be able to respawn at checkpoint without any threat
-    private void LoadData_OnGameLoaded(int lastCheckpointID)
+    private void LoadData_OnGameLoaded(int checkpointID)
     {
-        for(int i = 0; i < lastCheckpointID; lastCheckpointID++) 
-        {
-            checkpoints[i].gameObject.SetActive(false);
-        }
-        SpawnEnemies(lastCheckpointID);
+        if (checkpointID == 0)
+            SpawnEnemies(0);
     }
 
     private void SpawnEnemies(int i)

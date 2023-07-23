@@ -7,6 +7,7 @@ using UnityEngine;
 public class Checkpoints : MonoBehaviour
 {
     public event Action<int> OnSpawnNextAreaEnemies;
+    public event Action<int> OnReduceNextAreaGlobalLight;
     public int checkpointID;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -14,6 +15,7 @@ public class Checkpoints : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             OnSpawnNextAreaEnemies?.Invoke(checkpointID + 1);
+            OnReduceNextAreaGlobalLight?.Invoke(checkpointID + 1);
             this.enabled = false;
         }
     }

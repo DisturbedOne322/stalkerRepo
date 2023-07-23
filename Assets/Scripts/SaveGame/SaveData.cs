@@ -8,4 +8,5 @@ public class SaveData
 {
     public int savePoint;
     public int bulletAmount;
+    public float globalLightIntensity;
 }

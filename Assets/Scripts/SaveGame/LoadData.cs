@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 public class LoadData : MonoBehaviour
@@ -70,6 +71,7 @@ public class LoadData : MonoBehaviour
                 {
                     player.GetComponentInChildren<Shoot>().currentBulletNum = saveData.bulletAmount;
                     player.transform.position = savePoints[i].transform.position;
+                    GameObject.FindGameObjectWithTag("GlobalLight").GetComponent<Light2D>().intensity = saveData.globalLightIntensity;
                 }
             }
         }
@@ -102,7 +104,7 @@ public class LoadData : MonoBehaviour
         catch
         {
             Debug.LogError("Save does not exist");
-            LastCheckpointID = -1;
+            LastCheckpointID = 0;
         }
     }
 }

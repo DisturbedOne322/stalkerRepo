@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(IsPlayerInRange))]
 public class SaveGame : MonoBehaviour
@@ -17,7 +18,7 @@ public class SaveGame : MonoBehaviour
 
     public event Action OnDisplayIcon;
     public static event Action OnGameSaved;
-
+    public event Action OnReduceGlobalLight;
     private bool recentlySaved = false;
 
     private bool canSave;
@@ -61,13 +62,14 @@ public class SaveGame : MonoBehaviour
             saveData.savePoint = uniqueSavePointID;
             player.RestoreFullHealth();
             saveData.bulletAmount = player.GetComponentInChildren<Shoot>().currentBulletNum;
+            saveData.globalLightIntensity = GameObject.FindGameObjectWithTag("GlobalLight").GetComponent<Light2D>().intensity;
 
             string SaveDataJSON = JsonUtility.ToJson(saveData);
             System.IO.File.WriteAllText(Application.persistentDataPath + "/SaveData.json", SaveDataJSON);
 
             OnGameSaved?.Invoke();
             OnDisplayIcon?.Invoke();
-
+            OnReduceGlobalLight?.Invoke();
             recentlySaved = true;
         }
     }

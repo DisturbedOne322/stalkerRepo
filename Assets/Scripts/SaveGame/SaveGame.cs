@@ -11,6 +11,8 @@ public class SaveGame : MonoBehaviour
     public int uniqueSavePointID;
     private IsPlayerInRange isPlayerInRange;
 
+    private CheckCanSaveGame checkCanSaveGame;
+
     private bool playerInRange;
 
     public event Action OnDisplayIcon;
@@ -18,11 +20,21 @@ public class SaveGame : MonoBehaviour
 
     private bool recentlySaved = false;
 
+    private bool canSave;
+
     private void Start()
     {
         isPlayerInRange = GetComponent<IsPlayerInRange>();
         InputManager.Instance.OnInteract += Instance_OnInteract;
         isPlayerInRange.OnPlayerInRange += IsPlayerInRange_OnPlayerInRange;
+
+        checkCanSaveGame = GetComponent<CheckCanSaveGame>();
+        checkCanSaveGame.CanSaveGame += CheckCanSaveGame_CanSaveGame;
+    }
+
+    private void CheckCanSaveGame_CanSaveGame(bool canSave)
+    {
+        this.canSave = canSave;
     }
 
     private void IsPlayerInRange_OnPlayerInRange(bool obj)
@@ -34,6 +46,9 @@ public class SaveGame : MonoBehaviour
 
     private void Instance_OnInteract()
     {
+        if (!canSave)
+            return;
+
         if (recentlySaved)
             return;
 

@@ -34,11 +34,29 @@ public class PlayerInRange : MonoBehaviour
         hellHound.OnDamageTaken -= HellHound_OnDamageTaken;
     }
 
+    public void OnAnotherHellHoundDamaged()
+    {
+        if (foundPlayer)
+            return;
+
+        OnPlayerInRange?.Invoke(GameManager.Instance.GetPlayerReference());
+        foundPlayer = true;
+    }
+
     private void HellHound_OnDamageTaken()
     {
         if (!foundPlayer)
         {
-            OnPlayerInRange?.Invoke(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>());
+            RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, new Vector2(10, 10), 0, Vector3.zero);
+            for(int i = 0; i < hits.Length; i++) 
+            {
+                Debug.Log(hits[i].collider.gameObject.name);
+                if(hits[i].collider.gameObject.TryGetComponent<HellHound>(out HellHound anotherHellHound))
+                {
+                    anotherHellHound.GetComponentInChildren<PlayerInRange>().OnAnotherHellHoundDamaged();
+                }
+            }
+            OnPlayerInRange?.Invoke(GameManager.Instance.GetPlayerReference());
             foundPlayer = true;
         }
     }

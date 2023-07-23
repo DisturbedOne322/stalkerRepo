@@ -18,7 +18,8 @@ public class TeleporterSoundManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        teleporter.OnAppear -= Teleporter_OnAppear;
+        if(teleporter != null)
+            teleporter.OnAppear -= Teleporter_OnAppear;
     }
 
     private void Teleporter_OnAppear()

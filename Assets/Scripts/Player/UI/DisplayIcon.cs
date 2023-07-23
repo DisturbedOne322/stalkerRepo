@@ -20,6 +20,8 @@ public class DisplayIcon : MonoBehaviour
 
     private bool gameRecentrlySaved;
 
+    private bool canDisplayIcon = true;
+
     private void Start()
     {
         iconRenderer = GetComponent<Image>();
@@ -27,8 +29,16 @@ public class DisplayIcon : MonoBehaviour
         playerInRange = GetComponentInParent<IsPlayerInRange>();
         playerInRange.OnPlayerInRange += PlayerInRange_OnPlayerInRange;
 
-        if(GetComponentInParent<SaveGame>() != null)
+        if (GetComponentInParent<SaveGame>() != null)
+        {
             GetComponentInParent<SaveGame>().OnDisplayIcon += DisplayIcon_OnDisplayIcon;
+            GetComponentInParent<CheckCanSaveGame>().CanSaveGame += DisplayIcon_CanSaveGame; ;
+        }
+    }
+
+    private void DisplayIcon_CanSaveGame(bool canSave)
+    {
+        canDisplayIcon = canSave;
     }
 
     private void DisplayIcon_OnDisplayIcon()
@@ -44,6 +54,9 @@ public class DisplayIcon : MonoBehaviour
         float targetAlpha = inRange ? maxAlpha : minAlpha;
 
         if (gameRecentrlySaved)
+            targetAlpha = minAlpha;
+
+        if (!canDisplayIcon)
             targetAlpha = minAlpha;
 
         Color tempColor = iconRenderer.color;

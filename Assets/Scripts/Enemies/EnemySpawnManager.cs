@@ -23,7 +23,7 @@ public class EnemySpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject hellHoundPrefab;
     [SerializeField]
-    private GameObject corpsePrefabs;
+    private GameObject[] corpsePrefabs;
     #endregion
     
     #region Executiner Mini Boss Fight
@@ -70,18 +70,41 @@ public class EnemySpawnManager : MonoBehaviour
         teleporter = Instantiate(teleportedPrefab, Vector3.zero, Quaternion.identity);
         teleporter.SetActive(false);
 
-        executionerMiniBossFightTriggerArea.OnPlayerStartedBossFight += ExecutionerMiniBossFightTriggerArea_OnPlayerStartedBossFight; ;
+        executionerMiniBossFightTriggerArea.OnPlayerStartedBossFight += ExecutionerMiniBossFightTriggerArea_OnPlayerStartedBossFight;
+
+        for(int i = 0; i < checkpoints.Length; i++)
+        {
+            checkpoints[i].OnSpawnNextAreaEnemies += EnemySpawnManager_OnSpawnNextAreaEnemies;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        executionerMiniBossFightTriggerArea.OnPlayerStartedBossFight -= ExecutionerMiniBossFightTriggerArea_OnPlayerStartedBossFight;
+
+        for (int i = 0; i < checkpoints.Length; i++)
+        {
+            checkpoints[i].OnSpawnNextAreaEnemies -= EnemySpawnManager_OnSpawnNextAreaEnemies;
+        }
+    }
+
+    private void EnemySpawnManager_OnSpawnNextAreaEnemies(int id)
+    {
+        if (id > checkpoints.Length)
+            return;
+
+        SpawnEnemies(id);
     }
 
     //instead of respawning enemies, scene is reloaded
+    //spawn the enemies before the last checkpoint because otherwise player would be able to respawn at checkpoint without any threat
     private void LoadData_OnGameLoaded(int lastCheckpointID)
     {
-        Debug.Log("Last check " + lastCheckpointID);
-        // + 1 to spawn enemies for the new checkpoint areas only
-        for (int i = lastCheckpointID + 1; i < checkpoints.Length; i++)
+        for(int i = 0; i < lastCheckpointID; lastCheckpointID++) 
         {
-            SpawnEnemies(i);
+            checkpoints[i].gameObject.SetActive(false);
         }
+        SpawnEnemies(lastCheckpointID);
     }
 
     private void SpawnEnemies(int i)
@@ -127,7 +150,6 @@ public class EnemySpawnManager : MonoBehaviour
 
     int lastRandomIndex = -1;
 
-
     private void SpawnHellHoundPack(HellHoundParentObject[] parent)
     {
         if (parent == null)
@@ -135,19 +157,15 @@ public class EnemySpawnManager : MonoBehaviour
 
         for(int i = 0; i < parent.Length;i++)
         {
-            //int rand;
-            //do
-            //{
-            //    rand = UnityEngine.Random.Range(0, corpsePrefabs.Length);
-            //}while(rand == lastRandomIndex);
+            int rand;
+            do
+            {
+                rand = UnityEngine.Random.Range(0, corpsePrefabs.Length);
+            } while (rand == lastRandomIndex);
 
-            //rand = 0;
+            lastRandomIndex = rand;
 
-            //lastRandomIndex = rand;
-
-            //Debug.Log(rand);
-
-            GameObject corpse = Instantiate(corpsePrefabs
+            GameObject corpse = Instantiate(corpsePrefabs[rand]
                 , new Vector3(0,0,0), Quaternion.identity);
             corpse.transform.position = parent[i].transform.position;
             corpse.transform.parent = parent[i].transform;
@@ -157,14 +175,15 @@ public class EnemySpawnManager : MonoBehaviour
             int side = 1;
 
             float[] occipiedPositions = new float[numOfDogs];
-            float spawnOffset = 0.5f;
+            //too big spawn offset can cause infinite loop
+            float spawnOffset = 0.3f;
 
             for (int j = 0; j < numOfDogs; j++)
             {
                 float offset;
                 do
                 {
-                    offset = UnityEngine.Random.Range(-1.5f, -0.6f) * side;
+                    offset = UnityEngine.Random.Range(-1.5f, -0.5f) * side;
                 } while (IsPositionOccupied(offset, occipiedPositions, spawnOffset));
 
                 occipiedPositions[j] = offset;

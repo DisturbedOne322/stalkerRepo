@@ -9,6 +9,7 @@ TagManager:
   - PlayerFake
   - SavePoint
   - Elevator
+  - Enemy
   layers:
   - Default
   - TransparentFX

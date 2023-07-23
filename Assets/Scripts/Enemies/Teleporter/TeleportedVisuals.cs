@@ -21,6 +21,8 @@ public class TeleportedVisuals : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (teleporter == null)
+            return;
         teleporter.OnAppear -= Teleporter_OnAppear;
         teleporter.OnDisappear -= Teleporter_OnDisappear;
     }

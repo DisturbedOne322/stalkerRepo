@@ -26,6 +26,8 @@ public class HellHound : Enemy
     private float attackDistance = 3f;
     private float distanceToPlayer;
 
+    private float maxFollowRange = 30;
+
     private bool hasAttackedRecently = false;
 
     private PlayerMovement player;
@@ -80,7 +82,6 @@ public class HellHound : Enemy
 
             if (getAggressiveTimer <= 0)
             {
-                //moveSpeed = runSpeed;
                 OnAggressiveStateChange?.Invoke();
 
                 attackCD -= Time.deltaTime;
@@ -101,10 +102,11 @@ public class HellHound : Enemy
     }
     protected override void DetectPlayer()
     {
-       // hasDetectedPlayer = transform.position.x - player.transform.position.x < 5;
     }
     protected override void MoveToPlayer()
     {
+        if (Vector2.Distance(transform.position, player.transform.position) > maxFollowRange)
+            return;
         transform.Translate(new Vector2((transform.position.x > player.transform.position.x ? -1 : 1) * moveSpeed * dyingSpeedMultiplier * Time.deltaTime,0));
     }
     protected override void AttackPlayer()
@@ -120,6 +122,9 @@ public class HellHound : Enemy
     }
     public override void GetDamage(int damage)
     {
+        if (healthPoints <= 0)
+            return;
+
         healthPoints -= damage;
         if (healthPoints <= 0)
         {

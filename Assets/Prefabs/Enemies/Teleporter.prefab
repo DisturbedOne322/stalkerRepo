@@ -50,11 +50,11 @@ GameObject:
   - component: {fileID: 1377827631}
   m_Layer: 0
   m_Name: Teleporter
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4208403046639014025
 Transform:
   m_ObjectHideFlags: 0

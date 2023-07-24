@@ -167,7 +167,7 @@ public class EnemySpawnManager : MonoBehaviour
             corpse.transform.position = parent[i].transform.position;
             corpse.transform.parent = parent[i].transform;
 
-            int numOfDogs = UnityEngine.Random.Range(2, 5);
+            int numOfDogs = UnityEngine.Random.Range(2, 4);
 
             int side = 1;
 
@@ -288,7 +288,7 @@ public class EnemySpawnManager : MonoBehaviour
 
     private IEnumerator SpawnExecutioners(Transform[] spawnPositions)
     {
-        float delayBetweenSpawns = 2.5f;
+        float delayBetweenSpawns = 3.5f;
         for (int i = 1; i < spawnPositions.Length; i++)
         {
             GameObject exec = Instantiate(executionerPrefab, spawnPositions[i].position, Quaternion.identity);

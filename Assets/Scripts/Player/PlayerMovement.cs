@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private readonly float originalSpeed = 0.85f;
     private float moveSpeed = 0.85f;
     private readonly float sprintSpeed = 1.35f;
-    private readonly float backwardMoveSpeedMultiplier = 0.9f;
+    private readonly float backwardMoveSpeedMultiplier = 0.85f;
 
     private float stamina = 1;
     public float Stamina
@@ -258,7 +258,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void GetCriticaldamage()
     {
-        healthPoints = 1;
+        if (healthPoints > 3)
+            healthPoints -= 3;
+        else
+            healthPoints = 1;
         OnHealthChanged?.Invoke(GameManager.PlayerHealthStatus.LowHP);
         SoundManager.Instance.PlayGetHurtSound();
     }

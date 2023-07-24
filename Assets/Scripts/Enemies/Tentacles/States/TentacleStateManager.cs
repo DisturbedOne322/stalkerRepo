@@ -75,10 +75,13 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
 
     private void Instance_OnQTEEnd(IQTECaller caller)
     {
+        Debug.Log("HELLO " +  caller.ToString() + " ___" + gameObject.name);
         if(caller == this)
         {
+            Debug.Log("THIS");
             pullingPlayer = false;
             playerFreed = true;
+            SwitchState(disappearState);
         }
     }
 
@@ -101,6 +104,8 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
         boxCollider2D.size = spriteSize;
         Vector2 newColliderPosition = new Vector2(0, spriteRenderer.gameObject.transform.localPosition.y);
         boxCollider2D.offset = newColliderPosition;
+
+        Debug.Log(pullingPlayer + " " + playerFreed);
 
         if (pullingPlayer && !playerFreed)
         {

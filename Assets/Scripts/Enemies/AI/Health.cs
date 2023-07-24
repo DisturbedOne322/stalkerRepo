@@ -19,11 +19,17 @@ public class Health : MonoBehaviour, IDamagable
 
     public void TakeDamage(int damage)
     {
+        if (health <= 0)
+            return;
+
         health -= damage;
         OnHealthChange?.Invoke(health, maxHealth);
         if(health <= 0)
         {
             OnDeath?.Invoke();
+            Collider2D[] attachedColliders = GetComponentsInChildren<Collider2D>();
+            for(int i = 0; i < attachedColliders.Length; i++)
+                attachedColliders[i].enabled = false;
         }
     }
 

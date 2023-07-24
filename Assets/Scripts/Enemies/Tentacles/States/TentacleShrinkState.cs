@@ -44,7 +44,15 @@ public class TentacleShrinkState : TentaclesBaseState
             manager.animator.SetFloat(PULL_SPEED, pullSpeed);
             var a = manager.animator.GetCurrentAnimatorStateInfo(0);
             float animTimeNormalized = a.normalizedTime > 1 ? 0.99f : a.normalizedTime;
-            if(animTimeNormalized >= 0.6f &&  animTimeNormalized <= 0.65f)
+
+            AnimatorClipInfo[] m_CurrentClipInfo = manager.animator.GetCurrentAnimatorClipInfo(0);
+            if (m_CurrentClipInfo.Length != 0)
+            {
+                if(m_CurrentClipInfo[0].clip.name != "Tentacle_Shrink")
+                    return;
+            }
+
+            if (animTimeNormalized >= 0.65f)
             {
                 manager.pullingPlayer = false;
                 manager.playerFreed = true;

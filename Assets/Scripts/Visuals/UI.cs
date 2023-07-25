@@ -120,6 +120,8 @@ public class UI : MonoBehaviour
         mageBoss.OnHPChanged -= MageBoss_OnHPChanged;
         mageBoss.OnStageChanged -= MageBoss_OnStageChanged;
         GameManager.Instance.OnBossFightStarted -= Instance_OnBossFightStarted;
+
+        SaveGame.OnGameSaved -= SaveGame_OnGameSaved;
     }
 
     private void MageBoss_OnStageChanged()

@@ -43,21 +43,38 @@ public class Shoot : MonoBehaviour
     private float gunJamProbability = 0.0075f;
     private bool isJammed = false;
 
+    [SerializeField]
+    private EnemySpawnManager spawnManager;
+
     private void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
         playerPos = player.transform;
         InputManager.Instance.OnShootAction += InputManager_OnShootAction;
         InputManager.Instance.OnReloadAction += InputManager_OnReloadAction;
+        spawnManager.OnMiniBossFightStarted += SpawnManager_OnMiniBossFightStarted;
+        spawnManager.OnBossFightFinished += SpawnManager_OnBossFightFinished;
 
         QTE.instance.OnQTEStart += QTE_OnQTEStart;
         QTE.instance.OnQTEEnd += Instance_OnQTEEnd;
+    }
+
+    private void SpawnManager_OnBossFightFinished()
+    {
+        gunJamProbability = 0.0075f;
+    }
+
+    private void SpawnManager_OnMiniBossFightStarted()
+    {
+        gunJamProbability = 0;
     }
 
     private void OnDestroy()
     {
         InputManager.Instance.OnShootAction -= InputManager_OnShootAction;
         InputManager.Instance.OnReloadAction -= InputManager_OnReloadAction;
+        spawnManager.OnMiniBossFightStarted -= SpawnManager_OnMiniBossFightStarted;
+        spawnManager.OnBossFightFinished -= SpawnManager_OnBossFightFinished;
 
         QTE.instance.OnQTEStart -= QTE_OnQTEStart;
         QTE.instance.OnQTEEnd -= Instance_OnQTEEnd;

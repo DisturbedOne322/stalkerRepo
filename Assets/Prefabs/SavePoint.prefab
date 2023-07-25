@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 4288389253995475547}
   - component: {fileID: 1007272021389128750}
   - component: {fileID: 5926014071084451019}
+  - component: {fileID: 755591120}
   m_Layer: 0
   m_Name: SavePoint
   m_TagString: SavePoint
@@ -147,7 +148,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abc016fb50f290345b9242c0a8737302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueSavePointID: 2
+  uniqueSavePointID: 3
+--- !u!114 &755591120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805920641205292982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aca40c72b8cf6664290e56501773c85e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxCastWidth: 15
+  boxCastHeight: 5
 --- !u!1 &3133316078390930388
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,7 +699,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 71239097
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &2094236866592072554

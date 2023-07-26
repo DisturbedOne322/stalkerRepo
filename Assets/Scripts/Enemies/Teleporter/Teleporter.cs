@@ -22,8 +22,8 @@ public class Teleporter : MonoBehaviour
 
     //pull player when he is close
     private bool isPullingPlayer= false;
-    private readonly float initialPullingForce = 0.75f;
-    private readonly float pullingForceIncreasePerSecond = 0.75f;
+    private readonly float initialPullingForce = 0.85f;
+    private readonly float pullingForceIncreasePerSecond = 0.85f;
     private readonly float pullingForceChangeTimerTotal = 1f;
     private float pullingForceChangeTimer;
 

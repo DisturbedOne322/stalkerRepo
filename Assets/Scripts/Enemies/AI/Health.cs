@@ -26,6 +26,8 @@ public class Health : MonoBehaviour, IDamagable
         OnHealthChange?.Invoke(health, maxHealth);
         if(health <= 0)
         {
+            GetComponent<Rigidbody2D>().isKinematic = true;
+            GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             OnDeath?.Invoke();
             Collider2D[] attachedColliders = GetComponentsInChildren<Collider2D>();
             for(int i = 0; i < attachedColliders.Length; i++)

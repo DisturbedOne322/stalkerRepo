@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public event Action<GameManager.PlayerHealthStatus> OnHealthChanged;
     public event Action OnPlayerRespawned;
     public event Action OnPlayerTeleported;
+    public event Action OnPlayerTeleportedArrived;
     public event Action OnPlayerDied;
     private Rigidbody2D rb2D;
 
@@ -166,14 +167,30 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void TurnLightsOn()
+    {
+        for (int i = 0; i < lightSources.Length; i++)
+        {
+            lightSources[i].SetActive(true);
+        }
+    }
+
+
     public void GetTeleported()
     {
         canMove = false;
         rb2D.velocity = Vector2.zero;
         TurnLightsOff();
-        capsuleCollider.enabled = false;
         OnPlayerTeleported?.Invoke();
     }
+
+    private void OnTeleportArrived()
+    {
+        canMove = true;
+        TurnLightsOn();
+        OnPlayerTeleportedArrived?.Invoke();
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -264,6 +281,14 @@ public class PlayerMovement : MonoBehaviour
             healthPoints = 1;
         OnHealthChanged?.Invoke(GameManager.PlayerHealthStatus.LowHP);
         SoundManager.Instance.PlayGetHurtSound();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("TeleportDestination"))
+        {
+            OnTeleportArrived();
+        }
     }
 }
 

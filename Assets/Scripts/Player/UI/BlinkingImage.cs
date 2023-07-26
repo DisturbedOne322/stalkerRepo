@@ -30,7 +30,6 @@ public class BlinkingImage : MonoBehaviour
         stepTimeDelay = new WaitForSeconds(stepTime);
         if (maxAlpha < minAlpha)
         {
-            Debug.LogError("Max alpha < min alpha");
             this.enabled = false;
         }
     }
@@ -41,7 +40,6 @@ public class BlinkingImage : MonoBehaviour
         stepTime = step * animationTime * (maxAlpha / minAlpha);
         if (maxAlpha < minAlpha)
         {
-            Debug.LogError("Max alpha < min alpha");
             this.enabled = false;
         }
     }

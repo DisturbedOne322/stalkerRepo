@@ -75,10 +75,8 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
 
     private void Instance_OnQTEEnd(IQTECaller caller)
     {
-        Debug.Log("HELLO " +  caller.ToString() + " ___" + gameObject.name);
         if(caller == this)
         {
-            Debug.Log("THIS");
             pullingPlayer = false;
             playerFreed = true;
             SwitchState(disappearState);

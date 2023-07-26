@@ -22,6 +22,7 @@ public class LoadData : MonoBehaviour
     private GameObject loadScreen;
     private Animator loadScreenAnimator;
     private const string LOAD_SCREEN_TRIGGER = "OnLoad";
+    private const string UNLOAD_SCREEN_TRIGGER = "OnUnload";
 
     private PlayerMovement player;
 
@@ -44,7 +45,28 @@ public class LoadData : MonoBehaviour
         player = GameManager.Instance.GetPlayerReference();
         player.OnPlayerDied += Player_OnPlayerDied;
 
+        player.OnPlayerTeleported += Player_OnPlayerTeleported;
+        player.OnPlayerTeleportedArrived += Player_OnPlayerTeleportedArrived;
+
         LoadGame(player);
+    }
+
+    private void OnDestroy()
+    {
+        player.OnPlayerDied -= Player_OnPlayerDied;
+
+        player.OnPlayerTeleported -= Player_OnPlayerTeleported;
+        player.OnPlayerTeleportedArrived -= Player_OnPlayerTeleportedArrived;
+    }
+
+    private void Player_OnPlayerTeleportedArrived()
+    {
+        loadScreenAnimator.SetTrigger(UNLOAD_SCREEN_TRIGGER);
+    }
+
+    private void Player_OnPlayerTeleported()
+    {
+        loadScreenAnimator.SetTrigger(LOAD_SCREEN_TRIGGER);
     }
 
     private void Player_OnPlayerDied()
@@ -81,15 +103,6 @@ public class LoadData : MonoBehaviour
         }
 
     }
-
-    //private IEnumerator LoadLastCheckpointAfterDeath()
-    //{
-    //    yield return new WaitForSeconds(4.3f);
-
-    //    player.RestoreFullHealth();
-    //    LoadSaveData();
-    //    LoadGame(player);
-    //}
 
     private void LoadSaveData()
     {

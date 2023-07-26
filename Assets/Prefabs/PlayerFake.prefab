@@ -473,6 +473,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PlayerFake
       objectReference: {fileID: 0}
+    - target: {fileID: 6635067745223172618, guid: c53e6e8085720134bb9aa95cbcb271d2, type: 3}
+      propertyPath: m_CullingMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6635067745223172621, guid: c53e6e8085720134bb9aa95cbcb271d2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -811,9 +815,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afa3fb83eb496049b9a5b75efa0c07f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetDistanceInitial: 10
-  maxFollowDistance: 35
-  maxTargetOffset: 4
+  targetDistanceInitial: 8
+  maxFollowDistance: 20
+  maxTargetOffset: 2
   initialSpeed: 0.02
   cdAfterAttackTotal: 1.5
 --- !u!114 &1687306631
@@ -1059,7 +1063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   go: {fileID: 6672672340046392728}
-  recoilStrength: 20
+  recoilStrength: 10
 --- !u!4 &6672672340046392729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6635067744286494360, guid: c53e6e8085720134bb9aa95cbcb271d2, type: 3}

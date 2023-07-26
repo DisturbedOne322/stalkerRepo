@@ -62,7 +62,7 @@ public class EnemySpawnManager : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        LoadData.Instance.OnGameLoaded += LoadData_OnGameLoaded;
+       // LoadData.Instance.OnGameLoaded += LoadData_OnGameLoaded;
 
         executioner = Instantiate(executionerPrefab, Vector3.zero, Quaternion.identity);
         executioner.SetActive(false);
@@ -98,11 +98,11 @@ public class EnemySpawnManager : MonoBehaviour
 
     //instead of respawning enemies, scene is reloaded
     //spawn the enemies before the last checkpoint because otherwise player would be able to respawn at checkpoint without any threat
-    private void LoadData_OnGameLoaded(int checkpointID)
-    {
-        if (checkpointID == 0)
-            SpawnEnemies(0);
-    }
+    //private void LoadData_OnGameLoaded(int checkpointID)
+    //{
+    //    if (checkpointID == 0)
+    //        SpawnEnemies(0);
+    //}
 
     private void SpawnEnemies(int i)
     {

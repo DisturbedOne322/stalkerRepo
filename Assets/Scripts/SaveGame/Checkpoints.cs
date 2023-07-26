@@ -19,8 +19,8 @@ public class Checkpoints : MonoBehaviour
             if (spawned)
                 return;
 
-            OnSpawnNextAreaEnemies?.Invoke(checkpointID + 1);
-            OnReduceNextAreaGlobalLight?.Invoke(checkpointID + 1);
+            OnSpawnNextAreaEnemies?.Invoke(checkpointID);
+            OnReduceNextAreaGlobalLight?.Invoke(checkpointID);
             spawned = true;
         }
     }

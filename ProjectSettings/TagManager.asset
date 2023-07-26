@@ -11,6 +11,7 @@ TagManager:
   - Elevator
   - Enemy
   - GlobalLight
+  - TeleportDestination
   layers:
   - Default
   - TransparentFX

@@ -12,6 +12,7 @@ TagManager:
   - Enemy
   - GlobalLight
   - TeleportDestination
+  - Room
   layers:
   - Default
   - TransparentFX

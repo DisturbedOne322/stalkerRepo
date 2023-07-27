@@ -47,4 +47,9 @@ public class Dissolve : MonoBehaviour
     {
         dissolve = true;
     }
+
+    public void SetDissolveTickRate(float tickRate)
+    {
+        dissolvePerSec = tickRate;
+    }
 }

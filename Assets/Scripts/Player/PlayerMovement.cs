@@ -34,6 +34,9 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed = 0.85f;
     private readonly float sprintSpeed = 1.35f;
     private readonly float backwardMoveSpeedMultiplier = 0.85f;
+    private float slopeSpeedBonus;
+
+    private bool onSlope = false;
 
     private float stamina = 1;
     public float Stamina
@@ -57,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving = false;
     private bool canMove = true;
 
-    private readonly float jumpForce = 0.0065f;
+    private readonly float jumpForce = 0.0075f;
 
     private CapsuleCollider2D capsuleCollider;
 
@@ -204,7 +207,11 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving && isGrounded)
         {
             float moveSpeedMultiplier = (movementDirection > 0 && transform.localScale.x > 0)
-                || (movementDirection < 0 && transform.localScale.x < 0) ? 1 : backwardMoveSpeedMultiplier;  
+                || (movementDirection < 0 && transform.localScale.x < 0) ? 1 : backwardMoveSpeedMultiplier;
+
+            if(onSlope)
+                moveSpeedMultiplier += slopeSpeedBonus;
+
             rb2D.AddForce(new Vector2(movementDirection * moveSpeed * moveSpeedMultiplier * Time.deltaTime, 0));
             Idle.ReportAction();
         }
@@ -253,9 +260,21 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CheckIsGrounded()
     {
+
         RaycastHit2D rayHit = Physics2D.BoxCast(capsuleCollider.bounds.center, new Vector2(1,2),0, Vector2.down, distanceToTheGround + 0.1f, groundLayerMask);
-        BoxCastDrawer.Draw(rayHit,capsuleCollider.bounds.center, new Vector2(1, 0.001f), 0, Vector2.down, distanceToTheGround);
-        return rayHit.collider != null;
+        if (rayHit)
+        {
+            float angle = Mathf.Abs(rayHit.collider.gameObject.transform.rotation.eulerAngles.z);
+            onSlope = angle != 0;
+            slopeSpeedBonus = Mathf.Abs(angle > 180 ? angle - 360: angle) / 25;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+        //return rayHit.collider != null;
     }
 
     public void GetDamaged(int damage)
@@ -285,9 +304,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.CompareTag("Room"))
+        {
+            TurnLightsOff();
+        }
         if (collision.gameObject.CompareTag("TeleportDestination"))
         {
             OnTeleportArrived();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Room"))
+        {
+            TurnLightsOn();
         }
     }
 }

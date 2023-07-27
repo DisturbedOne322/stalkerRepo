@@ -69,6 +69,8 @@ public class CameraShootShake : MonoBehaviour
         QTE.instance.OnQTEStart += QTE_OnQTEStart;
         QTE.instance.OnQTEEnd += QTE_OnQTEEnd;
         FlameballFallingState.OnFlameballHitGround += FlameballFallingState_OnFlameballHitGround;
+
+        transform.position = player.transform.position;
     }
 
     private void Player_OnPlayerTeleportedArrived()
@@ -110,6 +112,7 @@ public class CameraShootShake : MonoBehaviour
     {
         ShakeCamera(originalShakeAmp, qteShakeFreq, 12);
     }
+
 
 
 

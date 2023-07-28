@@ -8,6 +8,7 @@ public class Checkpoints : MonoBehaviour
 {
     public event Action<int> OnSpawnNextAreaEnemies;
     public event Action<int> OnReduceNextAreaGlobalLight;
+    public event Action<int> OnChangeBGMusic;
     public int checkpointID;
 
     private bool spawned = false;
@@ -21,6 +22,7 @@ public class Checkpoints : MonoBehaviour
 
             OnSpawnNextAreaEnemies?.Invoke(checkpointID);
             OnReduceNextAreaGlobalLight?.Invoke(checkpointID);
+            OnChangeBGMusic?.Invoke(checkpointID);
             spawned = true;
         }
     }

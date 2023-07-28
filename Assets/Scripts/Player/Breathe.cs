@@ -26,6 +26,10 @@ public class Breathe : MonoBehaviour
     GradientAlphaKey[] midHPalphaKey;
     GradientColorKey[] lowHPcolorKey;
     GradientAlphaKey[] lowHPalphaKey;
+
+    [SerializeField]
+    private OptionsSO options;
+
     private void Start()
     {
         player.OnHealthChanged += Player_OnHealthChanged;
@@ -122,13 +126,16 @@ public class Breathe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!options.breatingEnabled)
+            return;
+
         exhaleTimer -= Time.deltaTime;
         inhaleTimer -= Time.deltaTime;
 
         if(inhaleTimer <= 0)
         {
-            inhaleTimer = highHP ? inhaleTimerTotal : inhaleTimerTotal - 1; ;
-            SoundManager.Instance.PlayInhaleSound(1);
+            inhaleTimer = highHP ? inhaleTimerTotal : inhaleTimerTotal - 1;
+            SoundManager.Instance.PlayInhaleSound();
         }
 
         if(exhaleTimer <= 0)
@@ -140,11 +147,9 @@ public class Breathe : MonoBehaviour
             var forceOverLifetime = breatheParticles.forceOverLifetime;
             forceOverLifetime.x = player.transform.localScale.x > 0 ? 5 : -5;
 
-            SoundManager.Instance.PlayExhaleSound(1);
+            SoundManager.Instance.PlayExhaleSound();
 
             exhaleTimer = highHP? exhaleTimerTotal : exhaleTimerTotal - 1;
         }
     }
-
-
 }

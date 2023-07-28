@@ -7,9 +7,6 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance;
 
     [SerializeField]
-    private AudioSource musicAudioSource;
-
-    [SerializeField]
     private AudioSource soundEffectsAudioSource;
 
     [SerializeField] 
@@ -112,12 +109,16 @@ public class SoundManager : MonoBehaviour
         soundEffectsAudioSource.PlayOneShot(headlightBrokenAudioClipArray[Random.Range(0,headlightBrokenAudioClipArray.Length)]);
     }
 
-    public void PlayExhaleSound(float volume)
+    public void PlayExhaleSound()
     {
-        soundEffectsAudioSource.PlayOneShot(audioClipsSO.exhaleSound, volume);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.exhaleSound);
     }
-    public void PlayInhaleSound(float volume)
+    public void PlayInhaleSound()
     {
-        soundEffectsAudioSource.PlayOneShot(audioClipsSO.inhaleSound, volume);
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.inhaleSound);
+    }
+    public void PlayDeathSound()
+    {
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.deathSound);
     }
 }

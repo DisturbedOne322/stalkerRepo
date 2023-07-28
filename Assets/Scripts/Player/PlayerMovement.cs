@@ -283,13 +283,19 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         healthPoints -= damage;
-        OnHealthChanged?.Invoke(healthPoints * 1.0f / maxHealthPoints > 0.5f? GameManager.PlayerHealthStatus.HighHP:
-            healthPoints * 1.0f / maxHealthPoints > 0.25f ? GameManager.PlayerHealthStatus.MidHP : GameManager.PlayerHealthStatus.LowHP);
+        OnHealthChanged?.Invoke(CalculateHealthStatus());
         if(healthPoints <= 0)
         {
             OnPlayerDied?.Invoke();
+            SoundManager.Instance.PlayDeathSound();
         }
         SoundManager.Instance.PlayGetHurtSound();
+    }
+
+    private GameManager.PlayerHealthStatus CalculateHealthStatus()
+    {
+        return healthPoints * 1.0f / maxHealthPoints > 0.5f ? GameManager.PlayerHealthStatus.HighHP :
+            healthPoints * 1.0f / maxHealthPoints > 0.25f ? GameManager.PlayerHealthStatus.MidHP : GameManager.PlayerHealthStatus.LowHP;
     }
 
     public void GetCriticaldamage()
@@ -298,7 +304,7 @@ public class PlayerMovement : MonoBehaviour
             healthPoints -= 3;
         else
             healthPoints = 1;
-        OnHealthChanged?.Invoke(GameManager.PlayerHealthStatus.LowHP);
+        OnHealthChanged?.Invoke(CalculateHealthStatus());
         SoundManager.Instance.PlayGetHurtSound();
     }
 

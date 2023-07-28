@@ -36,6 +36,7 @@ public class InputManager : MonoBehaviour
         playerInputActions.Player.Enable();      
     }
 
+
     public float GetMovementDirection()
     {
          return playerInputActions.Player.Movement.ReadValue<float>();

@@ -12,7 +12,7 @@ public class AudioClipsSO : ScriptableObject
     public AudioClip[] stepSound;
     public AudioClip inhaleSound;
     public AudioClip exhaleSound;
-    public AudioClip getHurtSound;
+    public AudioClip[] getHurtSound;
     public AudioClip heartbeatSound;
     public AudioClip deathSound;
     public AudioClip boneCrackSound;

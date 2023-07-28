@@ -69,9 +69,19 @@ public class SoundManager : MonoBehaviour
     {
         soundEffectsAudioSource.PlayOneShot(audioClipsSO.reloadSound);
     }
+
+
+    int lastGetHurtSound = -1;
     public void PlayGetHurtSound()
     {
-        soundEffectsAudioSource.PlayOneShot(audioClipsSO.getHurtSound);
+        int rand;
+        do
+        {
+            rand = Random.Range(0, audioClipsSO.getHurtSound.Length);
+        } while (rand == lastGetHurtSound);
+
+        lastGetHurtSound = rand;
+        soundEffectsAudioSource.PlayOneShot(audioClipsSO.getHurtSound[rand]);
     }
 
     public void PlayBoneCrackSound()

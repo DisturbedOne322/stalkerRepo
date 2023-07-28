@@ -27,7 +27,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e7bb57ef33c0f0a4d9f36204e9bb6899, type: 3}
   inhaleSound: {fileID: 8300000, guid: 865ad27faa3a3424c9f1ff61bf3de13d, type: 3}
   exhaleSound: {fileID: 8300000, guid: 09abb93a0aa402443a5687fc222fb91c, type: 3}
-  getHurtSound: {fileID: 8300000, guid: 540498f1801bf544ab02b40380f5d520, type: 3}
+  getHurtSound:
+  - {fileID: 8300000, guid: 1e5e60ed4b62df949b02ca59d1212db5, type: 3}
+  - {fileID: 8300000, guid: 22a302301b5a9354f9dcac5719bf2eb7, type: 3}
+  - {fileID: 8300000, guid: eaa9963a0e666d340ab87337f672dac2, type: 3}
   heartbeatSound: {fileID: 8300000, guid: 42e05fb2f3eacfc46b31b63b620ef490, type: 3}
   deathSound: {fileID: 8300000, guid: 1431a70faf0e62847a332ae05252913f, type: 3}
   boneCrackSound: {fileID: 8300000, guid: 9b3e6fdebb1c5e64c96849bd6787da6b, type: 3}

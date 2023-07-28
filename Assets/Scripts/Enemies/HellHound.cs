@@ -138,6 +138,7 @@ public class HellHound : Enemy
     {
         if(collision.gameObject.tag == "Player" && hasAttackedRecently)
         {
+            hasAttackedRecently = false;
             OnSuccessfulHit?.Invoke();
             player.GetDamaged(damage);
         }

@@ -47,15 +47,15 @@ public class QTE : MonoBehaviour
     private readonly string KEY_ANIMATION = "IS_KEY_ANIMATION";
 
     private int qteRoundsFinished = 0;
-    private int qteRounds = 3;
+    private int qteRounds = 6;
 
     private float qteRoundTimer;
-    private float qteRoundTimerTotal = 1f;
+    private float qteRoundTimerTotal = 0.6f;
 
     private int qteFailedDamage = 2;
 
 
-    private int buttonPressesToFinishSmashingQTE = 20;
+    private int buttonPressesToFinishSmashingQTE = 30;
     private int buttonPresses = 0;
 
     private void Awake()
@@ -89,11 +89,12 @@ public class QTE : MonoBehaviour
         if (!qtePlaying)
         {
             this.type = type;
-            if(type == QTE_TYPE.Reaction)
+            this.caller = caller;
+            qtePlaying = true;
+            qteParent.SetActive(true);
+
+            if (type == QTE_TYPE.Reaction)
             {
-                this.caller = caller;
-                qtePlaying = true;
-                qteParent.SetActive(true);
                 randomKeyIndex = GetRandomIndex();
                 SetQTEButtonActive(randomKeyIndex);
                 qteRoundsFinished = 0;
@@ -101,9 +102,6 @@ public class QTE : MonoBehaviour
             }
             if(type == QTE_TYPE.SmashingButtons)
             {
-                this.caller = caller;
-                qtePlaying = true;
-                qteParent.SetActive(true);
                 buttonPresses = 0;
 
                 randomKeyIndex = GetNextSmashButtonIndex();

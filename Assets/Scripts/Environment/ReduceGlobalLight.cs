@@ -12,7 +12,7 @@ public class ReduceGlobalLight : MonoBehaviour
     private float defaultIntensity = 0.1f;
 
     private float smDampVelocity;
-    private float smDampTime = 5;
+    private float smDampTime = 10;
 
     // Start is called before the first frame update
     void Start()

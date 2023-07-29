@@ -38,6 +38,7 @@ public class Dissolve : MonoBehaviour
             {
                 OnDissolved?.Invoke();
                 dissolve = false;
+                gameObject.SetActive(false);
             }
         }
         return dissolveAmount;

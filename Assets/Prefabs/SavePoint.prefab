@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abc016fb50f290345b9242c0a8737302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueSavePointID: 3
+  uniqueSavePointID: 0
 --- !u!114 &755591120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1615462621723046415}
   - component: {fileID: 8504279447929867334}
+  - component: {fileID: 2002791799}
   m_Layer: 0
   m_Name: Light 2D (1)
   m_TagString: Untagged
@@ -273,6 +274,18 @@ MonoBehaviour:
   - {x: -1, y: -0.4, z: 0}
   - {x: 1, y: -0.4, z: 0}
   - {x: 0.0033347488, y: 1.9149675, z: 0}
+--- !u!114 &2002791799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3133316078390930388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56941c524c6621545a0af7002404a030, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4742526968616147013
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,6 +386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9108534761026183980}
   - component: {fileID: 2425398365829890276}
+  - component: {fileID: 126693501}
   m_Layer: 0
   m_Name: Light 2D
   m_TagString: Untagged
@@ -557,6 +571,18 @@ MonoBehaviour:
   - {x: -1, y: -0.4, z: 0}
   - {x: 1, y: -0.4, z: 0}
   - {x: 0.0033347488, y: 1.9149675, z: 0}
+--- !u!114 &126693501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5352955344784751548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56941c524c6621545a0af7002404a030, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6291953767939621698
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,7 +726,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 71239097
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &2094236866592072554
 MonoBehaviour:

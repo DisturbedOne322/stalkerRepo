@@ -16,12 +16,13 @@ public class PlayAnimationOnItemSelected : MonoBehaviour
     public void OnPointerEnter()
     {
         animator.SetTrigger(PLAY_ANIM_ANIM_TRIGGER);
-        MainMenuSoundManager.Instance.PlayAnimSound(type);
+        if(type != MainMenuSoundManager.SoundType.NoSound)
+            MainMenuSoundManager.Instance.PlayAnimSound(type);
     }
 
     public void OnPointerExit()
     {
-        if(!MainMenuManager.playerActed)
+        if (!MainMenuManager.playerActed)
             animator.SetTrigger(STOP_ANIM_ANIM_TRIGGER);
     }
 }

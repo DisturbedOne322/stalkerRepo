@@ -69,8 +69,14 @@ public class CameraShootShake : MonoBehaviour
         QTE.instance.OnQTEStart += QTE_OnQTEStart;
         QTE.instance.OnQTEEnd += QTE_OnQTEEnd;
         FlameballFallingState.OnFlameballHitGround += FlameballFallingState_OnFlameballHitGround;
+        Teleport.OnTeleportedPlayer += Teleport_OnTeleportedPlayer;
 
         transform.position = player.transform.position;
+    }
+
+    private void Teleport_OnTeleportedPlayer(Vector3 delta)
+    {
+        vCam.OnTargetObjectWarped(player.transform, delta);
     }
 
     private void Player_OnPlayerTeleportedArrived()
@@ -88,6 +94,7 @@ public class CameraShootShake : MonoBehaviour
         QTE.instance.OnQTEStart -= QTE_OnQTEStart;
         QTE.instance.OnQTEEnd -= QTE_OnQTEEnd;
         FlameballFallingState.OnFlameballHitGround -= FlameballFallingState_OnFlameballHitGround;
+        Teleport.OnTeleportedPlayer -= Teleport_OnTeleportedPlayer;
     }
 
     private void Player_OnPlayerTeleported()

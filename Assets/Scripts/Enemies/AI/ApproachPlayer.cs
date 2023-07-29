@@ -91,7 +91,7 @@ public class ApproachPlayer : MonoBehaviour
 
         Vector2 vectorToPlayer = (player.transform.position - transform.position).normalized;
 
-        float distance = Vector2.Distance(player.transform.position, transform.position);
+        float distance = Mathf.Abs(player.transform.position.x - transform.position.x);
         bool playerInRange = distance < targetDistance;
 
         if (distance > maxFollowDistance)

@@ -35,6 +35,7 @@ public class FocusedHeadlight : MonoBehaviour
     private readonly float brokenHeadlightProbability = 0.03f; 
 
     private RaycastHit2D hit;
+    private RaycastHit2D[] tentaclesHit;
     private readonly float boxLength = 10f;
     private readonly float boxHeight = 1.5f;
 
@@ -103,11 +104,13 @@ public class FocusedHeadlight : MonoBehaviour
             {
                 OnGhostFound?.Invoke();
             }
-            hit = Physics2D.BoxCast(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, tentacleLayerMask);
-            if (hit)
+
+            tentaclesHit = Physics2D.BoxCastAll(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, tentacleLayerMask);
+            for(int i = 0; i <  tentaclesHit.Length; i++)
             {
-                OnTentacleFound?.Invoke(hit.collider.gameObject.GetComponent<TentacleStateManager>());
+                OnTentacleFound?.Invoke(tentaclesHit[i].collider.gameObject.GetComponent<TentacleStateManager>());
             }
+
             hit = Physics2D.BoxCast(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, executionerLayerMask);
             if (hit)
             {

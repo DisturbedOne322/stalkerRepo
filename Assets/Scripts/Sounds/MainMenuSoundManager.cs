@@ -37,6 +37,7 @@ public class MainMenuSoundManager : MonoBehaviour
         MetalDoor,
         HelpSign,
         SettingsSign,
+        NoSound
     }
 
     public void PlayAnimSound(SoundType type)

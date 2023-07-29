@@ -26,6 +26,8 @@ public class PlayerVisuals : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.gamePaused)
+            return;
         if (playerDead)
             return;
 

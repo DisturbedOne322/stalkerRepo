@@ -8,9 +8,7 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI magazineBulletCountText;
-    int bulletsShot = 0;
+
 
     [SerializeField]
     private TextMeshProUGUI weaponJammedNotification;
@@ -34,10 +32,7 @@ public class UI : MonoBehaviour
     [SerializeField]
     private Image saveGameIcon;
 
-    //magazine UI
-    [SerializeField]
-    private Image[] bulletImages;
-    private float bulletAlphaModifierSpeed = 0.05f;
+
 
     //health UI
     [SerializeField]
@@ -83,15 +78,12 @@ public class UI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Shoot.OnSuccessfulShoot += Shoot_OnSuccessfulShoot;
         Shoot.OnWeaponJammed += Shoot_OnWeaponJammed;
-        Shoot.OnSuccessfulReload += Shoot_OnSuccessfulReload;
         player.OnHealthChanged += Player_OnHealthChanged;
         player.OnStaminaStateChange += Player_OnStaminaStateChange;
         mageBoss.OnHPChanged += MageBoss_OnHPChanged;
         mageBoss.OnStageChanged += MageBoss_OnStageChanged;
         GameManager.Instance.OnBossFightStarted += Instance_OnBossFightStarted;
-        magazineBulletCountText.text = player.GetComponentInChildren<Shoot>().currentBulletNum.ToString() +"/12";
 
         SaveGame.OnGameSaved += SaveGame_OnGameSaved;
 
@@ -111,10 +103,8 @@ public class UI : MonoBehaviour
     }
 
     private void OnDestroy()
-    {
-        Shoot.OnSuccessfulShoot -= Shoot_OnSuccessfulShoot;
+    {     
         Shoot.OnWeaponJammed -= Shoot_OnWeaponJammed;
-        Shoot.OnSuccessfulReload -= Shoot_OnSuccessfulReload;
         player.OnHealthChanged -= Player_OnHealthChanged;
         player.OnStaminaStateChange -= Player_OnStaminaStateChange;
         mageBoss.OnHPChanged -= MageBoss_OnHPChanged;
@@ -181,18 +171,6 @@ public class UI : MonoBehaviour
         healthText.text = (player.HealthPoints * 1.0f / player.MaxHealthPoint * 100) + "%";
     }
 
-    private void Shoot_OnSuccessfulReload(int magSize)
-    {
-        magazineBulletCountText.text = magSize + "/" + magSize;
-
-        StopCoroutine(HideBullet(0));
-        StopCoroutine(ReappearBullets(0));
-        StopCoroutine(ShowBullet(0)); 
-
-        StartCoroutine(ReappearBullets(magSize));
-        bulletsShot = 0;
-    }
-
     #region Weapon Jam Notification
 
     private bool notificationShown = false;
@@ -204,6 +182,7 @@ public class UI : MonoBehaviour
 
     private readonly float smDampJamNotificationAppearTime = 0.5f;
     private readonly float smDampJamNotificationDisappearTime = 1;
+
 
     private void Shoot_OnWeaponJammed()
     {
@@ -253,53 +232,7 @@ public class UI : MonoBehaviour
         notificationShown = false;
     }
 
-    #endregion
-
-
-    private void Shoot_OnSuccessfulShoot(int bullets, int magSize)
-    {
-        magazineBulletCountText.text = bullets + "/" + magSize;
-        StartCoroutine(HideBullet(magSize - bullets - 1));
-        bulletsShot++;
-    }
-
-    IEnumerator HideBullet(int bulletImageIndex)
-    {
-        for(float i = 1; i > 0; i-= 0.1f) 
-        {
-            Color temp = bulletImages[bulletImageIndex].color;
-            temp.a = i;
-            bulletImages[bulletImageIndex].color = temp;
-            yield return new WaitForSeconds(bulletAlphaModifierSpeed);
-        }
-    }
-
-    IEnumerator ReappearBullets(int magSize)
-    {
-        //enable all the bullets that are left in the mag (reposition them to the bottom of mag)
-        for (int i = 0; i < magSize - bulletsShot; i++)
-        {
-            Color temp = bulletImages[i].color;
-            temp.a = 1;
-            bulletImages[i].color = temp;
-        }
-        for (int i = magSize - bulletsShot; i < magSize; i++)
-        {
-            StartCoroutine(ShowBullet(i));
-        }
-        yield return null;
-    }
-
-    IEnumerator ShowBullet(int bulletImageIndex)
-    {
-        for (float i = 0; i <= 1; i += 0.1f)
-        {
-            Color temp = bulletImages[bulletImageIndex].color;
-            temp.a = i;
-            bulletImages[bulletImageIndex].color = temp;
-            yield return new WaitForSeconds(bulletAlphaModifierSpeed);
-        }
-    }
+    #endregion    
 
     // Update is called once per frame
     void Update()

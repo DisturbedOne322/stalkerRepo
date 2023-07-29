@@ -43,8 +43,11 @@ public class TentacleAttackState : TentaclesBaseState
     }
     public override void OnCollisionEnter(TentacleStateManager manager, Collider2D collision)
     {
-        QTE.instance.StartQTE(manager, QTE.QTE_TYPE.SmashingButtons);
-        manager.SwitchState(manager.shrinkState);
-        manager.pullingPlayer = true;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            QTE.instance.StartQTE(manager, QTE.QTE_TYPE.SmashingButtons);
+            manager.SwitchState(manager.shrinkState);
+            manager.pullingPlayer = true;
+        }
     }
 }

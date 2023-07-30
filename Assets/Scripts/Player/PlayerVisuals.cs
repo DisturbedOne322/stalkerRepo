@@ -16,7 +16,12 @@ public class PlayerVisuals : MonoBehaviour
     private void Start()
     {
         player = GetComponent<PlayerMovement>();
-        player.OnPlayerDied += Player_OnPlayerDied;
+        player.GetComponentInChildren<PlayerHealth>().OnDeath += Player_OnPlayerDied;
+    }
+
+    private void OnDestroy()
+    {
+        player.GetComponentInChildren<PlayerHealth>().OnDeath -= Player_OnPlayerDied;
     }
 
     private void Player_OnPlayerDied()

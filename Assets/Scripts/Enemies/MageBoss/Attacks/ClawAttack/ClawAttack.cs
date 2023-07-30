@@ -27,12 +27,14 @@ public class ClawAttack : MonoBehaviour
     private AudioSource audioSource;
 
     private PlayerMovement player;
+    private PlayerHealth playerHealth;
     private Rigidbody2D playerRB;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
         player = GameManager.Instance.GetPlayerReference();
+        playerHealth = player.GetComponent<PlayerHealth>();
         playerRB = player.GetComponent<Rigidbody2D>();
         playerInClawAttackRange.OnPlayerInClawAttackRange += PlayerInClawAttackRange_OnPlayerInClawAttackRange;
     }
@@ -65,7 +67,7 @@ public class ClawAttack : MonoBehaviour
             return;
         if (collision.gameObject.CompareTag("Player"))
         {
-            player.GetDamaged(2);
+            playerHealth.TakeDamage(2);
             playerRB.AddForce(new Vector2(-0.01f,0.01f), ForceMode2D.Impulse);
             damageCD = damageCDTotal;
         }

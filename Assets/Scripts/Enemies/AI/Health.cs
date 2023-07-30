@@ -7,7 +7,18 @@ public class Health : MonoBehaviour, IDamagable
 {
     [SerializeField]
     private int health;
+    public int HealthPoints
+    {
+        get { return health; } 
+
+    }
+
     private int maxHealth;
+    public int MaxHealthPoint
+    {
+        get { return maxHealth; }
+    }
+
 
     public event Action<int,int> OnHealthChange;
 

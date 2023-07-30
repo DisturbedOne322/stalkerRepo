@@ -31,6 +31,7 @@ public class HellHound : Enemy
     private bool hasAttackedRecently = false;
 
     private PlayerMovement player;
+    private PlayerHealth playerHealth;
     [SerializeField]
     private Dissolve dissolve;
 
@@ -42,7 +43,7 @@ public class HellHound : Enemy
     private void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
-
+        playerHealth = player.GetComponent<PlayerHealth>();
         moveSpeed = walkSpeed;
         healthPoints = 10;
         attackRange = 0.2f;
@@ -140,7 +141,7 @@ public class HellHound : Enemy
         {
             hasAttackedRecently = false;
             OnSuccessfulHit?.Invoke();
-            player.GetDamaged(damage);
+            playerHealth.TakeDamage(damage);
         }
     }
 }

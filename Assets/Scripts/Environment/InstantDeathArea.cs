@@ -8,7 +8,7 @@ public class InstantDeathArea : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerMovement>().GetDamaged(99999);
+            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(99);
             return;
         }
 

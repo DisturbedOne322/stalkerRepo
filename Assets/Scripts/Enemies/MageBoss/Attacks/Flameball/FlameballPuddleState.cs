@@ -48,7 +48,7 @@ public class FlameballPuddleState : FlameballBaseState
         {
             if (canInflictDamage)
             {
-                GameManager.Instance.GetPlayerReference().GetDamaged(damage);
+                manager.playerHealth.TakeDamage(damage);
                 canInflictDamage = false;
                 puddleDamageCD = puddleDamageTickRate;
             }

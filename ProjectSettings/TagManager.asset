@@ -13,6 +13,7 @@ TagManager:
   - GlobalLight
   - TeleportDestination
   - Room
+  - Teleport
   layers:
   - Default
   - TransparentFX

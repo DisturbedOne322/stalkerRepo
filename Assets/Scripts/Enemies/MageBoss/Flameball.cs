@@ -17,7 +17,8 @@ public class Flameball : MonoBehaviour
     [SerializeField]
     public SpriteRenderer spriteRenderer;
 
-    private PlayerMovement player;
+    public PlayerMovement player;
+    public PlayerHealth playerHealth;
 
 
     public AudioSource audioSource;
@@ -51,6 +52,7 @@ public class Flameball : MonoBehaviour
     private void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
+        playerHealth = player.GetComponent<PlayerHealth>(); 
     }
 
     private void Update()

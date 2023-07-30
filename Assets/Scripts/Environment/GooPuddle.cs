@@ -16,7 +16,7 @@ public class GooPuddle : MonoBehaviour
         {
             if(Time.time> lastDamageTime + damageCD)
             {
-                collision.GetComponent<PlayerMovement>().GetDamaged(1);
+                collision.GetComponent<PlayerHealth>().TakeDamage(1);
                 lastDamageTime = Time.time;
             }
         }

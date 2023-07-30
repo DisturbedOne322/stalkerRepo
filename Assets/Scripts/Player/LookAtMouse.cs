@@ -40,7 +40,7 @@ public class LookAtMouse : MonoBehaviour
             InputManager.Instance.OnFocusActionEnded += InputManager_OnFocusActionEnded;
         }
         player = GetComponentInParent<PlayerMovement>();
-        player.OnPlayerDied += Player_OnPlayerDied;
+        player.GetComponent<PlayerHealth>().OnDeath += Player_OnPlayerDied;
     }
 
     private void Player_OnPlayerDied()
@@ -55,7 +55,7 @@ public class LookAtMouse : MonoBehaviour
             InputManager.Instance.OnFocusActionStarted -= InputManager_OnFocusAction;
             InputManager.Instance.OnFocusActionEnded -= InputManager_OnFocusActionEnded;
         }
-        player.OnPlayerDied -= Player_OnPlayerDied;
+        player.GetComponent<PlayerHealth>().OnDeath -= Player_OnPlayerDied;
     }
 
     private void InputManager_OnFocusActionEnded()

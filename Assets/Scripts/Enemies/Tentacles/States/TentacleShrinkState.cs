@@ -57,7 +57,7 @@ public class TentacleShrinkState : TentaclesBaseState
                 manager.pullingPlayer = false;
                 manager.playerFreed = true;
                 SoundManager.Instance.PlayBoneCrackSound();
-                manager.player.GetCriticaldamage();
+                manager.playerHealth.GetCriticaldamage();
                 QTE.instance.EndQTE();
             }
         }

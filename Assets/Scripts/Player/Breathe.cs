@@ -32,7 +32,7 @@ public class Breathe : MonoBehaviour
 
     private void Start()
     {
-        player.OnHealthChanged += Player_OnHealthChanged;
+        player.GetComponent<PlayerHealth>().OnHealthChanged += Player_OnHealthChanged;
         #region Instantiating gradients for HP values
         gradientsForHPValueArray = new Gradient[gradientsForHPamount];
 
@@ -98,7 +98,7 @@ public class Breathe : MonoBehaviour
 
     private void OnDestroy()
     {
-        player.OnHealthChanged -= Player_OnHealthChanged;
+        player.GetComponent<PlayerHealth>().OnHealthChanged -= Player_OnHealthChanged;
 
     }
 

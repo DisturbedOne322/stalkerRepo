@@ -5,6 +5,7 @@ using UnityEngine;
 public class Scythe : MonoBehaviour
 {
     private PlayerMovement player;
+    private PlayerHealth playerHealth;
     private Rigidbody2D playerRb;
 
     private Vector2 throwbackVector;
@@ -14,6 +15,7 @@ public class Scythe : MonoBehaviour
     void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
+        playerHealth = player.GetComponent<PlayerHealth>();
         playerRb = player.GetComponent<Rigidbody2D>();
     }
 
@@ -30,7 +32,7 @@ public class Scythe : MonoBehaviour
                 throwbackVector = new Vector2(-1,0);
             }
 
-            player.GetDamaged(1);
+            playerHealth.TakeDamage(1);
             playerRb.AddForce(throwbackVector * throwbackForce, ForceMode2D.Impulse);
         }
     }

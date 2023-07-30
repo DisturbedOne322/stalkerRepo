@@ -9,6 +9,7 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
     [SerializeField]
     private SpriteRenderer spriteRenderer;
     public PlayerMovement player;
+    public PlayerHealth playerHealth;
     [SerializeField]
     private Transform playerHoldPoint;
 
@@ -64,6 +65,7 @@ public class TentacleStateManager : MonoBehaviour, IQTECaller
     {
         FocusedHeadlight.OnTentacleFound += FocusedHeadlight_OnTentacleFound;
         player = GameManager.Instance.GetPlayerReference();
+        playerHealth = player.GetComponent<PlayerHealth>(); 
         QTE.instance.OnQTEEnd += Instance_OnQTEEnd;
     }
 

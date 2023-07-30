@@ -57,8 +57,8 @@ public class InputManager : MonoBehaviour
         playerInputActions.Player.Pause.performed += Pause_performed;
         playerInputActions.Player.Interact.performed += Interact_performed;
 
-        GameManager.Instance.GetPlayerReference().OnPlayerDied += InputManager_OnPlayerDied;
-        GameManager.Instance.GetPlayerReference().OnPlayerRespawned += InputManager_OnPlayerRespawned;
+        GameManager.Instance.GetPlayerReference().GetComponentInChildren<PlayerHealth>().OnDeath += InputManager_OnPlayerDied;
+        //GameManager.Instance.GetPlayerReference().OnPlayerRespawned += InputManager_OnPlayerRespawned;
     }
 
     private void InputManager_OnPlayerDied()
@@ -66,10 +66,10 @@ public class InputManager : MonoBehaviour
         playerInputActions.Player.Disable();
     }
 
-    private void InputManager_OnPlayerRespawned()
-    {
-        playerInputActions.Player.Enable();
-    }
+    //private void InputManager_OnPlayerRespawned()
+    //{
+    //    playerInputActions.Player.Enable();
+    //}
 
 
     private void OnDestroy()

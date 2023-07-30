@@ -22,6 +22,7 @@ public class Laser : MageBossBaseAttack
     private float trackOffsetX = 3f;
 
     private PlayerMovement player;
+    private PlayerHealth playerHealth;
 
     private readonly float smoothDampTimeVertical = 0.5f;
     private readonly float smoothDampTimeHorizontal = 1.2f;
@@ -52,6 +53,7 @@ public class Laser : MageBossBaseAttack
     void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
+        playerHealth = player.GetComponent<PlayerHealth>();
         focusedHeadlight = player.GetComponentInChildren<FocusedHeadlight>();
     }
 
@@ -151,7 +153,7 @@ public class Laser : MageBossBaseAttack
         {
             if (damageCD > 0)
                 return;
-            player.GetDamaged(damage);
+            playerHealth.TakeDamage(damage);
             damageCD = damageCDTotal;
         }
     }

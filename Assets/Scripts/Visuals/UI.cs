@@ -23,14 +23,18 @@ public class UI : MonoBehaviour
     [SerializeField]
     private Slider headlightCapacitySlider;
 
-    [SerializeField]
     private PlayerMovement player;
+    private PlayerHealth playerHealth;
 
     [SerializeField]
     private FocusedHeadlight focusedHeadlight;
 
     [SerializeField]
     private Image saveGameIcon;
+    [SerializeField]
+    private Image saveGameBrush;
+    [SerializeField]
+    private Animator brushAnimator;
 
 
 
@@ -79,8 +83,12 @@ public class UI : MonoBehaviour
     void Start()
     {
         Shoot.OnWeaponJammed += Shoot_OnWeaponJammed;
-        player.OnHealthChanged += Player_OnHealthChanged;
-        player.OnStaminaStateChange += Player_OnStaminaStateChange;
+
+        player = GameManager.Instance.GetPlayerReference();
+        playerHealth = player.GetComponent<PlayerHealth>();
+
+        playerHealth.OnHealthChanged += Player_OnHealthChanged;
+        GameManager.Instance.GetPlayerReference().OnStaminaStateChange += Player_OnStaminaStateChange;
         mageBoss.OnHPChanged += MageBoss_OnHPChanged;
         mageBoss.OnStageChanged += MageBoss_OnStageChanged;
         GameManager.Instance.OnBossFightStarted += Instance_OnBossFightStarted;
@@ -88,11 +96,15 @@ public class UI : MonoBehaviour
         SaveGame.OnGameSaved += SaveGame_OnGameSaved;
 
         saveGameIcon.gameObject.SetActive(false);
+        saveGameBrush.gameObject.SetActive(false);
     }
 
     private void SaveGame_OnGameSaved()
     {
+        SoundManager.Instance.PlaySaveSound();
         StartCoroutine(DisableImageAfterDelay(saveGameIcon, 2));
+        StartCoroutine(DisableImageAfterDelay(saveGameBrush, 2));
+        brushAnimator.SetTrigger("OnSaved");
     }
 
     private IEnumerator DisableImageAfterDelay(Image img, float delay)
@@ -105,8 +117,8 @@ public class UI : MonoBehaviour
     private void OnDestroy()
     {     
         Shoot.OnWeaponJammed -= Shoot_OnWeaponJammed;
-        player.OnHealthChanged -= Player_OnHealthChanged;
-        player.OnStaminaStateChange -= Player_OnStaminaStateChange;
+        playerHealth.OnHealthChanged -= Player_OnHealthChanged;
+        GameManager.Instance.GetPlayerReference().OnStaminaStateChange -= Player_OnStaminaStateChange;
         mageBoss.OnHPChanged -= MageBoss_OnHPChanged;
         mageBoss.OnStageChanged -= MageBoss_OnStageChanged;
         GameManager.Instance.OnBossFightStarted -= Instance_OnBossFightStarted;
@@ -168,7 +180,7 @@ public class UI : MonoBehaviour
                 break;
         }
 
-        healthText.text = (player.HealthPoints * 1.0f / player.MaxHealthPoint * 100) + "%";
+        healthText.text = (playerHealth.HealthPoint * 1.0f / playerHealth.MaxHealthPoint * 100) + "%";
     }
 
     #region Weapon Jam Notification

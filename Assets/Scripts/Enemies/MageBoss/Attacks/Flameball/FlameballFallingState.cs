@@ -31,7 +31,7 @@ public class FlameballFallingState : FlameballBaseState
         if(collision.gameObject.CompareTag("Player"))
         {
             manager.audioSource.Stop();
-            GameManager.Instance.GetPlayerReference().GetDamaged(damage);
+            manager.playerHealth.TakeDamage(damage);
             manager.gameObject.SetActive(false);
         }
         else

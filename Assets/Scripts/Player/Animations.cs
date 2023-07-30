@@ -35,7 +35,7 @@ public class Animations : MonoBehaviour
         QTE.instance.OnQTEStart += QTE_OnQTEStart;
         QTE.instance.OnQTEEnd += Instance_OnQTEEnd;
 
-        player.OnPlayerDied += Player_OnPlayerDied;
+        player.GetComponent<PlayerHealth>().OnDeath += Player_OnPlayerDied;
     }
 
     private void OnDestroy()
@@ -47,7 +47,7 @@ public class Animations : MonoBehaviour
         QTE.instance.OnQTEStart -= QTE_OnQTEStart;
         QTE.instance.OnQTEEnd -= Instance_OnQTEEnd;
 
-        player.OnPlayerDied -= Player_OnPlayerDied;
+        player.GetComponent<PlayerHealth>().OnDeath -= Player_OnPlayerDied;
     }
 
     private void Player_OnPlayerDied()

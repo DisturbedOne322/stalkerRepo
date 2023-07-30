@@ -23,6 +23,9 @@ public class SoundManager : MonoBehaviour
     private AudioClip qteAudioClip;
 
     [SerializeField]
+    private AudioClip saveGameAudio;
+
+    [SerializeField]
     private AudioClip[] headlightBrokenAudioClipArray;
 
     private void Awake()
@@ -46,6 +49,11 @@ public class SoundManager : MonoBehaviour
     private void OnDestroy()
     {
         QTE.instance.OnQTEStart -= QTE_OnQTEStart;
+    }
+
+    public void PlaySaveSound()
+    {
+        soundEffectsAudioSource.PlayOneShot(saveGameAudio);
     }
 
     private void QTE_OnQTEStart()

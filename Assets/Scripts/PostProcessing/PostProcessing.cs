@@ -11,7 +11,8 @@ public class PostProcessing : MonoBehaviour
     [SerializeField]
     private Volume volume;
     private UnityEngine.Rendering.Universal.Vignette vig;
-    private PlayerMovement player;
+    private PlayerHealth playerHealth;
+
 
     private bool playerAtLowHP = false;
     private float lowerBoundVigIntensity = 0.2f;
@@ -20,8 +21,8 @@ public class PostProcessing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameManager.Instance.GetPlayerReference();
-        player.OnHealthChanged += Player_OnHealthChanged;
+        playerHealth = GameManager.Instance.GetPlayerReference().GetComponent<PlayerHealth>();
+        playerHealth.OnHealthChanged += Player_OnHealthChanged;
         UnityEngine.Rendering.Universal.Vignette temp;
         if (volume.profile.TryGet<UnityEngine.Rendering.Universal.Vignette>(out temp))
         {
@@ -31,7 +32,7 @@ public class PostProcessing : MonoBehaviour
 
     private void OnDestroy()
     {
-        player.OnHealthChanged -= Player_OnHealthChanged;
+        playerHealth.OnHealthChanged -= Player_OnHealthChanged;
     }
 
     private void Player_OnHealthChanged(GameManager.PlayerHealthStatus healthStatus)

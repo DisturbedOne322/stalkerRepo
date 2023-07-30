@@ -25,6 +25,7 @@ public class LoadData : MonoBehaviour
     private const string UNLOAD_SCREEN_TRIGGER = "OnUnload";
 
     private PlayerMovement player;
+    private PlayerHealth playerHealth;
 
     private int LastCheckpointID;
 
@@ -43,8 +44,8 @@ public class LoadData : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
         player = GameManager.Instance.GetPlayerReference();
-        player.OnPlayerDied += Player_OnPlayerDied;
-
+        playerHealth = player.GetComponent<PlayerHealth>();
+        playerHealth.OnDeath += Player_OnPlayerDied;
         player.OnPlayerTeleported += Player_OnPlayerTeleported;
         player.OnPlayerTeleportedArrived += Player_OnPlayerTeleportedArrived;
 
@@ -53,7 +54,7 @@ public class LoadData : MonoBehaviour
 
     private void OnDestroy()
     {
-        player.OnPlayerDied -= Player_OnPlayerDied;
+        playerHealth.OnDeath -= Player_OnPlayerDied;
 
         player.OnPlayerTeleported -= Player_OnPlayerTeleported;
         player.OnPlayerTeleportedArrived -= Player_OnPlayerTeleportedArrived;

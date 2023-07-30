@@ -12,6 +12,8 @@ public class MagUI : MonoBehaviour
     private Image[] bulletImages;
     private float bulletAlphaModifierSpeed = 0.05f;
 
+    private Shoot shoot;
+
     int bulletsShot = 0;
 
     // Start is called before the first frame update
@@ -20,10 +22,16 @@ public class MagUI : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Shoot.OnSuccessfulShoot += Shoot_OnSuccessfulShoot;
         Shoot.OnSuccessfulReload += Shoot_OnSuccessfulReload;
-
+        shoot = GameManager.Instance.GetPlayerReference().GetComponentInChildren<Shoot>();
         magazineBulletCountText.text = GameManager.Instance.GetPlayerReference().GetComponentInChildren<Shoot>().currentBulletNum.ToString() + "/12";
-        bulletsShot = 12 - GameManager.Instance.GetPlayerReference().GetComponentInChildren<Shoot>().currentBulletNum;
+        bulletsShot = 12 - shoot.currentBulletNum;
         HideShotBulletsOnGameLoad();
+    }
+
+    private void OnDestroy()
+    {
+        Shoot.OnSuccessfulShoot -= Shoot_OnSuccessfulShoot;
+        Shoot.OnSuccessfulReload -= Shoot_OnSuccessfulReload;
     }
 
     private void HideShotBulletsOnGameLoad()
@@ -50,7 +58,7 @@ public class MagUI : MonoBehaviour
     private void Shoot_OnSuccessfulShoot(int bullets, int magSize)
     {
         magazineBulletCountText.text = bullets + "/" + magSize;
-        Coroutine temp = StartCoroutine(HideBullet(magSize - bullets - 1));
+        StartCoroutine(HideBullet(magSize - bullets - 1));
         bulletsShot++;
     }
 

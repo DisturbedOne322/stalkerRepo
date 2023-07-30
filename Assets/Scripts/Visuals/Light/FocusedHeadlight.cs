@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -35,7 +36,8 @@ public class FocusedHeadlight : MonoBehaviour
     private readonly float brokenHeadlightProbability = 0.03f; 
 
     private RaycastHit2D hit;
-    private RaycastHit2D[] tentaclesHit;
+    private RaycastHit2D[] tentaclesHits;
+    private RaycastHit2D[] executionerHits;
     private readonly float boxLength = 10f;
     private readonly float boxHeight = 1.5f;
 
@@ -48,8 +50,6 @@ public class FocusedHeadlight : MonoBehaviour
     [SerializeField]
     private LayerMask executionerLayerMask;
 
-
-
     private Vector2[] focusedHeadlightBoxPoints;
 
     //increase headlightBox with time
@@ -58,21 +58,73 @@ public class FocusedHeadlight : MonoBehaviour
 
     private bool automaticLight = false;
 
+    private PlayerMovement player;
+    private IDamagable health;
+
     [SerializeField]
     private EnemySpawnManager enemySpawnManager;
-
     // Start is called before the first frame update
     void Start()
     {
         light2D = GetComponent<Light2D>();
         defaultLightIntensity = light2D.intensity;
-        InputManager.Instance.OnHeadlightAction += Instance_OnHeadlightAction;
         InvokeRepeating("TryToBrakeHeadlight", 0, 0.5f);
         currentFocusedLightCapacity = focusedLightCapacity;
         focusedHeadlightBoxPoints = new Vector2[3];
+
         enemySpawnManager.OnMiniBossFightStarted += EnemySpawnManager_OnBossFightStarted;
         enemySpawnManager.OnBossFightFinished += EnemySpawnManager_OnBossFightFinished;
+
+        player = GameManager.Instance.GetPlayerReference();
+        player.OnEnterExitSafeZone += Player_OnEnterExitSafeZone;
+        InputManager.Instance.OnHeadlightAction += Instance_OnHeadlightAction;
+
+
+        health = GetComponentInParent<IDamagable>();
+        health.OnDeath += Health_OnDeath;
     }
+
+    private void Health_OnDeath()
+    {
+        if (focusedLightEnabled)
+        {
+            focusedLightEnabled = false;
+            automaticLight = true;
+            SoundManager.Instance.PlayFocusedLightSound(focusedLightEnabled);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        enemySpawnManager.OnMiniBossFightStarted -= EnemySpawnManager_OnBossFightStarted;
+        enemySpawnManager.OnBossFightFinished -= EnemySpawnManager_OnBossFightFinished;
+
+        player.OnEnterExitSafeZone -= Player_OnEnterExitSafeZone;
+        InputManager.Instance.OnHeadlightAction -= Instance_OnHeadlightAction;
+        
+        health.OnDeath -= Health_OnDeath;
+    }
+
+
+    private void Player_OnEnterExitSafeZone(bool inSafety)
+    {
+        if (inSafety)
+        {
+            automaticLight = true;
+            currentFocusedLightCapacity = 1;
+            if (focusedLightEnabled)
+            {
+                focusedLightEnabled = false;
+                SoundManager.Instance.PlayFocusedLightSound(focusedLightEnabled);
+            }
+        }
+        else
+        {
+            automaticLight = false;
+        }
+    }
+
+    
 
     private void EnemySpawnManager_OnBossFightFinished()
     {
@@ -89,11 +141,6 @@ public class FocusedHeadlight : MonoBehaviour
         SoundManager.Instance.PlayFocusedLightSound(focusedLightEnabled);
     }
 
-    private void OnDestroy()
-    {
-        InputManager.Instance.OnHeadlightAction -= Instance_OnHeadlightAction;
-    }
-
     private void FixedUpdate()
     {
         if (focusedLightEnabled)
@@ -105,19 +152,18 @@ public class FocusedHeadlight : MonoBehaviour
                 OnGhostFound?.Invoke();
             }
 
-            tentaclesHit = Physics2D.BoxCastAll(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, tentacleLayerMask);
-            for(int i = 0; i <  tentaclesHit.Length; i++)
+            tentaclesHits = Physics2D.BoxCastAll(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, tentacleLayerMask);
+            for(int i = 0; i <  tentaclesHits.Length; i++)
             {
-                OnTentacleFound?.Invoke(tentaclesHit[i].collider.gameObject.GetComponent<TentacleStateManager>());
+                OnTentacleFound?.Invoke(tentaclesHits[i].collider.gameObject.GetComponent<TentacleStateManager>());
             }
 
-            hit = Physics2D.BoxCast(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, executionerLayerMask);
-            if (hit)
+            executionerHits = Physics2D.BoxCastAll(transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right, 0, executionerLayerMask);
+            for (int i = 0; i < executionerHits.Length; i++)
             {
-                OnExecutionerFound?.Invoke(hit.collider.GetComponent<ExecutionerVisuals>());
+                OnExecutionerFound?.Invoke(executionerHits[i].collider.gameObject.GetComponent<ExecutionerVisuals>());
             }
-            BoxCastDrawer.Draw(hit, transform.position, new Vector2(boxLength, boxHeight), transform.parent.parent.rotation.eulerAngles.z, Vector2.right);
-         }
+        }
     }
     private void Instance_OnHeadlightAction()
     {

@@ -46,8 +46,6 @@ public class HellHoundSoundManager : MonoBehaviour
     private void Update()
     {
         audioSource.volume = DynamicSoundVolume.GetDynamicVolume(maxVolumeDistance, Vector2.Distance(transform.position, player.transform.position));
-
-        //audioSource.volume = Mathf.Clamp(1 - Vector2.Distance(transform.position,player.transform.position) / maxVolumeDistance,0, 1);
     }
     private void HellHound_OnSuccessfulHit()
     {
@@ -66,6 +64,13 @@ public class HellHoundSoundManager : MonoBehaviour
 
     private void PlayerDetection_OnPlayerInRange(PlayerMovement player)
     {
+        StartCoroutine(DelayAfterPlayerDetected());
+    }
+
+    private IEnumerator DelayAfterPlayerDetected()
+    {
+        yield return new WaitForSeconds(UnityEngine.Random.Range(0, 0.25f));
+
         audioSource.clip = hellHoundAudioClipsSO.GrowlThenBarkAudioClip;
         audioSource.Play();
     }

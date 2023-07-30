@@ -43,6 +43,7 @@ public class CameraShootShake : MonoBehaviour
     private readonly float playerDamagedShakeAmp = 2.5f;
     private readonly float playerDamagedShakeFreq = 10f;
     private PlayerMovement player;
+    private PlayerHealth playerHealth;
     #endregion
 
     /*
@@ -62,7 +63,8 @@ public class CameraShootShake : MonoBehaviour
     void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
-        player.OnHealthChanged += Player_OnHealthChanged;
+        playerHealth = player.GetComponent<PlayerHealth>();
+        playerHealth.OnHealthChanged += Player_OnHealthChanged;
         player.OnPlayerTeleported += Player_OnPlayerTeleported;
         player.OnPlayerTeleportedArrived += Player_OnPlayerTeleportedArrived;
         Shoot.OnSuccessfulShoot += Instance_OnShootAction;
@@ -87,7 +89,7 @@ public class CameraShootShake : MonoBehaviour
 
     private void OnDestroy()
     {
-        player.OnHealthChanged -= Player_OnHealthChanged;
+        playerHealth.OnHealthChanged -= Player_OnHealthChanged;
         player.OnPlayerTeleported -= Player_OnPlayerTeleported;
         player.OnPlayerTeleportedArrived -= Player_OnPlayerTeleportedArrived;
         Shoot.OnSuccessfulShoot -= Instance_OnShootAction;
@@ -111,7 +113,7 @@ public class CameraShootShake : MonoBehaviour
 
     private void Player_OnHealthChanged(GameManager.PlayerHealthStatus obj)
     {
-        if(player.HealthPoints != player.MaxHealthPoint)
+        if(playerHealth.HealthPoint != playerHealth.MaxHealthPoint)
             ShakeCamera(playerDamagedShakeAmp, playerDamagedShakeFreq, shakeTimerTotal);
     }
 

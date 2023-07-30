@@ -30,7 +30,6 @@ public class HellHoundVisuals : MonoBehaviour
     private void Awake()
     {
         hellHound = GetComponent<HellHound>();
-
     }
 
     // Start is called before the first frame update
@@ -49,6 +48,7 @@ public class HellHoundVisuals : MonoBehaviour
         {
             particleSpawnerOnPlayerHitWithClaw[i] = Instantiate(hitIndicatorsSO.ClawCutHitIndicatorArray[i]);
             particleSpawnerOnPlayerHitWithClaw[i].gameObject.transform.SetParent(player.transform, false);
+            particleSpawnerOnPlayerHitWithClaw[i].Stop();
         }
     }
 

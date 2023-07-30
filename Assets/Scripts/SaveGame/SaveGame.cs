@@ -60,7 +60,7 @@ public class SaveGame : MonoBehaviour
 
             SaveData saveData = new SaveData();
             saveData.savePoint = uniqueSavePointID;
-            player.RestoreFullHealth();
+            player.GetComponent<PlayerHealth>().RestoreFullHealth();
             saveData.bulletAmount = player.GetComponentInChildren<Shoot>().currentBulletNum;
             saveData.globalLightIntensity = GameObject.FindGameObjectWithTag("GlobalLight").GetComponent<Light2D>().intensity;
 

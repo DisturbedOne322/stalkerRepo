@@ -12,6 +12,7 @@ public class ShootPlayer : MonoBehaviour, IParticleSpawnerCaller, IShootableWeap
     private Transform parent;
 
     private PlayerMovement player;
+    private PlayerHealth playerHealth;
     [SerializeField]
     private LayerMask layerMask;
     [SerializeField]
@@ -27,6 +28,7 @@ public class ShootPlayer : MonoBehaviour, IParticleSpawnerCaller, IShootableWeap
     void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
+        playerHealth = player.GetComponent<PlayerHealth>();
         approachPlayer.OnPlayerInRange += ApproachPlayer_OnPlayerInRange;
     }
 
@@ -60,7 +62,7 @@ public class ShootPlayer : MonoBehaviour, IParticleSpawnerCaller, IShootableWeap
         hit = Physics2D.Raycast(transform.position, transform.right * parent.transform.localScale.x, shootDistance, layerMask);
         if(hit)
         {
-            player.GetDamaged(1);
+            playerHealth.TakeDamage(1);
         }
     }
 

@@ -19,6 +19,7 @@ public class Excalibur : MonoBehaviour
     private Rigidbody2D rb;
 
     private PlayerMovement player;
+    private PlayerHealth playerHealth;
     private Rigidbody2D playerRB;
 
     private float fallSpeed = 1000;
@@ -82,6 +83,7 @@ public class Excalibur : MonoBehaviour
     private void Start()
     {
         player = GameManager.Instance.GetPlayerReference();
+        playerHealth = player.GetComponent<PlayerHealth>(); 
         playerRB = player.GetComponent<Rigidbody2D>();
         MageBoss.OnFightFinished += MageBoss_OnFightFinished;
     }
@@ -222,7 +224,7 @@ public class Excalibur : MonoBehaviour
             throwDirection.x = playerPosX < transform.position.x ? -throwBackForce : throwBackForce;
 
             playerRB.AddForce(throwDirection, ForceMode2D.Impulse);
-            player.GetDamaged(1);
+            playerHealth.TakeDamage(1);
         }
         if (collision.gameObject.CompareTag("Ground"))
         {
@@ -232,7 +234,7 @@ public class Excalibur : MonoBehaviour
             {
                 if (objectHit.collider.gameObject.CompareTag("Player"))
                 {
-                    player.GetDamaged(2);
+                    playerHealth.TakeDamage(2);
                     //since player has multiple colliders, he gets damaged multiple times, so break early from the loop
                     break;
                 }

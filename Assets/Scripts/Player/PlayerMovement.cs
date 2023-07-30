@@ -6,28 +6,27 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public event Action<StaminaState> OnStaminaStateChange;
-    public event Action<GameManager.PlayerHealthStatus> OnHealthChanged;
-    public event Action OnPlayerRespawned;
     public event Action OnPlayerTeleported;
     public event Action OnPlayerTeleportedArrived;
-    public event Action OnPlayerDied;
     private Rigidbody2D rb2D;
 
     [SerializeField]
     private LayerMask groundLayerMask;
 
-    private int healthPoints = 10;
-    private readonly int maxHealthPoints = 10;
+    //private int healthPoints = 10;
+    //private readonly int maxHealthPoints = 10;
 
-    public int HealthPoints
-    {
-        get { return healthPoints; }
-    }
+    //public int HealthPoints
+    //{
+    //    get { return healthPoints; }
+    //}
 
-    public int MaxHealthPoint
-    {
-        get { return maxHealthPoints; }
-    }
+    //public int MaxHealthPoint
+    //{
+    //    get { return maxHealthPoints; }
+    //}
+
+    public event Action<bool> OnEnterExitSafeZone;
 
     [SerializeField]
     private readonly float originalSpeed = 0.85f;
@@ -100,7 +99,6 @@ public class PlayerMovement : MonoBehaviour
 
         QTE.instance.OnQTEStart += QTE_OnQTEStart;
         QTE.instance.OnQTEEnd += QTE_OnQTEEnd;
-        QTE.instance.OnQTERoundFailed += QTE_OnQTERoundFailed;
     }
 
     private void OnDestroy()
@@ -111,12 +109,6 @@ public class PlayerMovement : MonoBehaviour
 
         QTE.instance.OnQTEStart -= QTE_OnQTEStart;
         QTE.instance.OnQTEEnd -= QTE_OnQTEEnd;
-        QTE.instance.OnQTERoundFailed -= QTE_OnQTERoundFailed;
-    }
-
-    private void QTE_OnQTERoundFailed(int damage)
-    {
-        GetDamaged(damage);
     }
 
     private void QTE_OnQTEEnd(IQTECaller caller)
@@ -224,13 +216,13 @@ public class PlayerMovement : MonoBehaviour
             RegenStamina();
     }
 
-    public void RestoreFullHealth()
-    {
-        healthPoints = MaxHealthPoint;
-        OnHealthChanged?.Invoke(GameManager.PlayerHealthStatus.HighHP);
-        OnPlayerRespawned?.Invoke();
-        stamina = 1;
-    }
+    //public void RestoreFullHealth()
+    //{
+    //    healthPoints = MaxHealthPoint;
+    //    OnHealthChanged?.Invoke(GameManager.PlayerHealthStatus.HighHP);
+    //    OnPlayerRespawned?.Invoke();
+    //    stamina = 1;
+    //}
 
     private void DepleteStamina()
     {
@@ -277,46 +269,51 @@ public class PlayerMovement : MonoBehaviour
         //return rayHit.collider != null;
     }
 
-    public void GetDamaged(int damage)
-    {
-        if (healthPoints <= 0)
-            return;
+    //public void GetDamaged(int damage)
+    //{
+    //    if (healthPoints <= 0)
+    //        return;
 
-        healthPoints -= damage;
-        OnHealthChanged?.Invoke(CalculateHealthStatus());
-        if(healthPoints <= 0)
-        {
-            OnPlayerDied?.Invoke();
-            SoundManager.Instance.PlayDeathSound();
-        }
-        SoundManager.Instance.PlayGetHurtSound();
-    }
+    //    healthPoints -= damage;
+    //    OnHealthChanged?.Invoke(CalculateHealthStatus());
+    //    if(healthPoints <= 0)
+    //    {
+    //        OnPlayerDied?.Invoke();
+    //        SoundManager.Instance.PlayDeathSound();
+    //    }
+    //    SoundManager.Instance.PlayGetHurtSound();
+    //}
 
-    private GameManager.PlayerHealthStatus CalculateHealthStatus()
-    {
-        return healthPoints * 1.0f / maxHealthPoints > 0.5f ? GameManager.PlayerHealthStatus.HighHP :
-            healthPoints * 1.0f / maxHealthPoints > 0.25f ? GameManager.PlayerHealthStatus.MidHP : GameManager.PlayerHealthStatus.LowHP;
-    }
+    //private GameManager.PlayerHealthStatus CalculateHealthStatus()
+    //{
+    //    return healthPoints * 1.0f / maxHealthPoints > 0.5f ? GameManager.PlayerHealthStatus.HighHP :
+    //        healthPoints * 1.0f / maxHealthPoints > 0.25f ? GameManager.PlayerHealthStatus.MidHP : GameManager.PlayerHealthStatus.LowHP;
+    //}
 
-    public void GetCriticaldamage()
-    {
-        if (healthPoints > 3)
-            healthPoints -= 3;
-        else
-            healthPoints = 1;
-        OnHealthChanged?.Invoke(CalculateHealthStatus());
-        SoundManager.Instance.PlayGetHurtSound();
-    }
+    //public void GetCriticaldamage()
+    //{
+    //    if (healthPoints > 3)
+    //        healthPoints -= 3;
+    //    else
+    //        healthPoints = 1;
+    //    OnHealthChanged?.Invoke(CalculateHealthStatus());
+    //    SoundManager.Instance.PlayGetHurtSound();
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Room"))
         {
             TurnLightsOff();
+            OnEnterExitSafeZone?.Invoke(true);
         }
         if (collision.gameObject.CompareTag("TeleportDestination"))
         {
             OnTeleportArrived();
+        }
+        if(collision.gameObject.CompareTag("Teleport"))
+        {
+            GetTeleported();
         }
     }
 
@@ -325,6 +322,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Room"))
         {
             TurnLightsOn();
+            OnEnterExitSafeZone?.Invoke(false);
         }
     }
 }

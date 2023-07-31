@@ -12,7 +12,7 @@ public class InitiateBossfight : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             OnBossFightInitiated?.Invoke();
-            Destroy(this.gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

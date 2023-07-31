@@ -26,6 +26,9 @@ public class SoundManager : MonoBehaviour
     private AudioClip saveGameAudio;
 
     [SerializeField]
+    private AudioClip bossFightDoorClose;
+
+    [SerializeField]
     private AudioClip[] headlightBrokenAudioClipArray;
 
     private void Awake()
@@ -54,6 +57,11 @@ public class SoundManager : MonoBehaviour
     public void PlaySaveSound()
     {
         soundEffectsAudioSource.PlayOneShot(saveGameAudio);
+    }
+
+    public void PlayBossFightCloseDoorSound()
+    {
+        soundEffectsAudioSource.PlayOneShot(bossFightDoorClose);
     }
 
     private void QTE_OnQTEStart()

@@ -15,6 +15,9 @@ public class Teleport : MonoBehaviour
     [SerializeField]
     private GameObject nextArea;
 
+    [SerializeField]
+    private bool dontDestroyParent;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Player"))
@@ -36,7 +39,8 @@ public class Teleport : MonoBehaviour
 
             if (nextArea != null)
                 nextArea.SetActive(true);
-            gameObject.transform.parent.gameObject.SetActive(false);
+            if(!dontDestroyParent)
+                gameObject.transform.parent.gameObject.SetActive(false);
         }
     }
 }

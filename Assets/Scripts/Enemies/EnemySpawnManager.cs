@@ -52,6 +52,9 @@ public class EnemySpawnManager : MonoBehaviour
     private GameObject fakePrefab;
     #endregion
 
+    [SerializeField]
+    private GameObject initiateBossFightTrigger;
+
     List<GameObject> spawnedExecutioners = new List<GameObject>();
 
     #region Checkpoints

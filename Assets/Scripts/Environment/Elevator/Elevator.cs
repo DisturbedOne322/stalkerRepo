@@ -88,33 +88,33 @@ public class Elevator : MonoBehaviour
         OnDeparted?.Invoke();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //if (moving)
-        //    return;
-        //if (!collision.gameObject.CompareTag("Player"))
-        //    return;
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    //if (moving)
+    //    //    return;
+    //    //if (!collision.gameObject.CompareTag("Player"))
+    //    //    return;
 
-        //moving = true;
-    }
+    //    //moving = true;
+    //}
 
-    private void OnTriggerEnter2D(Collision2D collision)
-    {
-        if (moving)
-            return;
+    //private void OnTriggerEnter2D(Collision2D collision)
+    //{
+    //    if (moving)
+    //        return;
 
-        OnDeparted?.Invoke();
+    //    OnDeparted?.Invoke();
 
-        destination = Vector2.Distance(transform.position, startPoint.position) 
-            > Vector2.Distance(transform.position, endPoint.position) ? 
-            startPoint.position : endPoint.position;
+    //    destination = Vector2.Distance(transform.position, startPoint.position) 
+    //        > Vector2.Distance(transform.position, endPoint.position) ? 
+    //        startPoint.position : endPoint.position;
 
-        StartCoroutine(CallElevator(destination));
+    //    StartCoroutine(CallElevator(destination));
 
-        player.transform.parent = this.transform;
+    //    player.transform.parent = this.transform;
 
-        moving = true;
-    }
+    //    moving = true;
+    //}
 
     private IEnumerator CallElevator(Vector3 destination)
     {

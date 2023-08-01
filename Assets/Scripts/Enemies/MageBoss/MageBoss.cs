@@ -87,6 +87,10 @@ public class MageBoss : MonoBehaviour
     private AudioClip[] damagedAudioClipArray;
     [SerializeField]
     private AudioClip swordThrowSound;
+    [SerializeField]
+    private AudioClip swordPierceBossSound;
+    [SerializeField]
+    private AudioClip getPulledByTeleporterSound;
 
     private void Awake()
     {
@@ -205,6 +209,21 @@ public class MageBoss : MonoBehaviour
     public void PlayFlyUpSound()
     {
         audioSource.PlayOneShot(flyUpAudioClip);
+    }
+
+    public void PlayPulledByTeleporterSound()
+    {
+        audioSource.PlayOneShot(getPulledByTeleporterSound);
+    }
+
+    public void PlaySwordPirceBossSound()
+    {
+        audioSource.PlayOneShot(swordPierceBossSound);
+    }
+
+    public void PlayThrowSwordSoundInstantly()
+    {
+        audioSource.PlayOneShot(swordThrowSound);
     }
 
     public void PlayThrowSwordSound()

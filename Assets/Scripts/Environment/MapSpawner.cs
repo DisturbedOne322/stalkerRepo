@@ -21,11 +21,6 @@ public class MapSpawner : MonoBehaviour
             mapCheckpoints[i].OnSpawnNextMapPart += MapSpawner_OnSpawnNextMapPart;
         }
 
-        for(int i = 0; i < mapParts.Length; i++)
-        {
-            mapParts[i].SetActive(false);
-        }
-
         savePointToMapPartsDict = new Dictionary<int, List<int>>
         {
             { 0, new List<int> { 0, 1 } },
@@ -49,11 +44,9 @@ public class MapSpawner : MonoBehaviour
 
     private void Instance_OnGameLoaded(int lastCheckpointId)
     {
-        Debug.Log(lastCheckpointId);
         List<int> parts = savePointToMapPartsDict[lastCheckpointId];
         for(int i = 0; i < parts.Count;i++)
         {
-            Debug.Log(parts[i]);
             mapParts[parts[i]].SetActive(true);
         }
     }
